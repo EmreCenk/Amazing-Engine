@@ -2,7 +2,7 @@
 import pygame
 
 
-class big_boi_3d:
+class graphics_manager:
 
     def __init__(self,  width_window , height_window):
 
@@ -15,8 +15,10 @@ class big_boi_3d:
         screen_size = (self.height,self.width)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
 
-    def init_loop(self, functions_to_call):
+    def init_loop(self, functions_to_call=None):
 
+        if functions_to_call is None:
+            functions_to_call = []
         self.start_engine()
 
         while True:
@@ -26,8 +28,8 @@ class big_boi_3d:
                     quit()
                     break
                 if event.type == pygame.VIDEORESIZE:
-                    self.height = pygame.display.get_window_size()
-                    self.width, self.height = height
+                    self.width, self.height = pygame.display.get_window_size()
+                    print(self.width,self.height)
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
@@ -42,3 +44,6 @@ class big_boi_3d:
 
 
 
+if __name__ == '__main__':
+    a = graphics_manager(500,500)
+    a.init_loop()
