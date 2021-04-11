@@ -24,7 +24,8 @@ class graphics_manager:
         if functions_to_call is None:
             functions_to_call = []
 
-        self.test_triangle = triangle([1000,1000,100],[4000,2000,100],[6000,3000,100])
+        self.test_triangle = triangle([100,100,100],[200,200,100],[300,300,100])
+        self.test_triangle_2 = triangle([1000,1000,100],[2000,2000,100],[6000,3000,100])
         self.start_engine()
 
         while True:
@@ -44,14 +45,28 @@ class graphics_manager:
                         quit()
 
 
-            self.test_triangle.vertex1[0] += 10
-            self.test_triangle.vertex2[1] += 10
-            self.test_triangle.vertex3[0] += 10
+            self.test_triangle.vertex1[0] -= 1
+            self.test_triangle.vertex2[0] -= 1
+            self.test_triangle.vertex3[0] -= 1
             new_vertices = project_triangle(self.test_triangle.vertex1,
                                    self.test_triangle.vertex2,
-                                   self.test_triangle.vertex3,)
+                                   self.test_triangle.vertex3,
+                                    self.width,
+                                    self.height
 
+                                            )
+
+            self.test_triangle_2.vertex1[2] -= 1
+            self.test_triangle_2.vertex2[2] -= 1
+            self.test_triangle_2.vertex3[2] -= 1
+            new_vertices2 = project_triangle(self.test_triangle_2.vertex1,
+                                   self.test_triangle_2.vertex2,
+                                   self.test_triangle_2.vertex3,
+                                             self.width,
+                                             self.height
+                                             )
             pygame.draw.polygon(self.window, points = new_vertices,color = "white")
+            pygame.draw.polygon(self.window, points = new_vertices2,color = "blue")
             print(new_vertices)
             for func in functions_to_call:
                 func()
