@@ -7,7 +7,8 @@ import pygame
 
 class graphics_manager:
 
-    def __init__(self,  width_window , height_window, background_color = (0,0,0)):
+    def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):
+        self.delay_time = delay_time
         self.background_color = background_color
 
 
@@ -19,7 +20,7 @@ class graphics_manager:
         screen_size = (self.height,self.width)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
 
-    def init_loop(self,delay_time = 100, functions_to_call=None):
+    def init_loop(self, functions_to_call=None):
 
         if functions_to_call is None:
             functions_to_call = []
@@ -27,10 +28,13 @@ class graphics_manager:
         self.test_triangle = shapes_2d.triangle([100,100,100],[200,200,100],[300,300,100])
         self.test_triangle_2 = shapes_2d.triangle([-200,-200,50],[200,200,50],[0,500,50],color="blue")
 
+        self.quad_test = shapes_2d.quadrilateral([1000,-200,50], [200,200,50], [0,500,50], [1000,1000,50],
+                                                 _color = "green")
+
         self.start_engine()
 
         while True:
-            pygame.time.delay(delay_time)
+            pygame.time.delay(self.delay_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -46,17 +50,18 @@ class graphics_manager:
                         quit()
 
 
-            self.test_triangle.vertex1[2] -= 1
-            self.test_triangle.vertex2[2] -= 1
-            self.test_triangle.vertex3[2] -= 1
 
 
-            self.test_triangle_2.vertex1[2] -= 1
-            self.test_triangle_2.vertex2[2] -= 1
-            self.test_triangle_2.vertex3[2] -= 1
 
-            self.test_triangle_2.draw(self.window)
-            self.test_triangle.draw(self.window)
+            self.test_triangle_2.move("z",-1)
+            self.quad_test.move("z",-1)
+
+
+            self.quad_test.draw(self.window)
+            # self.test_triangle_2.draw(self.window)
+            # self.test_triangle.draw(self.window)
+
+
 
             for func in functions_to_call:
                 func()
@@ -77,5 +82,5 @@ class graphics_manager:
 
 
 if __name__ == '__main__':
-    a = graphics_manager(500,500)
+    a = graphics_manager(500,500,delay_time=100)
     a.init_loop()
