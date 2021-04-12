@@ -25,7 +25,8 @@ class graphics_manager:
             functions_to_call = []
 
         self.test_triangle = triangle([100,100,100],[200,200,100],[300,300,100])
-        self.test_triangle_2 = triangle([1000,1000,100],[2000,2000,100],[6000,3000,100])
+        self.test_triangle_2 = triangle([-200,-200,50],[200,200,50],[0,500,50])
+
         self.start_engine()
 
         while True:
@@ -45,9 +46,9 @@ class graphics_manager:
                         quit()
 
 
-            self.test_triangle.vertex1[0] -= 1
-            self.test_triangle.vertex2[0] -= 1
-            self.test_triangle.vertex3[0] -= 1
+            self.test_triangle.vertex1[2] -= 1
+            self.test_triangle.vertex2[2] -= 1
+            self.test_triangle.vertex3[2] -= 1
             new_vertices = project_triangle(self.test_triangle.vertex1,
                                    self.test_triangle.vertex2,
                                    self.test_triangle.vertex3,
@@ -83,6 +84,12 @@ class triangle:
         self.vertex1 = vertex1
         self.vertex2 = vertex2
         self.vertex3 = vertex3
+
+# class cube:
+#     def __init__(self, center_x, center_y, center_z, side_length):
+#         self.vertices = []
+#     def generate_coordinates(self, center_x, center_y, center_z, side_length):
+
 
 if __name__ == '__main__':
     a = graphics_manager(500,500)
