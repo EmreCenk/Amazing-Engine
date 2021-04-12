@@ -3,7 +3,7 @@ def convert_result(x,y,s_width,s_height):
     #the output of all the other functions take the center of the screen as the origin. Here, we convert it back such
 # that the top left corner is the origin
 
-    return round(x+s_width/2),round(y+s_height/2)
+    return x+s_width/2,y+s_height/2
 
 def project_3d_point_to_2d(x,y,z,screen_width,screen_height,d=1):
 
