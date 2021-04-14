@@ -1,7 +1,6 @@
 
 from Mathematical_Functions.projecting import project_triangle
-
-import graphics.shapes_2d as shapes_2d
+import graphics.shapes_3d as sh3
 
 import pygame
 
@@ -26,19 +25,17 @@ class graphics_manager:
         if functions_to_call is None:
             functions_to_call = []
 
-        self.test_triangle = shapes_2d.triangle([100,100,100],[200,200,100],[300,300,100])
-        self.test_triangle_2 = shapes_2d.triangle([-200,-200,50],[200,200,50],[0,500,50],color="blue")
-
-        self.quad_test = shapes_2d.quadrilateral([200,-200,50], [200,200,50], [0,500,50], [1000,1000,50],
-                                                 _color = "green")
-
-        self.test_cube = shapes_2d.shape_2d(color="blue")
-
-        self.test_cube.triangles.extend([
-            shapes_2d.quadrilateral.convert_to_triangles(self.test_cube,(0,0,1),(0,0,0),(1,0,0),(1,0,1))
-        ])
-        s=10
-        t=-100
+        shift = 1
+        side = 100
+        self.test_rect3 = sh3.rectangular_prism(
+            (shift, shift, shift), (side, shift, shift), (side, side, shift), (shift, side, shift),
+             (shift, shift, side), (side,
+                                    shift,
+                                    side), (side,
+                                            side,
+                                            side),
+             (shift, side, side)
+        )
 
 
         self.start_engine()
@@ -63,13 +60,6 @@ class graphics_manager:
 
 
 
-            self.test_triangle_2.move("z",-1)
-            self.quad_test.move("z",-1)
-
-
-            self.quad_test.draw(self.window)
-            # self.test_triangle_2.draw(self.window)
-            # self.test_triangle.draw(self.window)
 
 
 
@@ -78,7 +68,7 @@ class graphics_manager:
 
 
 
-
+            self.test_rect3.draw(self.window)
             pygame.display.update()
 
             self.window.fill(self.background_color)
