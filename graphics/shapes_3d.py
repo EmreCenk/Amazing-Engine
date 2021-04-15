@@ -39,6 +39,7 @@ class rectangular_prism(shape_3d):
         for side in self.faces:
             self.triangles.extend(side.triangles)
 
+        print("triangle number : ", len(self.triangles))
     def define_center(self):
         #We find the center of this cube by taking the average of all coordinates
 

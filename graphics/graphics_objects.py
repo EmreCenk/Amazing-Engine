@@ -28,13 +28,16 @@ class graphics_manager:
         shift = 1
         side = 100
         self.test_rect3 = sh3.rectangular_prism(
-            (shift, shift, shift), (side, shift, shift), (side, side, shift), (shift, side, shift),
-             (shift, shift, side), (side,
-                                    shift,
-                                    side), (side,
-                                            side,
-                                            side),
-             (shift, side, side)
+
+            [shift, shift, side],
+            [side, shift, side],
+            [side, shift, shift],
+            [shift, shift, shift],
+
+             [shift, side, side],
+            [side, side, side],
+            [side,side, shift],
+             [shift, side, shift]
         )
 
 
@@ -69,6 +72,7 @@ class graphics_manager:
 
 
             self.test_rect3.draw(self.window)
+            self.test_rect3.move("x",-0.5)
             pygame.display.update()
 
             self.window.fill(self.background_color)
