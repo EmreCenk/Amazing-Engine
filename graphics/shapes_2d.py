@@ -69,11 +69,14 @@ class quadrilateral(shape_2d):
 
     def convert_to_triangles(self,v1,v2,v3,v4):
         t1=triangle(
-            v1,v2,v3,color = self.color, fill_bool=self.fill
-        ).triangles
+            v1,v2,v3,color = "red", fill_bool=self.fill
+        )
+
+
         t2 = triangle(
-                v3, v4, v1, color=self.color, fill_bool=self.fill
-            ).triangles
-        self.triangles.append(t1[0])
-        self.triangles.append(t2[0])
+                list(v1), list(v4), list(v1), color="red", fill_bool=self.fill
+            )
+        print("Yes")
+        self.triangles.append(t1)
+        self.triangles.append(t2)
 
