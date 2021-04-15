@@ -12,3 +12,5 @@ def distance(p1,p2):
         (p1[2] - p2[2]) ** 2
     )
 
+def rotation(m,n):
+    pass
