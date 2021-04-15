@@ -17,9 +17,12 @@ class shape_3d(shape_2d):
 class rectangular_prism(shape_3d):
 
     def __init__(self,v1, v2, v3, v4, v5, v6, v7, v8, color="white",fill_bool=False):
+        """Label the first 4 points starting with the top left corner of a given side, and moving in a clockwise
+        direction. Label the last 4 points by picking the vertex that has not been labeled which is also connected to vertex 1.
+        From there, keep labeling in a clockwise direction. """
         super().__init__(color,fill_bool)
         self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
-        self.vertices= (v1, v2, v3, v4, v5, v6, v7, v8)
+        self.vertices= [v1, v2, v3, v4, v5, v6, v7, v8]
 
 
     def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
@@ -34,12 +37,13 @@ class rectangular_prism(shape_3d):
         s5 = quadrilateral(v2,v3,v7,v6,self.color,self.fill)
         s6 = quadrilateral(v1,v4,v8,v5,self.color,self.fill)
 
-        self.faces = [s1,s2,s3,s4,s5,s6]
+        self.faces = [s2]
 
         for side in self.faces:
             self.triangles.extend(side.triangles)
 
-        print("triangle number : ", len(self.triangles))
+
+
     def define_center(self):
         #We find the center of this cube by taking the average of all coordinates
 

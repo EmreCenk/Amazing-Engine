@@ -7,6 +7,7 @@ class shape_2d:
         self.color = color
         self.fill = fill_bool
         self.triangles = [] #all shapes are represented as combined triangles. This is the list of triangles
+        self.vertices = set() #so that there are no duplicates
 
     def draw(self,window):
 
@@ -54,7 +55,6 @@ class triangle(shape_2d):
         self.vertex3[axis]+=how_much
 
 
-        print()
 
 
 
@@ -68,15 +68,12 @@ class quadrilateral(shape_2d):
         self.convert_to_triangles(v1,v2,v3,v4)
 
     def convert_to_triangles(self,v1,v2,v3,v4):
-        self.triangles.append(
-            triangle(
+        t1=triangle(
             v1,v2,v3,color = self.color, fill_bool=self.fill
-        )
-        )
-
-        self.triangles.append(
-            triangle(
+        ).triangles
+        t2 = triangle(
                 v3, v4, v1, color=self.color, fill_bool=self.fill
-            )
-        )
+            ).triangles
+        self.triangles.append(t1[0])
+        self.triangles.append(t2[0])
 
