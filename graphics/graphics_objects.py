@@ -25,8 +25,8 @@ class graphics_manager:
         if functions_to_call is None:
             functions_to_call = []
 
-        shift = 1
-        side = 100
+        shift = 0.1
+        side = 2
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
@@ -36,12 +36,12 @@ class graphics_manager:
             v1,v2,v3,v4,v5,v6,v7,v8
         )
 
-        self.test2d = sh2.quadrilateral(v1,v2,v3,v4,_color="green")
+        self.shoot = sh2.quadrilateral([10,10,1],[20,20,1],[30,30,1],[40,40,1],_color="green")
 
         self.start_engine()
-        print(v1,v2,v3,v4,v5,v6,v7,v8)
 
         while True:
+
             pygame.time.delay(self.delay_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -68,12 +68,26 @@ class graphics_manager:
                 func()
 
 
-            self.test2d.move("y",-5)
-            self.test2d.draw(self.window)
+            all=[]
+            for t in self.test_rect3.triangles:
+                all.append(tuple(t.vertex1))
+                all.append(tuple(t.vertex2))
+                all.append(tuple(t.vertex3))
 
+            def Remove(duplicate):
+                final_list = []
+                for num in duplicate:
+                    if num not in final_list:
+                        final_list.append(num)
+                return final_list
+
+            all = Remove(all)
+            # print(all)
             self.test_rect3.draw(self.window)
 
-            self.test_rect3.move("y",-5)
+            self.test_rect3.move("y",-0.01)
+
+
             pygame.display.update()
 
             self.window.fill(self.background_color)
