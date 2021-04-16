@@ -1,5 +1,5 @@
 import pygame
-
+import modifying.alternative_graphics.shapes_2d as sh2
 
 class graphics_manager:
 
@@ -22,6 +22,10 @@ class graphics_manager:
             functions_to_call = []
 
         self.start_engine()
+        s=100
+        self.test_triangle = sh2.triangle(
+            [0,s,5],[s,0,5],[s,s,5]
+        )
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -44,9 +48,10 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-
-
-
+            self.test_triangle.move_yourself("y",-8)
+            self.test_triangle.wireframe_draw(self.window)
+            pygame.display.update()
+            self.window.fill(self.background_color)
 
 
 
