@@ -1,5 +1,23 @@
 
-from math import sqrt
+from math import radians, sqrt, cos
+from constants import conversion,excluded
+
+def rotate(vertex, angle, axis, radian_input = False):
+    if not radian_input:
+        angle = radians(angle)
+
+    if axis in conversion:
+        axis = conversion[axis]
+
+    #Getting the other 2 axes:
+    a1, a2 = excluded[axis]
+
+    vertex[a1] = vertex[a1]*cos(angle) - vertex[a2]
+    vertex[a2] = vertex[a2]*cos(angle) - vertex[a1]
+
+    return vertex
+
+
 def distance(p1,p2):
 
 
@@ -12,5 +30,3 @@ def distance(p1,p2):
         (p1[2] - p2[2]) ** 2
     )
 
-def rotation(m,n):
-    pass
