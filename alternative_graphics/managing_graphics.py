@@ -1,9 +1,5 @@
-
-from Mathematical_Functions.projecting import project_triangle
-import graphics.shapes_3d as sh3
-import graphics.shapes_2d as sh2
 import pygame
-
+import alternative_graphics.shapes_2d as sh2
 
 class graphics_manager:
 
@@ -25,21 +21,11 @@ class graphics_manager:
         if functions_to_call is None:
             functions_to_call = []
 
-        shift = 0.1
-        side = 2
-        v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
-        [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
-
-
-        self.test_rect3 = sh3.rectangular_prism(
-
-            v1,v2,v3,v4,v5,v6,v7,v8
-        )
-
-        self.shoot = sh2.quadrilateral([10,10,1],[20,20,1],[30,30,1],[40,40,1],_color="green")
-
         self.start_engine()
-
+        s=200
+        self.test_triangle = sh2.triangle(
+                [0,s,0],[s,0,0],[s,s,0]
+        )
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -58,39 +44,17 @@ class graphics_manager:
                         quit()
 
 
-
-
-
-
+            self.test_triangle.rotate("z", 0.5)
+            self.test_triangle.rotate("y", 1)
 
 
             for func in functions_to_call:
                 func()
-
-
-            all=[]
-            for t in self.test_rect3.triangles:
-                all.append(tuple(t.vertex1))
-                all.append(tuple(t.vertex2))
-                all.append(tuple(t.vertex3))
-
-            def Remove(duplicate):
-                final_list = []
-                for num in duplicate:
-                    if num not in final_list:
-                        final_list.append(num)
-                return final_list
-
-            all = Remove(all)
-            # print(all)
-            self.test_rect3.draw(self.window)
-
-            self.test_rect3.move("y",-0.01)
-
+            self.test_triangle.wireframe_draw(self.window)
 
             pygame.display.update()
-
             self.window.fill(self.background_color)
+
 
 
 
