@@ -11,7 +11,8 @@ class shape_3d(shape):
         super().__init__(color)
 
     def rotate(self,axis,angle):
-        for
+        for vert in self.vertices:
+            rotate(vert,axis,angle)
 
 
 class rectangular_prism(shape_3d):
@@ -21,20 +22,6 @@ class rectangular_prism(shape_3d):
         direction. Label the last 4 points by picking the vertex that has not been labeled which is also connected to vertex 1.
         From there, keep labeling in a clockwise direction. """
         super().__init__(color)
-        self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
-
-
-
-    def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
-
-        s1 = quadrilateral(list(v1),list(v2),list(v3),list(v4),self.color)
-        s2 = quadrilateral(list(v8),list(v7),list(v3),list(v4),self.color)
-
-        s3 = quadrilateral(list(v5),list(v6),list(v7),list(v8),self.color)
-        s4 = quadrilateral(list(v5),list(v6),list(v2),list(v1),self.color)
-
-        s5 = quadrilateral(list(v2),list(v3),list(v7),list(v6),self.color)
-        s6 = quadrilateral(list(v5),list(v8),list(v1),list(v4),self.color)
 
         self.v1 = v1
         self.v2 = v2
@@ -44,6 +31,21 @@ class rectangular_prism(shape_3d):
         self.v6 = v6
         self.v7 = v7
         self.v8 = v8
+
+        self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
+
+
+
+    def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
+
+        s1 = quadrilateral(list(self.v1),list(self.v2),list(self.v3),list(self.v4),self.color)
+        s2 = quadrilateral(list(self.v8),list(self.v7),list(self.v3),list(self.v4),self.color)
+
+        s3 = quadrilateral(list(self.v5),list(self.v6),list(self.v7),list(self.v8),self.color)
+        s4 = quadrilateral(list(self.v5),list(self.v6),list(self.v2),list(self.v1),self.color)
+
+        s5 = quadrilateral(list(self.v2),list(self.v3),list(self.v7),list(self.v6),self.color)
+        s6 = quadrilateral(list(self.v5),list(self.v8),list(self.v1),list(self.v4),self.color)
 
         self.vertices = [self.v1,
                          self.v2,

@@ -24,16 +24,20 @@ class shape:
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
 
     def move(self,axis,amount):
-        for tri in self.triangles:
-            tri.move_yourself(axis,amount)
+        if axis in conversion:
+            axis = conversion[axis]
+
+        for vert in self.vertices:
+            vert[axis]+=amount
+
 
 class triangle(shape):
 
     def __init__(self,v1,v2,v3,color = "white"):
         super().__init__(color = color )
-        self.v1 = list(v1)
-        self.v2 = list(v2)
-        self.v3 = list(v3)
+        self.v1 = v1
+        self.v2 = v2
+        self.v3 = v3
 
         self.vertices = [self.v1,self.v2,self.v3]
         self.edges = [
@@ -42,13 +46,13 @@ class triangle(shape):
             [self.v3,self.v1]
         ]
 
-    def move_yourself(self,axis, how_much):
-        if axis in conversion:
-            axis = conversion[axis]
-
-        self.v1[axis] += how_much
-        self.v2[axis] += how_much
-        self.v3[axis] += how_much
+    # def move_yourself(self,axis, how_much):
+    #     if axis in conversion:
+    #         axis = conversion[axis]
+    #
+    #     self.v1[axis] += how_much
+    #     self.v2[axis] += how_much
+    #     self.v3[axis] += how_much
 
     def get_projected_coordinates(self):
 
