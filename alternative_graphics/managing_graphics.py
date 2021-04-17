@@ -23,12 +23,10 @@ class graphics_manager:
 
         self.start_engine()
         s=200
-        self.test_triangle = sh2.triangle(
-                [0,s,0],[s,0,0],[s,s,0]
-        )
+
 
         shift = 1
-        side = 100
+        side = 0.5
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
@@ -50,16 +48,14 @@ class graphics_manager:
 
 
             # self.test_triangle.rotate("z", 0.5)
-            # self.test_triangle.rotate("y", 1)
+            self.tester_rectangle.rotate("y", 10)
 
-            self.tester_rectangle.rotate("y", 5)
-            self.tester_rectangle.rotate("x", 1)
+            # self.tester_rectangle.rotate("x", 1)
 
             for func in functions_to_call:
                 func()
 
-            self.test_triangle.wireframe_draw(self.window)
-            self.tester_rectangle.draw_all_triangles(self.window)
+            self.tester_rectangle.wireframe_draw(self.window)
 
             pygame.display.update()
             self.window.fill(self.background_color)

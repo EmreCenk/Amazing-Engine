@@ -89,7 +89,7 @@ class quadrilateral(shape):
     def convert_to_triangles(self,v1,v2,v3,v4):
 
         t1=triangle(
-            v3,v2,v1, color = self.color,
+            v1,v2,v3, color = self.color,
         )
 
 
