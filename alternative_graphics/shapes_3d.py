@@ -1,5 +1,5 @@
 from alternative_graphics.shapes_2d import quadrilateral,shape
-from Mathematical_Functions.coordinate_system_3d import distance
+from Mathematical_Functions.coordinate_system_3d import rotate
 
 class shape_3d(shape):
 
@@ -10,7 +10,8 @@ class shape_3d(shape):
     def __init__(self,color):
         super().__init__(color)
 
-
+    def rotate(self,axis,angle):
+        for
 
 
 class rectangular_prism(shape_3d):
@@ -27,7 +28,7 @@ class rectangular_prism(shape_3d):
     def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
 
         s1 = quadrilateral(list(v1),list(v2),list(v3),list(v4),self.color)
-        s2 = quadrilateral(list(v8),list(v7),list(v3),list(v4),self.color,)
+        s2 = quadrilateral(list(v8),list(v7),list(v3),list(v4),self.color)
 
         s3 = quadrilateral(list(v5),list(v6),list(v7),list(v8),self.color)
         s4 = quadrilateral(list(v5),list(v6),list(v2),list(v1),self.color)
@@ -35,6 +36,39 @@ class rectangular_prism(shape_3d):
         s5 = quadrilateral(list(v2),list(v3),list(v7),list(v6),self.color)
         s6 = quadrilateral(list(v5),list(v8),list(v1),list(v4),self.color)
 
+        self.v1 = v1
+        self.v2 = v2
+        self.v3 = v3
+        self.v4 = v4
+        self.v5 = v5
+        self.v6 = v6
+        self.v7 = v7
+        self.v8 = v8
+
+        self.vertices = [self.v1,
+                         self.v2,
+                         self.v3,
+                         self.v4,
+                         self.v5,
+                         self.v6,
+                         self.v7,
+                         self.v8,
+                         ]
+
+        self.edges = [
+            [self.v1,self.v2],
+            [self.v2,self.v3],
+            [self.v3,self.v4],
+            [self.v4,self.v1],
+            [self.v4,self.v8],
+            [self.v3,self.v7],
+            [self.v7,self.v8],
+            [self.v2,self.v6],
+            [self.v1,self.v5],
+            [self.v5,self.v6],
+            [self.v7,self.v6],
+            [self.v5,self.v8]
+        ]
         self.faces = [s1,s2,s3,s4,s5,s6]
 
         for side in self.faces:
@@ -55,3 +89,4 @@ class rectangular_prism(shape_3d):
 
 
         return x/8,y/8,z/8
+
