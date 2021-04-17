@@ -1,6 +1,6 @@
 
 import pygame
-from Mathematical_Functions.projecting import project_3d_point_to_2d
+from Mathematical_Functions.projecting import project_3d_point_to_2d,convert_result
 from Mathematical_Functions.coordinate_system_3d import rotate
 from constants import conversion
 
@@ -21,7 +21,13 @@ class shape:
             p1=project_3d_point_to_2d(edge[0],width,height,d)
             p2=project_3d_point_to_2d(edge[1],width,height,d)
 
+
+
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
+    def draw_all_triangles(self,window,d=1):
+        for tri in self.triangles:
+            tri.wireframe_draw(window,d)
+
 
     def move(self,axis,amount):
         if axis in conversion:
@@ -29,6 +35,10 @@ class shape:
 
         for vert in self.vertices:
             vert[axis]+=amount
+
+    def rotate(self,axis,angle):
+        for vert in self.vertices:
+            rotate(vert,axis,angle)
 
 
 class triangle(shape):
@@ -90,7 +100,12 @@ class quadrilateral(shape):
         self.triangles.append(t2)
 
 if __name__ == '__main__':
-    self = triangle([1,2,3],[3,4,5],[4,5,6],"white")
-    print(self.vertices)
-    self.v1[0]+=1000
-    print(self.vertices)
+    import alternative_graphics.shapes_3d as sh3
+
+    shift = 1
+    side = 100
+
+    v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side], [side, shift, side], [side, shift, shift], [shift, shift,
+                                                                                                       shift], \
+                                     [shift, side, side], [side, side, side], [side, side, shift], [shift, side, shift]
+    self = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8)

@@ -1,3 +1,4 @@
+from math import tan,radians
 
 def convert_result(x,y,s_width,s_height):
     #the output of all the other functions take the center of the screen as the origin. Here, we convert it back such
@@ -14,11 +15,16 @@ def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
     # This is currently a very basic perspective projection. It is derived using similar triangles
     # At some point the engine will implement quaternions. For now, I will be using 3 coordinates to get some basic
     # functionality
+
+
+
     x=point[0]
     y=point[1]
     z=point[2]
-    newx = d*x
-    newy = d*y
+
+
+    newx = x
+    newy = y
 
     return convert_result(newx,newy,screen_width,screen_height)
 

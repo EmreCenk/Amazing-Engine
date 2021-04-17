@@ -10,9 +10,7 @@ class shape_3d(shape):
     def __init__(self,color):
         super().__init__(color)
 
-    def rotate(self,axis,angle):
-        for vert in self.vertices:
-            rotate(vert,axis,angle)
+
 
 
 class rectangular_prism(shape_3d):
@@ -32,11 +30,11 @@ class rectangular_prism(shape_3d):
         self.v7 = v7
         self.v8 = v8
 
-        self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
+        self.generate_triangles()
 
 
 
-    def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
+    def generate_triangles(self):
 
         s1 = quadrilateral(list(self.v1),list(self.v2),list(self.v3),list(self.v4),self.color)
         s2 = quadrilateral(list(self.v8),list(self.v7),list(self.v3),list(self.v4),self.color)
