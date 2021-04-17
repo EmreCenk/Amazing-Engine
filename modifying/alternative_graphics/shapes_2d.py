@@ -1,9 +1,7 @@
 
 import pygame
 from Mathematical_Functions.projecting import project_3d_point_to_2d
-conversion = {"x":0,
-              "y":1,
-              "z":2}
+from modifying.constants import conversion
 
 class shape:
 
