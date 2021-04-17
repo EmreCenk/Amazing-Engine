@@ -47,8 +47,7 @@ class graphics_manager:
 
 
 
-            # self.test_triangle.rotate("z", 0.5)
-            self.tester_rectangle.rotate("y", 10)
+            self.tester_rectangle.rotate("x", 1)
 
             # self.tester_rectangle.rotate("x", 1)
 

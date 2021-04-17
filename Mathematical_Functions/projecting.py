@@ -35,7 +35,8 @@ def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
     y=point[1]
     z=point[2]
     if z>=d:
-        return [-111111,-1111111]
+        return [-10000,-10000]
+
     scale=100
 
     return convert_result(scale*x/(z-d),scale*y/(z-d),screen_width,screen_height)
