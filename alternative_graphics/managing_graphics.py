@@ -47,17 +47,14 @@ class graphics_manager:
                     self.width, self.height = pygame.display.get_window_size()
                     print(self.width,self.height)
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_r:
-                        pygame.quit()
-                        quit()
 
 
             # self.test_triangle.rotate("z", 0.5)
             # self.test_triangle.rotate("y", 1)
 
-            self.tester_rectangle.rotate("z", 0.5)
-            self.tester_rectangle.rotate("y", 1)
+            self.tester_rectangle.rotate("z", 5)
+            self.tester_rectangle.rotate("y", 7)
+            self.tester_rectangle.rotate("x", 9)
 
             for func in functions_to_call:
                 func()
@@ -77,5 +74,5 @@ class graphics_manager:
 
 
 if __name__ == '__main__':
-    a = graphics_manager(500,500,delay_time=100)
+    a = graphics_manager(500,500,delay_time=50)
     a.init_loop()
