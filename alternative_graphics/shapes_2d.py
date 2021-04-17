@@ -87,13 +87,14 @@ class quadrilateral(shape):
         self.convert_to_triangles(v1,v2,v3,v4)
 
     def convert_to_triangles(self,v1,v2,v3,v4):
+
         t1=triangle(
-            list(v3),list(v2),list(v1), color = self.color,
+            v3,v2,v1, color = self.color,
         )
 
 
         t2 = triangle(
-                list(v3), list(v4), list(v1), color=self.color,
+                v3, v4, v1, color=self.color,
             )
 
         self.triangles.append(t1)
@@ -109,3 +110,8 @@ if __name__ == '__main__':
                                                                                                        shift], \
                                      [shift, side, side], [side, side, side], [side, side, shift], [shift, side, shift]
     self = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8)
+    print(self.triangles[0].edges,self.edges)
+
+    self.rotate("x",60)
+
+    print(self.triangles[0].edges,self.edges)
