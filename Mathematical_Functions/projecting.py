@@ -17,16 +17,16 @@ def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
     x=point[0]
     y=point[1]
     z=point[2]
-    newx = d*x/z
-    newy = d*y/z
+    newx = d*x
+    newy = d*y
 
     return convert_result(newx,newy,screen_width,screen_height)
 
 def project_triangle(v1,v2,v3,screen_width,screen_height,d=10):
 
-    return (project_3d_point_to_2d(v1[0],v1[1],v1[2],screen_width,screen_height,d),
-            project_3d_point_to_2d(v2[0],v2[1],v2[2],screen_width,screen_height,d),
-            project_3d_point_to_2d(v3[0],v3[1],v3[2],screen_width,screen_height,d))
+    return (project_3d_point_to_2d(v1,screen_width,screen_height,d),
+            project_3d_point_to_2d(v2,screen_width,screen_height,d),
+            project_3d_point_to_2d(v3,screen_width,screen_height,d))
 
 
 def matrix_multiplication(matrix1,matrix2):
