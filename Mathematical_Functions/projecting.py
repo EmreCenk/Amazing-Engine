@@ -13,13 +13,22 @@ def project_3d_point_to_2d(point,screen_width,screen_height,camera_position):
     x=point[0]
     y=point[1]
     z=point[2]
+
+    cx=camera_position[0]
+    cy = camera_position[1]
     d=camera_position[2]
+
+    x+=cx
+    y-=cy
     if z>=d:
         return [-10000,-10000]
 
     scale=100
 
-    return convert_result(scale*x/(z-d),scale*y/(z-d),screen_width,screen_height)
+    return convert_result(scale*x/(z-d),        #projected x coordinate
+                          scale*y/(z-d),        #projected y coordinate
+                          screen_width,
+                          screen_height)
 def project_triangle(v1,v2,v3,screen_width,screen_height,camera_position):
 
     return (project_3d_point_to_2d(v1,screen_width,screen_height,camera_position),

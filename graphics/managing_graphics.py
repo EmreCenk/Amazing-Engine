@@ -51,8 +51,6 @@ class graphics_manager:
 
 
 
-            self.tester_rectangle.rotate("z", 10)
-            self.tester_rectangle.rotate("y", 1)
 
 
 
@@ -61,10 +59,26 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-            self.tester_rectangle.wireframe_draw(self.window,self.camera.position)
-            self.camera.move("z",0.01)
-            print(self.camera.position)
 
+            keys = pygame.key.get_pressed()
+
+            power_level=0.1
+            if keys[pygame.K_DOWN]:
+                self.camera.move("y",-power_level)
+
+            if keys[pygame.K_UP]:
+                self.camera.move("y",power_level)
+
+
+            if keys[pygame.K_LEFT]:
+                self.camera.move("x",-power_level)
+
+            if keys[pygame.K_RIGHT]:
+                self.camera.move("x",power_level)
+
+            # self.tester_rectangle.rotate("z", 10)
+            # self.tester_rectangle.rotate("y", 1)
+            self.tester_rectangle.wireframe_draw(self.window, self.camera.position)
 
             pygame.display.update()
             self.window.fill(self.background_color)
