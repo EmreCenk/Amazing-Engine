@@ -6,24 +6,25 @@ def convert_result(x,y,s_width,s_height):
 
     return x+s_width/2,y+s_height/2
 
-def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
+def project_3d_point_to_2d(point,screen_width,screen_height,camera_position):
 
 
 
     x=point[0]
     y=point[1]
     z=point[2]
+    d=camera_position[2]
     if z>=d:
         return [-10000,-10000]
 
     scale=100
 
     return convert_result(scale*x/(z-d),scale*y/(z-d),screen_width,screen_height)
-def project_triangle(v1,v2,v3,screen_width,screen_height,d=10):
+def project_triangle(v1,v2,v3,screen_width,screen_height,camera_position):
 
-    return (project_3d_point_to_2d(v1,screen_width,screen_height,d),
-            project_3d_point_to_2d(v2,screen_width,screen_height,d),
-            project_3d_point_to_2d(v3,screen_width,screen_height,d))
+    return (project_3d_point_to_2d(v1,screen_width,screen_height,camera_position),
+            project_3d_point_to_2d(v2,screen_width,screen_height,camera_position),
+            project_3d_point_to_2d(v3,screen_width,screen_height,camera_position))
 
 
 def matrix_multiplication(matrix1,matrix2):
@@ -68,6 +69,6 @@ def matrix_multiplication(matrix1,matrix2):
 
 
 if __name__ == '__main__':
-    print(project_3d_point_to_2d([70, -189, 70],500,500))
+    pass
     # m,mm=[[1,2,3]],[[4,3],[2,5],[6,8]]
     # print(matrix_multiplication(m,mm))

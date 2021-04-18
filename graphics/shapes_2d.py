@@ -12,18 +12,18 @@ class shape:
         self.edges = []
         self.vertices = []
 
-    def wireframe_draw(self,window,d=1,orthogonal=False):
+    def wireframe_draw(self,window,camera_position):
         for edge in self.edges:
             height = window.get_height()
             width = window.get_width()
 
-            if not orthogonal:
+            # if not orthogonal:
                 #getting the 2d points:
-                p1=project_3d_point_to_2d(edge[0],width,height,d)
-                p2=project_3d_point_to_2d(edge[1],width,height,d)
-            else:
-                p1=convert_result(edge[0][0],edge[0][1],width,height)
-                p2=convert_result(edge[1][0],edge[1][1],width,height)
+            p1=project_3d_point_to_2d(edge[0],width,height,camera_position)
+            p2=project_3d_point_to_2d(edge[1],width,height,camera_position)
+            #else:
+            #     p1=convert_result(edge[0][0],edge[0][1],width,height)
+            #     p2=convert_result(edge[1][0],edge[1][1],width,height)
 
 
 
@@ -68,13 +68,13 @@ class triangle(shape):
     #     self.v2[axis] += how_much
     #     self.v3[axis] += how_much
 
-    def get_projected_coordinates(self):
+    def get_projected_coordinates(self,camera_position):
 
 
         w,h = pygame.display.get_window_size()
-        return project_3d_point_to_2d(self.v1,w,h),\
-               project_3d_point_to_2d(self.v2,w,h),\
-               project_3d_point_to_2d(self.v3,w,h)
+        return project_3d_point_to_2d(self.v1,w,h,camera_position),\
+               project_3d_point_to_2d(self.v2,w,h,camera_position),\
+               project_3d_point_to_2d(self.v3,w,h,camera_position)
 
     def rotate(self,axis,angle):
         rotate(self.v1,axis,angle)
