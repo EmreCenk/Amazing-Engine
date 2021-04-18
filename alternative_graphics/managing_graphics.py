@@ -26,13 +26,17 @@ class graphics_manager:
 
 
         shift = 0
-        side = 0.5
+        side = 50
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
-        self.tester_rectangle = sh3.rectangular_prism(v1,v2,v3,v4,v5,v6,v7,v8,color="green"
+        self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="green"
 
-        )
+                                                      )
+
+        self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
+
+                                                      )
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -50,12 +54,18 @@ class graphics_manager:
             self.tester_rectangle.rotate("z", 10)
             self.tester_rectangle.rotate("y", 1)
 
+
+
             # self.tester_rectangle.rotate("x", 1)
 
             for func in functions_to_call:
                 func()
 
+            self.tester_rectangle.color="green"
             self.tester_rectangle.wireframe_draw(self.window)
+
+            self.tester_rectangle.color="white"
+            self.tester_rectangle.wireframe_draw(self.window,orthogonal=True)
 
             pygame.display.update()
             self.window.fill(self.background_color)
