@@ -1,4 +1,4 @@
-from alternative_graphics.shapes_2d import quadrilateral,shape
+from graphics.shapes_2d import quadrilateral,shape
 from Mathematical_Functions.coordinate_system_3d import rotate
 
 class shape_3d(shape):

@@ -105,7 +105,7 @@ class quadrilateral(shape):
         self.triangles.append(t2)
 
 if __name__ == '__main__':
-    import alternative_graphics.shapes_3d as sh3
+    import graphics.shapes_3d as sh3
 
     shift = 1
     side = 100
