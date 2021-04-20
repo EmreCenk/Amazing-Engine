@@ -46,11 +46,12 @@ def magnitude(v):
         v[0]**2 + v[1]**2 + v[2]**2
     )
 
-def normalize(v):
+def normalized(v):
     mag = magnitude(v)
-
+    if mag==0:
+        mag=0.001
     return [
-        v[1]/mag,v[2]/mag,v[3]/mag
+        v[0]/mag,v[1]/mag,v[2]/mag
                           ]
 def get_normal(triangle_vertices):
     #We get the cross product of two vertices of the triangle to find the normal
