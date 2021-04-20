@@ -90,7 +90,7 @@ class graphics_manager:
             self.tester_rectangle.rotate("z", 1)
             self.tester_rectangle.rotate("y", 1)
 
-            self.tester_rectangle.wireframe_draw(self.window, self.camera.position,orthogonal=False)
+            self.tester_rectangle.draw_faces(self.window, self.camera.position,orthogonal=False)
 
 
 

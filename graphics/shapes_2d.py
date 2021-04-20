@@ -12,6 +12,7 @@ class shape:
         self.edges = []
         self.vertices = []
 
+
     def wireframe_draw(self,window,camera_position,orthogonal=False):
         for edge in self.edges:
             height = window.get_height()
@@ -25,6 +26,15 @@ class shape:
 
 
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
+
+    def draw_faces(self,window,camera_position,orthogonal=False):
+        for triangle in self.triangles:
+
+            coordiantes = triangle.get_projected_coordinates(camera_position = camera_position,
+                                                             orthogonal = orthogonal)
+
+            pygame.draw.polygon(window,points=coordiantes,color=self.color)
+
     def draw_all_triangles(self,window,d=1):
         for tri in self.triangles:
             tri.wireframe_draw(window,d)
@@ -65,13 +75,13 @@ class triangle(shape):
     #     self.v2[axis] += how_much
     #     self.v3[axis] += how_much
 
-    def get_projected_coordinates(self,camera_position):
+    def get_projected_coordinates(self,camera_position,orthogonal=False):
 
 
         w,h = pygame.display.get_window_size()
-        return project_3d_point_to_2d(self.v1,w,h,camera_position),\
-               project_3d_point_to_2d(self.v2,w,h,camera_position),\
-               project_3d_point_to_2d(self.v3,w,h,camera_position)
+        return project_3d_point_to_2d(self.v1,w,h,camera_position,orthogonal=orthogonal),\
+               project_3d_point_to_2d(self.v2,w,h,camera_position,orthogonal=orthogonal),\
+               project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
 
     def rotate(self,axis,angle):
         rotate(self.v1,axis,angle)
