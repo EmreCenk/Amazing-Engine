@@ -1,7 +1,7 @@
 
 import pygame
 from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
-from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized,is_visible
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized,is_visible,normalize_triangle_vertices
 from constants import conversion
 
 class shape:
@@ -39,7 +39,9 @@ class shape:
 
 
     def draw_all_triangles(self,window,camera_position,orthogonal=False):
+        distinct = set()
         for tri in self.triangles:
+
             if tri.is_visible(camera_position):
                 tri.wireframe_draw(window,camera_position,orthogonal=orthogonal)
 
@@ -101,7 +103,7 @@ class triangle(shape):
     def get_normal(self):
 
         return get_normal(
-            self.vertices
+            normalize_triangle_vertices(self.vertices)
         )
 
     def get_translated(self,camera_position):
@@ -128,7 +130,7 @@ class quadrilateral(shape):
 
 
         t2 = triangle(
-                v1, v3, v4, color=self.color,
+                v3, v4, v1, color=self.color,
             )
 
         self.triangles.append(t1)

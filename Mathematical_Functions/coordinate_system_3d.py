@@ -94,7 +94,7 @@ def subtract_vectors(v1,v2):
 
 def get_lines(triangle_vertices):
     return [
-        subtract_vectors(triangle_vertices[1],triangle_vertices[0]),
+        subtract_vectors(triangle_vertices[1], triangle_vertices[0]),
         subtract_vectors(triangle_vertices[2], triangle_vertices[0])
     ]
 
@@ -109,18 +109,25 @@ def get_normal(triangle_vertices):
         a[2] * b[0] - a[0] * b[2],
         a[0] * b[1] - a[1] * b[0]
     ]
+"""
+    return [
+        a[2] * b[3] - a[3] * b[2],
+        a[3] * b[1] - a[1] * b[3],
+        a[1] * b[2] - a[2] * b[1]
+    ]
 
+"""
 
 def is_visible(triangle_vertices, camera_position):
     triangle_vertices = translate_triangle_vertices(triangle_vertices,camera_position)
+
     triangle_vertices = normalize_triangle_vertices(triangle_vertices)
 
     normal = get_normal(triangle_vertices)
+    if dot_product(normal,camera_position)<0:
+        return False
 
-    if normal[2]<0:
-        return True
-
-    return False
+    return True
 
 
 

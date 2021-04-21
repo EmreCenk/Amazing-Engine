@@ -25,8 +25,8 @@ class graphics_manager:
         s=200
 
 
-        shift = 0
-        side = 100
+        shift = 5
+        side = 60
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
