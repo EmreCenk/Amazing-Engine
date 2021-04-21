@@ -87,7 +87,7 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            self.tester_rectangle.rotate("z", 1)
+            # self.tester_rectangle.rotate("z", 1)
             self.tester_rectangle.rotate("y", 1)
 
             self.tester_rectangle.draw_all_triangles(self.window, self.camera.position,orthogonal=False)

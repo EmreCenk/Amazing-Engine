@@ -1,7 +1,7 @@
 
 import pygame
 from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
-from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized,is_visible
 from constants import conversion
 
 class shape:
@@ -47,6 +47,7 @@ class shape:
         if axis in conversion:
             axis = conversion[axis]
 
+        #This method updates both the self.v values and the self.vertices values
         for vert in self.vertices:
             vert[axis]+=amount
 
@@ -100,7 +101,7 @@ class triangle(shape):
     def get_normal(self):
 
         return get_normal(
-            self.get_normalized()
+            self.vertices
         )
 
     def get_translated(self,camera_position):
@@ -109,15 +110,8 @@ class triangle(shape):
                translate(self.v3,camera_position),
 
     def is_visible(self, camera_position):
-        normal = self.get_normal()
-
-        vt1, vt2, vt3 = translate(self.v1,camera_position)
-        c1 = normal[0] * vt1
-        c2 = normal[0] * vt1
-        c3 = normal[0] * vt1
-
-
-        return True
+        return is_visible(triangle_vertices = self.vertices,
+                          camera_position = camera_position)
 
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
@@ -129,7 +123,7 @@ class quadrilateral(shape):
     def convert_to_triangles(self,v1,v2,v3,v4):
 
         t1=triangle(
-            v1,v3,v2, color = self.color,
+            v1,v2,v3, color = self.color,
         )
 
 
