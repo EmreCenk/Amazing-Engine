@@ -6,10 +6,7 @@ def convert_result(x,y,s_width,s_height):
 
     return [x+s_width/2,y+s_height/2]
 
-def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orthogonal=False):
-
-
-
+def translate(point,camera_position):
     x=point[0]
     y=point[1]
     z=point[2]
@@ -20,17 +17,25 @@ def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orth
 
     x+=cx
     y-=cy
-    if z>=d:
+    z-=d
+
+    return x,y,z
+def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orthogonal=False):
+    if orthogonal:
+        return convert_result(
+            point[0],point[1],screen_width,screen_height
+        )
+
+    x,y,z = translate(point,camera_position)
+
+    if z>=camera_position[2]:
         return [-10000,-10000]
 
     scale=screen_width
 
-    if orthogonal:
-        return convert_result(
-            x,y,screen_width,screen_height
-        )
-    return convert_result(scale*x/(z-d),        #projected x coordinate
-                          scale*y/(z-d),        #projected y coordinate
+
+    return convert_result(scale*x/z,        #projected x coordinate
+                          scale*y/z,        #projected y coordinate
                           screen_width,
                           screen_height)
 def project_triangle(v1,v2,v3,screen_width,screen_height,camera_position):
