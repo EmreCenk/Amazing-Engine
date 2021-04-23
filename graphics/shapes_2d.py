@@ -32,7 +32,7 @@ class shape:
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
 
         for vertex in self.vertices:
-            prompt = str(self.vertices.index(vertex))
+            prompt = str(self.vertices.index(vertex)+1)
             asdf = project_3d_point_to_2d(vertex, width,height,camera_position,orthogonal)
             pygame.draw.circle(window, "white", asdf, 3)
             prompt_surface = self.font.render(prompt, True, (255, 255, 255))

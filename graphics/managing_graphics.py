@@ -38,8 +38,7 @@ class graphics_manager:
 
                                                       )
 
-        power_level = 30
-
+        power_level = 15
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -88,9 +87,9 @@ class graphics_manager:
 
 
             # self.tester_rectangle.rotate("z", 1)
-            self.tester_rectangle.rotate("y", 1)
+            # self.tester_rectangle.rotate("y", 1)
 
-            self.tester_rectangle.wireframe_draw(self.window, self.camera.position,orthogonal=False)
+            self.tester_rectangle.draw_all_triangles(self.window, self.camera.position,orthogonal=False)
 
 
             pygame.display.update()

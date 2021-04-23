@@ -35,14 +35,14 @@ class rectangular_prism(shape_3d):
 
     def generate_triangles(self):
 
-        s1 = quadrilateral(self.v1,self.v2,self.v3,self.v4,self.color)
-        s2 = quadrilateral(self.v8,self.v7,self.v3,self.v4,self.color)
+        s1 = quadrilateral(self.v2,self.v1,self.v4,self.v3,self.color) # FIXED
+        s2 = quadrilateral(self.v8,self.v7,self.v3,self.v4,self.color) # FIXED
 
-        s3 = quadrilateral(self.v5,self.v6,self.v7,self.v8,self.color)
-        s4 = quadrilateral(self.v5,self.v6,self.v2,self.v1,self.color)
+        s3 = quadrilateral(self.v7,self.v8,self.v5,self.v6,self.color) # FIXED
+        s4 = quadrilateral(self.v6,self.v5,self.v1,self.v2,self.color) # FIXED
 
-        s5 = quadrilateral(self.v2,self.v6,self.v7,self.v3,self.color)
-        s6 = quadrilateral(self.v1,self.v5,self.v8,self.v4,self.color)
+        s5 = quadrilateral(self.v7,self.v6,self.v2,self.v3,self.color) # FIXED
+        s6 = quadrilateral(self.v5,self.v8,self.v4,self.v1,self.color) # FIXED
 
         self.vertices = [self.v1,
                          self.v2,
