@@ -54,7 +54,7 @@ def distance(p1,p2):
     # The distance between these two points is: sqrt ( (x-xx)^2 + (y-yy)^2 + (z-zz)^2 )
 
     return sqrt(
-        (p1[0]-p2[0])**2 +
+        (p1[0] - p2[0]) ** 2 +
         (p1[1] - p2[1]) ** 2 +
         (p1[2] - p2[2]) ** 2
     )
@@ -73,8 +73,6 @@ def magnitude(v):
 
 def normalized(v):
     mag = magnitude(v)
-    if mag==0:
-        mag=0.001
     return [
         v[0]/mag,v[1]/mag,v[2]/mag
     ]
@@ -94,8 +92,8 @@ def subtract_vectors(v1,v2):
 
 def get_lines(triangle_vertices):
     return [
-        subtract_vectors(triangle_vertices[1], triangle_vertices[0]),
-        subtract_vectors(triangle_vertices[2], triangle_vertices[0])
+        subtract_vectors(triangle_vertices[2], triangle_vertices[0]),
+        subtract_vectors(triangle_vertices[1], triangle_vertices[0])
     ]
 
 
@@ -104,6 +102,12 @@ def get_normal(triangle_vertices):
 
     a, b = get_lines(triangle_vertices)
 
+    # print(triangle_vertices,[
+    #     a[1] * b[2] - a[2] * b[1],
+    #     a[2] * b[0] - a[0] * b[2],
+    #     a[0] * b[1] - a[1] * b[0]
+    # ])
+    # print()
     return [
         a[1] * b[2] - a[2] * b[1],
         a[2] * b[0] - a[0] * b[2],
@@ -119,12 +123,15 @@ def get_normal(triangle_vertices):
 """
 
 def is_visible(triangle_vertices, camera_position):
-    triangle_vertices = translate_triangle_vertices(triangle_vertices,camera_position)
+    new_triangle_vertices = translate_triangle_vertices(triangle_vertices,camera_position)
 
-    triangle_vertices = normalize_triangle_vertices(triangle_vertices)
+    new_triangle_vertices = normalize_triangle_vertices(new_triangle_vertices)
+    new_camera_position = normalized(camera_position)
+    normal = get_normal(new_triangle_vertices)
 
-    normal = get_normal(triangle_vertices)
-    if dot_product(normal,camera_position)<0:
+    print(dot_product(normal,new_camera_position))
+
+    if dot_product(normal,new_camera_position)>0: #dot product correctly implemented
         return False
 
     return True
