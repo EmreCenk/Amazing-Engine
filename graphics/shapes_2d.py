@@ -1,8 +1,9 @@
 
 import pygame
 from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
-from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized,is_visible,normalize_triangle_vertices
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices
 from constants import conversion
+from Mathematical_Functions.shading import get_color
 
 pygame.font.init()
 
@@ -31,9 +32,12 @@ class shape:
 
         for triangle in self.triangles:
             if triangle.is_visible(camera_position):
+
+                new_color = get_color(triangle,camera_position)
                 coordiantes = triangle.get_projected_coordinates(camera_position = camera_position,
                                                                  orthogonal = orthogonal)
-                pygame.draw.polygon(window,points=coordiantes,color=self.color)
+
+                pygame.draw.polygon(window,points=coordiantes,color=new_color)
 
     def label_wireframe_corners(self,window,camera_position, orthogonal = False):
         height = window.get_height()
@@ -125,6 +129,13 @@ class triangle(shape):
         return is_visible(triangle_vertices = self.vertices,
                           camera_position = camera_position)
 
+    def get_centroid(self):
+        return (
+            (self.v1[0] + self.v2[0] + self.v3[0]) / 3,
+            (self.v1[1] + self.v2[1] + self.v3[1]) / 3,
+            (self.v1[2] + self.v2[2] + self.v3[2]) / 3,
+
+        )
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
         #This class basically exists for the sole purpose of converting quadrilaterals to triangles
