@@ -1,6 +1,7 @@
 import pygame
 import graphics.shapes_3d as sh3
 from graphics.camera import camera
+from graphics.using_obj_files.using_obj_files import obj_mesh
 
 class graphics_manager:
 
@@ -9,7 +10,7 @@ class graphics_manager:
         self.background_color = background_color
         self.height = height_window
         self.width = width_window
-        self.camera = camera(z=300)
+        self.camera = camera( z = 20)
 
     def start_engine(self):
         pygame.init()
@@ -23,20 +24,21 @@ class graphics_manager:
 
         self.start_engine()
 
-        shift = 5
-        side = 60
+        shift = 0
+        side = 5
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
         self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="green"
 
                                                       )
+        #
+        # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
+        #
+        #                                               )
 
-        self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
-
-                                                      )
-
-        power_level = 15
+        self.tester_mesh = obj_mesh("using_obj_files/object_sample_files/sphere_5_scaled.obj")
+        power_level = 4
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -51,10 +53,10 @@ class graphics_manager:
 
                 elif event.type == pygame.MOUSEBUTTONDOWN :
                     if event.button == 4:
-                        self.camera.move("z",-50)
+                        self.camera.move("z",-10)
 
                     elif event.button == 5:
-                        self.camera.move("z",50)
+                        self.camera.move("z",10)
 
                     # print(self.camera.position)
 
@@ -84,14 +86,16 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            self.tester_rectangle.rotate("z", 1)
-            self.tester_rectangle.rotate("y", 1)
-            self.tester_rectangle.rotate("x", 1)
+            # self.tester_rectangle.rotate("z", 1)
+            # self.tester_rectangle.rotate("y", 1)
+            # self.tester_rectangle.rotate("x", 1)
+            #
+            # self.tester_rectangle.draw_faces(self.window, self.camera.position,orthogonal=False)
 
-            self.tester_rectangle.draw_faces(self.window, self.camera.position,orthogonal=False)
-
-
+            self.tester_mesh.draw_faces(self.window, self.camera.position, orthogonal = False)
             pygame.display.update()
+
+            print(self.tester_mesh.triangles[0].vertices, self.camera.position)
             self.window.fill(self.background_color)
 
 

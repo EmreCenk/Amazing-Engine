@@ -73,9 +73,12 @@ def magnitude(v):
 
 def normalized(v):
     mag = magnitude(v)
-    return [
-        v[0]/mag,v[1]/mag,v[2]/mag
-    ]
+    try:
+        return [
+            v[0]/mag,v[1]/mag,v[2]/mag
+        ]
+    except ZeroDivisionError:
+        return [0,0,0]
 
 def normalize_triangle_vertices(triangle_vertices):
     return [

@@ -19,22 +19,35 @@ def parse_triangle_list(path, color = (255,255,255)):
 
     text_to_parse = file.read()
     file.close()
-    text_to_parse = text_to_parse.split("\n")[:-1] #We remove the last entry since the last entry is an empty string
+    text_to_parse = text_to_parse.split("\n")[3:-1] #We remove the last entry since the last entry is an empty string
+    #We remove the first 3 entries since they are comments
+
+
     all_triangles = []
+    all_vertices = []
+
     for entry in text_to_parse:
-        if entry[0] != "f": # We only parse faces
+        points = entry.split(" ")
+
+        if "s o" in entry:
             continue
 
-        vertices = entry.split(" ")
-        print(int(vertices[1]),
-        int(vertices[2]),
-        int(vertices[3]))
+        if entry[0] == "v":
+            current_entries = [float(points[1]), float(points[2]), float(points[3])]
+
+            all_vertices.append(current_entries)
+            continue
+
+
+        current_entries = [int(points[1])-1, int(points[2])-1, int(points[3])-1] #these need to be integers since they are
+        # indexes
+        print(len(all_vertices),current_entries)
         all_triangles.append(
 
             triangle(
-                v1 = int(vertices[1]),
-                v2 = int(vertices[2]),
-                v3 = int(vertices[3]),
+                v1 = all_vertices[current_entries[0]],
+                v2 = all_vertices[current_entries[1]],
+                v3 = all_vertices[current_entries[2]],
                 color = color
             )
 

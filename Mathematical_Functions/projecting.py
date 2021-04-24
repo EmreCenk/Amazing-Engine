@@ -18,7 +18,7 @@ def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orth
     if z>=camera_position[2]:
         return [-10000,-10000]
 
-    scale=screen_width
+    scale=screen_height
 
 
     return convert_result(scale*x/z,        #projected x coordinate
