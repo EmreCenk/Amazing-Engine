@@ -51,10 +51,10 @@ class graphics_manager:
 
                 elif event.type == pygame.MOUSEBUTTONDOWN :
                     if event.button == 4:
-                        self.camera.move("z",-70)
+                        self.camera.move("z",-50)
 
                     elif event.button == 5:
-                        self.camera.move("z",70)
+                        self.camera.move("z",50)
 
                     print(self.camera.position)
 
