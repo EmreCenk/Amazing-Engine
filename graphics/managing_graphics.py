@@ -84,8 +84,9 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            # self.tester_rectangle.rotate("z", 1)
+            self.tester_rectangle.rotate("z", 1)
             self.tester_rectangle.rotate("y", 1)
+            self.tester_rectangle.rotate("x", 1)
 
             self.tester_rectangle.draw_faces(self.window, self.camera.position,orthogonal=False)
 
