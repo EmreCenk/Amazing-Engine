@@ -19,8 +19,13 @@ def parse_triangle_list(path, color = (255,255,255)):
 
     text_to_parse = file.read()
     file.close()
-    text_to_parse = text_to_parse.split("\n")[3:-1] #We remove the last entry since the last entry is an empty string
-    #We remove the first 3 entries since they are comments
+    text_to_parse = text_to_parse.split("\n")
+    if text_to_parse[-1]=="":
+        text_to_parse.pop(-1)
+
+    print(text_to_parse[0][0],"r")
+    while text_to_parse[0][0] in [ "#", "o"]:
+        text_to_parse.pop(0)
 
 
     all_triangles = []
@@ -28,8 +33,7 @@ def parse_triangle_list(path, color = (255,255,255)):
 
     for entry in text_to_parse:
         points = entry.split(" ")
-
-        if "s o" in entry:
+        if "s o" in entry or entry == "":
             continue
 
         if entry[0] == "v":
@@ -42,6 +46,7 @@ def parse_triangle_list(path, color = (255,255,255)):
         current_entries = [int(points[1])-1, int(points[2])-1, int(points[3])-1] #these need to be integers since they are
         # indexes
         print(len(all_vertices),current_entries)
+
         all_triangles.append(
 
             triangle(
@@ -53,10 +58,10 @@ def parse_triangle_list(path, color = (255,255,255)):
 
         )
 
-    return all_triangles
+    return all_triangles,all_vertices
 
 
 
 
 if __name__ == '__main__':
-    parse_triangle_list("object_sample_files/sphere_example.obj")
+    parse_triangle_list("sample_object_files/sphere_example.obj")

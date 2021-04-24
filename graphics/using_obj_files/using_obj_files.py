@@ -7,8 +7,13 @@ class obj_mesh(shape):
     def __init__(self, path_to_object, color = (255,255,255)):
         super().__init__(color)
         self.path_to_object = path_to_object
-        self.create_triangles()
+        self.create_attributes()
 
-    def create_triangles(self):
-        self.triangles = parse_triangle_list(self.path_to_object)
+    def create_attributes(self):
+        self.triangles, self.vertices = parse_triangle_list(self.path_to_object)
 
+    def wireframe_draw(self,window,camera_position,orthogonal=False): #We re-write the wireframe_draw function since
+    #the original wireframe_drwa function uses edges (.obj does not have edges as afr as I know)
+
+        for tri in self.triangles:
+            tri.wireframe_draw(window,camera_position, orthogonal=orthogonal)
