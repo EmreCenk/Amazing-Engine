@@ -39,7 +39,9 @@ class graphics_manager:
         #                                               )
         #
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj")
+        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
+        self.tester_mesh2.move("x",-10)
+
         # self.tester_mesh2.move("x",5)
         # self.tester_mesh.move("x",-5)
         power_level = 1
@@ -47,8 +49,9 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<50:
-            x+=1
+        # while x<50:
+        #     x+=1
+        while 1:
             s = perf_counter()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -94,8 +97,8 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-
-            self.tester_mesh2.wireframe_draw(self.window, self.camera.position)
+            self.tester_mesh2.rotate("y",1)
+            self.tester_mesh2.draw_faces(self.window, self.camera.position)
 
             pygame.display.update()
             self.window.fill(self.background_color)
@@ -104,7 +107,7 @@ class graphics_manager:
 
             self.proper_delay(time_took_for_frame)
 
-            total += perf_counter()-s
+            # total += perf_counter()-s
 
 
 

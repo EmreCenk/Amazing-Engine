@@ -36,7 +36,7 @@ class shape:
         for triangle in self.triangles: # 130 operations to compute the coordinates of a single triangle
             if triangle.is_visible(camera_position): # 62 operations
 
-                new_color = get_color(triangle,camera_position) # 38 operations
+                new_color = get_color(triangle, camera_position, rgb_colour = self.color) # 38 operations
                 coordiantes = triangle.get_projected_coordinates(camera_position = camera_position, orthogonal =
                 orthogonal) # 30 operations
 
