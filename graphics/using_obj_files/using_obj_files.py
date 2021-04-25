@@ -12,6 +12,7 @@ class obj_mesh(shape):
     def create_attributes(self):
         self.triangles, self.vertices = parse_triangle_list(self.path_to_object)
 
+
     def wireframe_draw(self,window,camera_position,orthogonal=False): #We re-write the wireframe_draw function since
     #the original wireframe_drwa function uses edges (.obj does not have edges as afr as I know)
 

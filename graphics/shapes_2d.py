@@ -29,13 +29,13 @@ class shape:
 
 
     def draw_faces(self,window,camera_position,orthogonal=False):
+        print(len(self.triangles))
+        for triangle in self.triangles: # 121 operations to compute the coordinates of a single triangle
+            if triangle.is_visible(camera_position): # 62 operations
 
-        for triangle in self.triangles:
-            if triangle.is_visible(camera_position):
-
-                new_color = get_color(triangle,camera_position)
-                coordiantes = triangle.get_projected_coordinates(camera_position = camera_position,
-                                                                 orthogonal = orthogonal)
+                new_color = get_color(triangle,camera_position) # 29 operations
+                coordiantes = triangle.get_projected_coordinates(camera_position = camera_position, orthogonal =
+                orthogonal) # 30 operations
 
                 pygame.draw.polygon(window,points=coordiantes,color=new_color)
 
@@ -99,9 +99,10 @@ class triangle(shape):
     #     self.v3[axis] += how_much
 
     def get_projected_coordinates(self,camera_position,orthogonal=False):
-
+        #30 operations
 
         w,h = pygame.display.get_window_size()
+
         return project_3d_point_to_2d(self.v1,w,h,camera_position,orthogonal=orthogonal),\
                project_3d_point_to_2d(self.v2,w,h,camera_position,orthogonal=orthogonal),\
                project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
@@ -126,6 +127,7 @@ class triangle(shape):
                translate(self.v3,camera_position),
 
     def is_visible(self, camera_position):
+        #62 operations
         return is_visible(triangle_vertices = self.vertices,
                           camera_position = camera_position)
 

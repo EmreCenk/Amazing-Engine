@@ -23,7 +23,7 @@ def parse_triangle_list(path, color = (255,255,255)):
     if text_to_parse[-1]=="":
         text_to_parse.pop(-1)
 
-    print(text_to_parse[0][0],"r")
+
     while text_to_parse[0][0] in [ "#", "o"]:
         text_to_parse.pop(0)
 
@@ -45,7 +45,6 @@ def parse_triangle_list(path, color = (255,255,255)):
 
         current_entries = [int(points[1])-1, int(points[2])-1, int(points[3])-1] #these need to be integers since they are
         # indexes
-        print(len(all_vertices),current_entries)
 
         all_triangles.append(
 
