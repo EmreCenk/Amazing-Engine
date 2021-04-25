@@ -25,22 +25,23 @@ class graphics_manager:
 
         self.start_engine()
 
-        shift = 0
-        side = 5
-        v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
-        [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
-
-        self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="green"
-
-                                                      )
+        # shift = 0
+        # side = 5
+        # v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
+        # [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
+        #
+        # self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="green"
+        #
+        #                                               )
         #
         # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
         #
         #                                               )
         #
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
-        self.tester_mesh2.move("x",-10)
+        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj",
+                                     self.camera.position, color = (0,255,255))
+        self.tester_mesh2.move("x",-10, self.camera.position)
 
         # self.tester_mesh2.move("x",5)
         # self.tester_mesh.move("x",-5)
@@ -49,9 +50,8 @@ class graphics_manager:
 
         x=0
         total=0
-        # while x<50:
-        #     x+=1
-        while 1:
+        while x<5000:
+            x+=1
             s = perf_counter()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -97,7 +97,7 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            self.tester_mesh2.rotate("y",1)
+            self.tester_mesh2.rotate("y", 1, self.camera.position)
             self.tester_mesh2.draw_faces(self.window, self.camera.position)
 
             pygame.display.update()
@@ -107,8 +107,9 @@ class graphics_manager:
 
             self.proper_delay(time_took_for_frame)
 
-            # total += perf_counter()-s
+            total += perf_counter()-s
 
+            print("TIME TOOK: ", perf_counter()-s)
 
 
 
@@ -121,6 +122,10 @@ class graphics_manager:
 
         # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT: 0.2826867440000001, 0.2819358000000001
         # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT WITHOUT A SHADING FUNCTION: 0.24425682
+
+        # FINAL UTAH TEAPOT TIME-PER-FRAME (with computer charging): 0.22456067540000021
+
+        # UTAH TEAPOT ROTATING: 0.23953809999999998
         print("AVERAGE:",total/x)
 
     def proper_delay(self, frame_time):
