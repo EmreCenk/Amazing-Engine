@@ -38,6 +38,7 @@ class graphics_manager:
         #
         #                                               )
 
+
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
         self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
         # self.tester_mesh2.move("x",-10)
@@ -128,6 +129,7 @@ class graphics_manager:
         # AVERAGE "draw_faces" when laptop is charging : 0.23835497399999997
 
         #AFTER OPTIMIZATIONS 'draw_faces' TIME: 0.196687804
+        #When plugged in: 0.12054579799999997
 
         print("AVERAGE:",total/x)
 
