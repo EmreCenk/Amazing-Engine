@@ -33,9 +33,10 @@ class shape:
     def draw_faces(self,window,camera_position,orthogonal=False):
         normalized_camera = normalized(camera_position)
 
-        for triangle in self.triangles: # 122 operations to compute the coordinates of a single triangle
-            translated_vert = (triangle.vertices, camera_position) # 3 operations
-            if is_visible(translated_vert,camera_position,normalized_camera): # 62 operations
+        for triangle in self.triangles: # 102 operations to compute the coordinates of a single triangle
+
+            translated_vert = triangle.get_translated(camera_position) # 9 operations
+            if is_visible(translated_vert,normalized_camera): # 45 operations
 
                 new_color = get_color(triangle,
                                       normalized_light_source=normalized_camera
@@ -130,6 +131,7 @@ class triangle(shape):
         )
 
     def get_translated(self,camera_position):
+        # 9 operations
         return translate(self.v1,camera_position),\
                translate(self.v2,camera_position),\
                translate(self.v3,camera_position),
