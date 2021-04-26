@@ -37,7 +37,7 @@ class graphics_manager:
         # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
         #
         #                                               )
-        #
+
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
         self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
         # self.tester_mesh2.move("x",-10)
@@ -50,7 +50,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<500:
+        while x<50:
             x+=1
 
             s = perf_counter()
@@ -126,6 +126,9 @@ class graphics_manager:
         # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT WITHOUT A SHADING FUNCTION: 0.24425682
 
         # AVERAGE "draw_faces" when laptop is charging : 0.23835497399999997
+
+        #AFTER OPTIMIZATIONS 'draw_faces' TIME: 0.196687804
+
         print("AVERAGE:",total/x)
 
     def proper_delay(self, frame_time):
