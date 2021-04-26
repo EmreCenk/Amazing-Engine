@@ -1,9 +1,7 @@
 
 import pygame
-from pygame.draw import line
-
-from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
-from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices
+from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 from constants import conversion
 from Mathematical_Functions.shading import get_color
 
@@ -15,7 +13,7 @@ class shape:
 
     def __init__(self,color):
         self.color = color
-        self.triangles = [] #all shapes are represented as combined triangles. This is the list of triangle
+        self.triangles = [] #all shapes are represented as combined triangles. This is the list of triangles
         self.edges = []
         self.vertices = []
 
@@ -33,12 +31,18 @@ class shape:
 
 
     def draw_faces(self,window,camera_position,orthogonal=False):
-        for triangle in self.triangles: # 130 operations to compute the coordinates of a single triangle
-            if triangle.is_visible(camera_position): # 62 operations
+        normalized_camera = normalized(camera_position)
 
-                new_color = get_color(triangle, camera_position, rgb_colour = self.color) # 38 operations
-                coordiantes = triangle.get_projected_coordinates(camera_position = camera_position, orthogonal =
-                orthogonal) # 30 operations
+        for triangle in self.triangles: # 122 operations to compute the coordinates of a single triangle
+            translated_vert = (triangle.vertices, camera_position) # 3 operations
+            if is_visible(translated_vert,camera_position,normalized_camera): # 62 operations
+
+                new_color = get_color(triangle,
+                                      normalized_light_source=normalized_camera
+                                      , rgb_colour = self.color) # 30 operations
+
+                w, h = pygame.display.get_window_size()
+                coordiantes = efficient_triangle_projection(translated_vert,w,h) #18 operations
 
                 pygame.draw.polygon(window,points=coordiantes,color=new_color)
 
@@ -101,6 +105,7 @@ class triangle(shape):
     #     self.v2[axis] += how_much
     #     self.v3[axis] += how_much
 
+
     def get_projected_coordinates(self,camera_position,orthogonal=False):
         #30 operations
 
@@ -129,10 +134,11 @@ class triangle(shape):
                translate(self.v2,camera_position),\
                translate(self.v3,camera_position),
 
-    def is_visible(self, camera_position):
-        #62 operations
-        return is_visible(triangle_vertices = self.vertices,
-                          camera_position = camera_position)
+    # def is_visible(self, normalized_camera_position, camera_position):
+    #     #62 operations
+    #     return is_visible(triangle_vertices = self.vertices,
+    #                       camera_position = camera_position,
+    #                       normalized_camera_position = normalized_camera_position)
 
     def get_centroid(self):
         # 9 operations
