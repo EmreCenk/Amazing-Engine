@@ -31,8 +31,19 @@ class window_manager:
         for index in self.changed_pixels:
             self.pixels[index[0]][index[1]] = float("inf") # resets the z value of the pixel
 
-    @staticmethod
-    def draw_line(window, x1, y1, x2, y2, color = (255,255,255)):
+        self.changed_pixels = set()
+
+    def draw_proper_pixel(self, window,  x, y, d, color = (255,255,255)):
+        if self.pixels[x][y]<d:
+            #There is already a pixel that is closer to the camera
+            return None
+
+        self.changed_pixels.add((x,y))
+
+        gfxdraw.pixel(window, x, y, color)
+
+
+    def draw_line(self, window, x1, y1, x2, y2, color = (255,255,255)):
 
         # An implementation of Bresenham's Line algorithm
         # The algorithm basically travels through all integer x coordinates between the two points and finds the
@@ -42,25 +53,43 @@ class window_manager:
         sn = mn - (x2 - x1)
 
         y = y1
-        for x in range(x1, x2 + 1):
-
-            gfxdraw.pixel(window, x, y, color)
-
-
-
-            # Add slope to increment angle formed
+        for x in range(int(x1), int(x2) + 1):
+            self.draw_proper_pixel(window, x, y , 0)
             sn = sn + mn
-
-            # Slope error reached limit, time to
-            # increment y and update slope error.
             if (sn >= 0):
                 y = y + 1
                 sn = sn - 2 * (x2 - x1)
     def fill_top(self,v1,v2,v3):
-        pass
+        inverse_slope_1 = (v3[0] - v1[0]) / (v3[1] - v1[1])
+        inverse_slope_2 = (v3[0] - v2[0]) / (v3[1] - v2[1])
+        curx1 = v3[0]
+        curx2 = v3[0]
 
-    def fill_bottom(self,v1,v2,v3):
-        pass
+        s_line_y = v3[1]
+        while s_line_y > v1[1]:
+
+            self.draw_line(window, curx1, s_line_y, curx2, s_line_y)
+
+            curx1 -= inverse_slope_1
+            curx2 -= inverse_slope_2
+            s_line_y -= 1
+
+
+    def fill_bottom(self,window, v1,v2,v3):
+
+        invslope1 = (v2[0] - v1[0]) / (v2[1] - v1[1])
+        invslope2 = (v3[0] - v1[0]) / (v3[1] - v1[1])
+        curx1 = curx2 = v3[0]
+
+        s_line_y = v1
+        while s_line_y <= v2[1]:
+            self.draw_line(window, curx1, s_line_y, curx2, s_line_y)
+            curx1 += invslope1
+            curx2 += invslope2
+
+            s_line_y += 1
+
+
 
 
     @staticmethod
@@ -98,7 +127,7 @@ if __name__ == '__main__':
 
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 
-    screen.draw_line(window, 100, 100, 400, 10 )
+    screen.fill_top([100,100], [200,100], [300,200])
 
     while 1:
 
