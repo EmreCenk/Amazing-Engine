@@ -12,6 +12,7 @@ class graphics_manager:
         self.height = height_window
         self.width = width_window
         self.camera = camera( z = 20)
+        self.delta_time = 1 #inital value. It gets updated every frame
 
     def start_engine(self):
         pygame.init()
@@ -33,7 +34,6 @@ class graphics_manager:
         self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="green"
 
                                                       )
-        #
         # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
         #
         #                                               )
@@ -43,8 +43,8 @@ class graphics_manager:
         self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
 
         # self.tester_mesh2.move("x",-10)
-        self.tester_mesh2.rotate("x",-20)
-        self.tester_mesh2.rotate("y",-20)
+        self.tester_mesh2.rotate("x",-20 * self.delta_time)
+        self.tester_mesh2.rotate("y",-20 * self.delta_time)
         
         # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
@@ -53,7 +53,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<50:
+        while x<500:
             x+=1
 
             s = perf_counter()
@@ -114,7 +114,10 @@ class graphics_manager:
 
             self.proper_delay(time_took_for_frame)
 
-            total += perf_counter()-s
+            self.delta_time = perf_counter()-s
+
+            total += self.delta_time
+
 
 
 
