@@ -4,6 +4,20 @@ from graphics.camera import camera
 from graphics.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
 
+try:
+    #Try importing the cython files:
+    # import pyximport
+    # pyximport.install()
+    from cythonized_math.cython_coordinate_system_3d import distance,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+    from cythonized_math.cythonized_projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+
+except Exception as E:
+    #If the cython files don't work, then use the pure pyhton implementations
+    from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+    from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+
+from Mathematical_Functions.shading import get_color
+
 class graphics_manager:
 
     def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):
@@ -13,11 +27,39 @@ class graphics_manager:
         self.width = width_window
         self.camera = camera( z = 20)
         self.delta_time = 1 #inital value. It gets updated every frame
+        self.models = []
 
+        
     def start_engine(self):
         pygame.init()
         screen_size = (self.height,self.width)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
+
+    def render_frame(self):
+        camera_position = self.camera.position
+        normalized_camera = normalized(camera_position)
+        to_draw = []
+        for model in self.models:
+            for triangle in model.triangles:
+
+                translated_vert = triangle.get_translated(camera_position)
+                if is_visible(translated_vert,normalized_camera):
+                    to_draw.append(
+                        [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
+                    )
+
+        to_draw.sort(key = lambda tri: tri[1], reverse=True)
+
+        for liste in to_draw:
+            new_color = get_color(liste[0],
+                                    normalized_light_source=normalized_camera
+                                    , rgb_colour = liste[0].color)
+
+            w, h = pygame.display.get_window_size()
+            coordiantes = efficient_triangle_projection(liste[2],w,h)
+
+            pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+                    
 
     def init_loop(self, functions_to_call=None):
 
@@ -31,30 +73,37 @@ class graphics_manager:
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
-        self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="green"
+        # self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color=(255,255,0)
 
-                                                      )
+        #                                               )
+        self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
+
+        self.tester_rectangle.move("z",10)
         # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
         #
         #                                               )
 
 
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
+        self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
 
         # self.tester_mesh2.move("x",-10)
         self.tester_mesh2.rotate("x",-20 * self.delta_time)
         self.tester_mesh2.rotate("y",-20 * self.delta_time)
         
+        self.models.extend([self.tester_mesh2,
+                            self.tester_rectangle])
         # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
-        power_level = 1
-        zpower = 1
+        p_original = 10
+        p_z_original = 10
 
         x=0
         total=0
         while x<500:
             x+=1
+            power_level = p_original * self.delta_time
+            zpower = p_z_original * self.delta_time
 
             s = perf_counter()
             for event in pygame.event.get():
@@ -102,8 +151,8 @@ class graphics_manager:
 
 
             self.tester_mesh2.rotate("y",1)
-            self.tester_mesh2.draw_faces(self.window, self.camera.position)
-
+            # self.tester_mesh2.draw_faces(self.window, self.camera.position)
+            self.render_frame()
             # self.tester_mesh2.rotate("x",2)
             # self.tester_mesh2.rotate("y",2)
 

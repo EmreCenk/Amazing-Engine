@@ -16,7 +16,7 @@ class shape_3d(shape):
 
 class rectangular_prism(shape_3d):
 
-    def __init__(self,v1, v2, v3, v4, v5, v6, v7, v8, color="white",):
+    def __init__(self,v1, v2, v3, v4, v5, v6, v7, v8, color=(255,255,255),):
         """Label the first 4 points starting with the top left corner of a given side, and moving in a clockwise
         direction. Label the last 4 points by picking the vertex that has not been labeled which is also connected to vertex 1.
         From there, keep labeling in a clockwise direction. """
