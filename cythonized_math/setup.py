@@ -3,11 +3,11 @@ from Cython.Build import cythonize
 
 names = [
     "cythonized_projecting.pyx",
-    "cython_coordinate_system_3d.pyx"
+    # "cython_coordinate_system_3d.pyx"
 ]
 for name in names:
     setup(
-        ext_modules = cythonize(name)
+        ext_modules = cythonize(name, annotate=True)
     )
 
 
