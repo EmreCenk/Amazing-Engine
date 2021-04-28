@@ -136,7 +136,9 @@ class graphics_manager:
 
         #When I run the code from vscode, the time went down to 0.06948835800000003 (~0.07 seconds per frame)
 
-        print("AVERAGE:",total/x)
+        #With cython and vscode, the time went down to 0.045847264999999984 seconds
+
+        print(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
 
     def proper_delay(self, frame_time):
         if frame_time >= self.delay_time:
