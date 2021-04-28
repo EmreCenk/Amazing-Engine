@@ -53,7 +53,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<50:
+        while x<500:
             x+=1
 
             s = perf_counter()
@@ -101,7 +101,7 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            # self.tester_mesh2.rotate("y",1)
+            self.tester_mesh2.rotate("y",1)
             self.tester_mesh2.draw_faces(self.window, self.camera.position)
 
             # self.tester_mesh2.rotate("x",2)
