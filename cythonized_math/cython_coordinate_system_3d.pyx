@@ -34,7 +34,7 @@ cpdef translate(point, camera_position):
 
     return x,y,z
 
-cpdef translate_triangle_vertices(triangle_vertices, camera_position):
+def translate_triangle_vertices(triangle_vertices, camera_position):
     #has 9 operations
     return [
         translate(triangle_vertices[0],camera_position),
@@ -43,7 +43,7 @@ cpdef translate_triangle_vertices(triangle_vertices, camera_position):
     ]
 
 
-cpdef rotate(vertex, axis, angle, radian_input = False):
+def rotate(vertex, axis, angle, radian_input = False):
     if not radian_input:
         angle *= 0.0174533 #I might have to define a new variable here since the input angle is int 
         # but angle is reassigned to a float
@@ -66,12 +66,21 @@ cpdef rotate(vertex, axis, angle, radian_input = False):
     return vertex
 
 
-cpdef distance(p1,p2):
+def distance(p1,p2):
     return sqrt(
         (p1[0] - p2[0]) ** 2 +
         (p1[1] - p2[1]) ** 2 +
         (p1[2] - p2[2]) ** 2
     )
+
+cpdef dot_product(v1,v2):
+    # 5 operations
+    return (
+        v1[0]*v2[0] +
+        v1[1]*v2[1] +
+        v1[2]*v2[2]
+    )
+
 
 cpdef magnitude(v):
     # 5 operations
@@ -92,7 +101,7 @@ cpdef normalized(v):
     ]
     
 
-def normalize_triangle_vertices(triangle_vertices):
+cpdef normalize_triangle_vertices(triangle_vertices):
     return [
         normalized(triangle_vertices[0]),
         normalized(triangle_vertices[1]),
@@ -114,7 +123,7 @@ cpdef get_lines(triangle_vertices):
     ]
 
 
-def get_normal(triangle_vertices):
+cpdef get_normal(triangle_vertices):
 
     cdef double[2][3] lines = get_lines(triangle_vertices)
     cdef double[3] a = lines[0]
@@ -125,3 +134,16 @@ def get_normal(triangle_vertices):
         a[2] * b[0] - a[0] * b[2],
         a[0] * b[1] - a[1] * b[0]
     ] 
+
+
+
+def is_visible(translated_triangle_vertices, normalized_camera_position):
+
+    cdef double[3][3] new_triangle_vertices = normalize_triangle_vertices(translated_triangle_vertices) 
+    cdef double[3] normal = get_normal(new_triangle_vertices)
+    cdef double r = dot_product(normal,normalized_camera_position)
+
+    if r>0:
+        return False
+
+    return True
