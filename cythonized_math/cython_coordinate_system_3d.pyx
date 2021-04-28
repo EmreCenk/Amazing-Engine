@@ -66,15 +66,62 @@ cpdef rotate(vertex, axis, angle, radian_input = False):
     return vertex
 
 
-def distance(p1,p2):
+cpdef distance(p1,p2):
     return sqrt(
         (p1[0] - p2[0]) ** 2 +
         (p1[1] - p2[1]) ** 2 +
         (p1[2] - p2[2]) ** 2
     )
 
-def magnitude(v):
+cpdef magnitude(v):
     # 5 operations
     return sqrt(
         v[0]**2 + v[1]**2 + v[2]**2
     )
+
+
+cpdef normalized(v):
+    cdef double mag = magnitude(v)
+    
+    if mag == 0:
+        return [0,0,0]
+    
+    
+    return [
+        v[0]/mag,v[1]/mag,v[2]/mag
+    ]
+    
+
+def normalize_triangle_vertices(triangle_vertices):
+    return [
+        normalized(triangle_vertices[0]),
+        normalized(triangle_vertices[1]),
+        normalized(triangle_vertices[2])
+    ]
+
+cpdef subtract_vectors(v1,v2):
+    return [
+        v1[0] - v2[0],
+        v1[1] - v2[1],
+        v1[2] - v2[2],
+    ]
+
+
+cpdef get_lines(triangle_vertices):
+    return [
+        subtract_vectors(triangle_vertices[2], triangle_vertices[0]),
+        subtract_vectors(triangle_vertices[1], triangle_vertices[0])
+    ]
+
+
+def get_normal(triangle_vertices):
+
+    cdef double[2][3] lines = get_lines(triangle_vertices)
+    cdef double[3] a = lines[0]
+    cdef double[3] b = lines[1]
+
+    return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+    ] 
