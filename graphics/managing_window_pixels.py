@@ -71,8 +71,7 @@ class WindowManager:
     def flat_fill_top(self, surface, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
         
         """
-        v1: bottom right corner of triangle
-        v2: bottom left corner
+        v1, v2: bottom left and bottom right corners of the triangle (in any order)
         v3: top of triangle
 
         Assumes that the y values of v1 and v2 are the same. 
@@ -89,14 +88,28 @@ class WindowManager:
         current_x_2 = v2[0]
         current_y = v1[1]
 
-        while current_y>=v3[1]:
+        while current_y>v3[1]:
             pygame.draw.line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
             current_y -= 1
             current_x_1 -= inverse_m1
             current_x_2 -= inverse_m2
 
         
-        
+    def flat_fill_bottom(self, surface, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
+        """Goes through the pixels of a triangle which has a side paralel to the x axis.
+        Assumes that the line v1-v2 is parralel to the x axis and v3[1]>v1[1]"""
+        inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
+        inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
+
+        current_x_1 = v1[0]
+        current_x_2 = v2[0]
+        current_y = v1[1]
+
+        while current_y<v3[1]:
+            pygame.draw.line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
+            current_y += 1
+            current_x_1 += inverse_m1
+            current_x_2 += inverse_m2
  
     def draw_triangle(self, v1: Sequence,v2: Sequence,v3: Sequence,
                             v1_distance: float, v2_distance: float, v3_distance: float):
@@ -135,10 +148,10 @@ if __name__ == '__main__':
                 quit()
                 break
 
-        screen.flat_fill_top(window, [300,100],[100,100], [19,19])
+        screen.flat_fill_bottom(window, [300,100],[100,100], [400,400])
         screen.render_all_pixels()
         pygame.display.update()
 
         pygame.time.delay(100)
-        pygame.draw.polygon(window,(255,0,0),points = [[300,100],[100,100], [19,19]] )
+        pygame.draw.polygon(window,(255,0,0),points = [ [300,100],[100,100], [400,400]] )
 
