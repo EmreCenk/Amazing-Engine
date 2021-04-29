@@ -1,5 +1,7 @@
+from time import perf_counter
+
 from graphics.managing_graphics import graphics_manager
-a = graphics_manager(500,500,delay_time=70)
+a = graphics_manager(500,500,delay_time=25)
 a.init_loop()
 
 
