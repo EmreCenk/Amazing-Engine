@@ -74,6 +74,14 @@ class WindowManager:
         return arr
 
 
+    def draw_horizontal_line(self, window, color, start_position: Sequence, end_position: Sequence, ):
+        new_s_x = round(start_position[0])
+        new_e_x = round(start_position[1])
+        y = round(start_position[1])
+
+        for i in range(new_s_x, new_e_x):
+            gfxdraw.pixel(window, i, y, color)
+
     def flat_fill_top(self, surface, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
         
         """
@@ -95,7 +103,7 @@ class WindowManager:
         current_y = v1[1]
 
         while current_y>v3[1]:
-            pygame.draw.line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
+            self.draw_horizontal_line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
             current_y -= 1
             current_x_1 -= inverse_m1
             current_x_2 -= inverse_m2
@@ -112,7 +120,7 @@ class WindowManager:
         current_y = v1[1]
 
         while current_y<v3[1]:
-            pygame.draw.line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
+            self.draw_horizontal_line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
             current_y += 1
             current_x_1 += inverse_m1
             current_x_2 += inverse_m2
@@ -184,13 +192,12 @@ if __name__ == '__main__':
         total+=perf_counter()-s
         # print("SETTING THEM CUSTOM:",perf_counter()-s)
         s = perf_counter()
-        screen.render_all_pixels()
         total+=perf_counter()-s
         # print("RENDERING:",perf_counter()-s)
         
 
         s= perf_counter()
-        pygame.draw.polygon(window,(255,0,0),points = [ [300,323],[123,123], [400,400]] )
+        # pygame.draw.polygon(window,(255,0,0),points = [ [300,323],[123,123], [400,400]] )
         totalpy+=perf_counter()-s
         print("pygame SETTING THEM:",perf_counter()-s)
         
