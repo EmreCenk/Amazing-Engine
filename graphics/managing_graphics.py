@@ -30,6 +30,7 @@ class graphics_manager:
         self.start_engine()
 
         self.Window_Manager = WindowManager(self.window, width_window, height_window)
+        print(width_window,height_window)
         self.models = []
 
         
