@@ -58,8 +58,6 @@ class WindowManager:
 
     @staticmethod
     def sort_v_by_ascending(arr: Sequence) -> Sequence:
-        print("HERE:",arr[0][1], arr[1][1], arr[2][1])
-        print()
         # basically an insertions sort
         # This method uses as little operations as possible
         # This function also changes the array in place, so be very carefull when using this function
@@ -77,10 +75,14 @@ class WindowManager:
 
     def draw_horizontal_line(self, window, color, start_position: Sequence, end_position: Sequence, ):
         # FIXME: This function does not always work
-        new_s_x = round(start_position[0])
-        new_e_x = round(end_position[0])
+        
+        if start_position[0]<end_position[0]:
+            new_s_x, new_e_x = round(start_position[0]), round(end_position[0])
+        else:
+            new_e_x, new_s_x = round(start_position[0]), round(end_position[0])
+        
         y = round(start_position[1])
-
+        
         for i in range(new_s_x, new_e_x+1):
             gfxdraw.pixel(window, i, y, color)
 
@@ -97,8 +99,9 @@ class WindowManager:
         (y+1-b)/m = x + (1/m)
         Using this fact, we loop through all the y values given, and find the respective x values"""
 
-        inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
+        print(v1,v2,v3)        
         inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
+        inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
 
         current_x_1 = v1[0]
         current_x_2 = v2[0]
@@ -126,7 +129,12 @@ class WindowManager:
             current_y += 1
             current_x_1 += inverse_m1
             current_x_2 += inverse_m2
- 
+    
+    @staticmethod
+    def roundv(v):
+        return [
+            round(v[0]), round(v[1])
+        ]
     def draw_triangle(self,surface, v1: Sequence,v2: Sequence,v3: Sequence,
                             v1_distance: float, v2_distance: float, v3_distance: float,
                             color = (255,255,255)) -> None: 
@@ -137,9 +145,9 @@ class WindowManager:
         The algorithm basically splits the triangle into 2 triangles where each triangle has one side parallel to the x axis."""
         # FIXME: The class/function does not work when implemented into managing_graphics
         # FIXME: Function does not work for all inputs. The following vertices do not work for instance:
-        # [375, 203] [242, 272] [332, 346]
+        # [375, 203], [242, 272], [332, 346]
         # [7, 126] [132, 135] [418, 48]
-        v1, v2, v3 = self.sort_v_by_ascending([v1,v2,v3])
+        v1, v2, v3 = self.sort_v_by_ascending([self.roundv(v1),self.roundv(v2),self.roundv(v3)])
         #Now that they have been sorted, v1.y<v2.y<v3.y
 
 
@@ -154,16 +162,15 @@ class WindowManager:
 
         # General case is derived by splitting the triangle into two different triangles by drawing a horizontal 
         # line from v2 to the line v1-v3
-        try:
-            m = (v1[1]-v3[1]) / (v1[0]-v3[0])
-            b = v1[1] - m*v1[0]
-            y = v2[1]
-            v4 = [ (y-b)/m, y ]
-        except ZeroDivisionError:
-            print("oh no")
-            gfxdraw.pixel(surface, round(v1[0]),round(v1[1]), color)
-            return 
+        y = v2[1]
 
+        if v1[0] == v3[0]: #this check is to avoid dividing by 0
+            v4 = [0, y]
+
+        else:
+            m =  (v1[1]-v3[1]) / (v1[0]-v3[0])
+            b = v1[1] - (v1[0]*m)
+            v4 = [ (y-b)/m, y ]
         # pygame.draw.line(window, (0,255,0),v4,v2,width = 4)
 
         self.flat_fill_top(surface, v2,v4,v1, color)
@@ -188,12 +195,12 @@ if __name__ == '__main__':
     #     a = [randint(0,500),randint(0,500)]
     #     b = [randint(0,500),randint(0,500)]
     #     c = [randint(0,500),randint(0,500)]
-    #     print(a,b,c)
     #     col = [randint(0,255),randint(0,255),randint(0,255),]
     #     screen.draw_triangle(window, a,b,c, 0, 0, 0, col)
-    screen.draw_triangle(window,[375, 203], [242, 272], [332, 346],0, 0, 0, (255,0,0))
+    screen.draw_triangle(window,[250.0, 282.3081042334652], [279.1285464215361, 311.8453470702507], [250.0, 312.20225074429794],0, 0, 0, (255,0,0))
+    #    screen.draw_triangle(window,[375, 203], [242, 272], [332, 346],0, 0, 0, (255,0,0))
 
-    pygame.draw.polygon(window, (255,255,255), [[375, 203], [242, 272], [332, 346]])
+    # pygame.draw.polygon(window, (255,255,255), [[250.0, 282.3081042334652], [279.1285464215361, 311.8453470702507], [250.0, 312.20225074429794]])
     
     pygame.display.update()
     while 1:
