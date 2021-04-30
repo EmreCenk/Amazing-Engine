@@ -58,28 +58,30 @@ class WindowManager:
 
     @staticmethod
     def sort_v_by_ascending(arr: Sequence) -> Sequence:
-
+        print("HERE:",arr[0][1], arr[1][1], arr[2][1])
+        print()
         # basically an insertions sort
         # This method uses as little operations as possible
         # This function also changes the array in place, so be very carefull when using this function
 
-        if (arr[1] < arr[0]):
+        if (arr[1][1] < arr[0][1]):
             arr[0], arr[1] = arr[1], arr[0]
 
-        if (arr[2] < arr[1]):
+        if (arr[2][1] < arr[1][1]):
             arr[1], arr[2] = arr[2], arr[1]
-            if (arr[1] < arr[0]):
+            if (arr[1][1] < arr[0][1]):
                 arr[1], arr[0] = arr[0], arr[1]
 
         return arr
 
 
     def draw_horizontal_line(self, window, color, start_position: Sequence, end_position: Sequence, ):
+        # FIXME: This function does not always work
         new_s_x = round(start_position[0])
-        new_e_x = round(start_position[1])
+        new_e_x = round(end_position[0])
         y = round(start_position[1])
 
-        for i in range(new_s_x, new_e_x):
+        for i in range(new_s_x, new_e_x+1):
             gfxdraw.pixel(window, i, y, color)
 
     def flat_fill_top(self, surface, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
@@ -133,10 +135,11 @@ class WindowManager:
         """ This function rasterizes the given triangle and draws each pixel onto the screen.
         The pixel is not drawn if there is anything else in that pixel which is closer.
         The algorithm basically splits the triangle into 2 triangles where each triangle has one side parallel to the x axis."""
-        #FIXME: The class/function does not work when implemented into managing_graphics
-
+        # FIXME: The class/function does not work when implemented into managing_graphics
+        # FIXME: Function does not work for all inputs. The following vertices do not work for instance:
+        # [375, 203] [242, 272] [332, 346]
+        # [7, 126] [132, 135] [418, 48]
         v1, v2, v3 = self.sort_v_by_ascending([v1,v2,v3])
-
         #Now that they have been sorted, v1.y<v2.y<v3.y
 
 
@@ -151,14 +154,17 @@ class WindowManager:
 
         # General case is derived by splitting the triangle into two different triangles by drawing a horizontal 
         # line from v2 to the line v1-v3
-        m = (v1[1]-v3[1]) / (v1[0]-v3[0])
-        b = v1[1] - m*v1[0]
-        y = v2[1]
         try:
+            m = (v1[1]-v3[1]) / (v1[0]-v3[0])
+            b = v1[1] - m*v1[0]
+            y = v2[1]
             v4 = [ (y-b)/m, y ]
         except ZeroDivisionError:
+            print("oh no")
             gfxdraw.pixel(surface, round(v1[0]),round(v1[1]), color)
             return 
+
+        # pygame.draw.line(window, (0,255,0),v4,v2,width = 4)
 
         self.flat_fill_top(surface, v2,v4,v1, color)
         self.flat_fill_bottom(surface, v2,v4,v3, color)
@@ -171,49 +177,25 @@ class WindowManager:
 
 
 if __name__ == '__main__':
-    k=0
+    from random import randint
     from time import perf_counter
     screen = WindowManager(500,500)
     pygame.init()
 
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 
-    
+    # for i in range(2):
+    #     a = [randint(0,500),randint(0,500)]
+    #     b = [randint(0,500),randint(0,500)]
+    #     c = [randint(0,500),randint(0,500)]
+    #     print(a,b,c)
+    #     col = [randint(0,255),randint(0,255),randint(0,255),]
+    #     screen.draw_triangle(window, a,b,c, 0, 0, 0, col)
+    screen.draw_triangle(window,[375, 203], [242, 272], [332, 346],0, 0, 0, (255,0,0))
 
-    #gfxdraw.pixel takes around 0.2 seconds for 250,000 pixels
-    #pygame.surfarray.pixels3d takes 0.3 seconds
-    #pygame.PixelArray(window) takes 0.096 seconds (~0.1)
-    #pygame.draw.circle takes 0.3 seconds
-
-    #with cython pixelarray takes 0.02 seconds
-    asdf = {True:0,False:0}
-    total = 0
-    totalpy = 0
-    s = perf_counter()
-    screen.draw_triangle(window, [300,323],[123,123], [400,400], 0, 0, 0, (255,255,0))
+    pygame.draw.polygon(window, (255,255,255), [[375, 203], [242, 272], [332, 346]])
     
-
-    total+=perf_counter()-s
-    # print("SETTING THEM CUSTOM:",perf_counter()-s)
-    s = perf_counter()
-    total+=perf_counter()-s
-    print("RENDERING:",perf_counter()-s)
-    
-
-    s= perf_counter()
-    # pygame.draw.polygon(window,(255,0,0),points = [ [300,323],[123,123], [400,400]] )
-    totalpy+=perf_counter()-s
-    print("pygame SETTING THEM:",perf_counter()-s)
-    
-    s= perf_counter()
     pygame.display.update()
-    totalpy+=perf_counter()-s
-    # print("pygame RENDERING:",perf_counter()-s)
-        
-    # print()
-    asdf[total<=totalpy]+=1
-
-    print(asdf)
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
