@@ -9,7 +9,7 @@ from cythonized_graphics.pixels import clear_z_buffer, efficient_clear_z_buffer,
 class WindowManager:
     #This class implements a z buffer
 
-    def __init__(self,surface, width:int = None, height: int = None, background_color: Sequence = None) :
+    def __init__(self,surface, height: int = None, width:int = None, background_color: Sequence = None) :
         if background_color is None:
             background_color = (0,0,0)
 
@@ -41,9 +41,7 @@ class WindowManager:
 
         self.pixel_depths[x][y] = depth
         #This pixel is closer
-
         self.pixels[x][y] = color
-
 
     def clear_z_buffer(self, background):
         clear_z_buffer(self.pixel_depths,float("inf"))
@@ -77,17 +75,24 @@ class WindowManager:
 
     def draw_horizontal_line(self, window, color, distance:int, start_position: Sequence, end_position: Sequence, ):
         # FIXME: This function does not always work
+        y = round(start_position[1])
+        if y<0 or y>self.height:
+            return 
+
         
         if start_position[0]<end_position[0]:
             new_s_x, new_e_x = round(start_position[0]), round(end_position[0])
         else:
             new_e_x, new_s_x = round(start_position[0]), round(end_position[0])
         
-        y = round(start_position[1])
         if new_s_x<0:
             new_s_x = 0
         while new_s_x<new_e_x+1 and new_s_x<self.width:
-            self.draw_pixel(new_s_x, y, color, distance)
+            try:
+                self.draw_pixel(new_s_x, y, color, distance)
+            except:
+                # print("WTF",new_s_x,y,len(self.pixels))
+                pass
             new_s_x += 1
 
 
