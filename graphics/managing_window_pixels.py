@@ -22,16 +22,8 @@ class WindowManager:
         self.pixel_depths = full((self.width, self.height),float("inf"))
 
         self.pixels = pygame.surfarray.pixels3d(surface)
-        
 
-        self.changed_pixels = [] #We store the pixels that were changed so that the program doesn't loop through
-        # every single pixel when resetting z buffer
 
-        # for i in range(self.height):
-        #     current = []
-        #     for j in range(self.width):
-        #         current.append(0) #set all the pixel values to infinity,
-        #     self.changed_pixels.append(current)
     
 
     def draw_pixel(self, x:Sequence, y:Sequence, color:Sequence, depth:int = 0):
@@ -46,13 +38,6 @@ class WindowManager:
     def clear_z_buffer(self, background):
         clear_z_buffer(self.pixel_depths,float("inf"))
 
-
-
-
-    # def render_all_pixels(self):
-
-    #     for index in self.changed_pixels:
-    #         self.draw_pixel(index[0], index[1], self.changed_pixels[index])
 
 
 
