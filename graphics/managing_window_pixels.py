@@ -103,6 +103,7 @@ class WindowManager:
             inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
             inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
         except ZeroDivisionError:
+            print('ERROR1:',v1,v2,v3)
             return 
 
         current_x_1 = v1[0]
@@ -172,7 +173,8 @@ class WindowManager:
             b = v1[1] - (v1[0]*m)
             v4 = [ (y-b)/m, y ]
         except ZeroDivisionError:
-            return 
+            print("ERROR2:",v1,v2,v3)
+            v4 = [v1[0], y]
 
         self.flat_fill_top(surface, v2,v4,v1, color)
         self.flat_fill_bottom(surface, v2,v4,v3, color)
@@ -198,10 +200,10 @@ if __name__ == '__main__':
     #     c = [randint(0,500),randint(0,500)]
     #     col = [randint(0,255),randint(0,255),randint(0,255),]
     #     screen.draw_triangle(window, a,b,c, 0, 0, 0, col)
-    # screen.draw_triangle(window,[250.0, 282.3081042334652], [279.1285464215361, 311.8453470702507], [250.0, 312.20225074429794],0, 0, 0, (255,0,0))
+    screen.draw_triangle(window,[250, 312], [225, 337], [250, 338] ,0, 0, 0, (255,0,0))
     #    screen.draw_triangle(window,[375, 203], [242, 272], [332, 346],0, 0, 0, (255,0,0))
 
-    pygame.draw.polygon(window, (255,255,255), [[567, 107], [586, 107], [561, 107]])
+    # pygame.draw.polygon(window, (255,0,255), [[250, 312], [225, 337], [250, 338]])
     
     pygame.display.update()
     while 1:
