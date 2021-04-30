@@ -99,9 +99,11 @@ class WindowManager:
         (y+1-b)/m = x + (1/m)
         Using this fact, we loop through all the y values given, and find the respective x values"""
 
-        print(v1,v2,v3)        
-        inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
-        inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
+        try:
+            inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
+            inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
+        except ZeroDivisionError:
+            return 
 
         current_x_1 = v1[0]
         current_x_2 = v2[0]
@@ -164,14 +166,13 @@ class WindowManager:
         # line from v2 to the line v1-v3
         y = v2[1]
 
-        if v1[0] == v3[0]: #this check is to avoid dividing by 0
-            v4 = [0, y]
 
-        else:
+        try:
             m =  (v1[1]-v3[1]) / (v1[0]-v3[0])
             b = v1[1] - (v1[0]*m)
             v4 = [ (y-b)/m, y ]
-        # pygame.draw.line(window, (0,255,0),v4,v2,width = 4)
+        except ZeroDivisionError:
+            return 
 
         self.flat_fill_top(surface, v2,v4,v1, color)
         self.flat_fill_bottom(surface, v2,v4,v3, color)
@@ -197,10 +198,10 @@ if __name__ == '__main__':
     #     c = [randint(0,500),randint(0,500)]
     #     col = [randint(0,255),randint(0,255),randint(0,255),]
     #     screen.draw_triangle(window, a,b,c, 0, 0, 0, col)
-    screen.draw_triangle(window,[250.0, 282.3081042334652], [279.1285464215361, 311.8453470702507], [250.0, 312.20225074429794],0, 0, 0, (255,0,0))
+    # screen.draw_triangle(window,[250.0, 282.3081042334652], [279.1285464215361, 311.8453470702507], [250.0, 312.20225074429794],0, 0, 0, (255,0,0))
     #    screen.draw_triangle(window,[375, 203], [242, 272], [332, 346],0, 0, 0, (255,0,0))
 
-    # pygame.draw.polygon(window, (255,255,255), [[250.0, 282.3081042334652], [279.1285464215361, 311.8453470702507], [250.0, 312.20225074429794]])
+    pygame.draw.polygon(window, (255,255,255), [[567, 107], [586, 107], [561, 107]])
     
     pygame.display.update()
     while 1:
