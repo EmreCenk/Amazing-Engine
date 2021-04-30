@@ -1,7 +1,7 @@
 
 #When len(nump_array)>=422, clear_z_buffer starts to become more efficient than efficient_clear_z_buffer
 
-cpdef clear_z_buffer(int[:, :, :,] nump_array, tuple color):
+cpdef clear_z_buffer(double[:, :,] nump_array, double num):
     
     cdef int i = 0 
     cdef int j = 0
@@ -10,10 +10,7 @@ cpdef clear_z_buffer(int[:, :, :,] nump_array, tuple color):
 
     for i in range(N):
         for j in range(K):
-            nump_array[i][j][0] = color[0]
-            nump_array[i][j][1] = color[1]
-            nump_array[i][j][2] = color[2]
-
+            nump_array[i][j] = num
 
 cpdef efficient_clear_z_buffer(int[:, :, :,] nump_array, int[:, :] changed_pixels , tuple color):
     # int N = changed_pixels.shape[0]
