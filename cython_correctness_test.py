@@ -1,26 +1,17 @@
 import pyximport
 pyximport.install()
 
-from cythonized_graphics.pixels import update_pixels as cython_update
-
-from performance_tests import update_pixels
+from cythonized_graphics.pixels import clear_z_buffer
 from time import perf_counter
-import pygame
-pygame.init()
-window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 
-s = perf_counter()
-window.fill((255,255,255))
-print(perf_counter()-s)
+from time import perf_counter
+import numpy
+alpha=numpy.full((500,500,3),(0,0,0))
 
+print(alpha)
 
+s=perf_counter()
+clear_z_buffer(alpha, (255,255,255))
+print("CYTHON:", perf_counter()-s)
 
-
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-            break
-
-    pygame.display.update()
+print(alpha)
