@@ -3,7 +3,7 @@ import graphics.shapes_3d as sh3
 from graphics.camera import camera
 from graphics.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
-
+from graphics.managing_window_pixels import WindowManager
 try:
     #Try importing the cython files:
     # import pyximport
@@ -27,6 +27,7 @@ class graphics_manager:
         self.width = width_window
         self.camera = camera( z = 20)
         self.delta_time = 1 #inital value. It gets updated every frame
+        self.Window_Manager = WindowManager(width_window, height_window)
         self.models = []
 
         
@@ -58,7 +59,8 @@ class graphics_manager:
             w, h = pygame.display.get_window_size()
             coordiantes = efficient_triangle_projection(liste[2],w,h)
 
-            pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+            # pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+            self.Window_Manager.draw_triangle(self.window, coordiantes[0],coordiantes[1],coordiantes[2],0, 0, 0,new_color)
                     
 
     def init_loop(self, functions_to_call=None):
@@ -105,7 +107,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<500:
+        while x<50:
             x+=1
             power_level = p_original * self.delta_time
             zpower = p_z_original * self.delta_time
