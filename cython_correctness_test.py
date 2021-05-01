@@ -13,9 +13,16 @@ colman = np.array([255,255,255],dtype=np.ubyte)
 
 
 Manager = WindowManager(pix, 500, 500, colman)
+s = perf_counter()
 
-s=perf_counter()
-Manager.clear_z_buffer()
+for i in range(500):
+    if i%2 == 0 :
+        Manager.draw_horizontal_line(window, np.array([255,255,255],dtype=np.ubyte),0,
+        np.array([0,i], dtype=np.double),
+        np.array([500,i],  dtype=np.double))
+
+
+
 print("function time:",perf_counter()-s,f"({1/(perf_counter()-s)} fps)")
 
 pygame.display.update()
