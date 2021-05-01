@@ -34,3 +34,4 @@ cpdef fill_screen(unsigned char [:, :, :,] nump_array, tuple color):
             nump_array[i][j][0] = color[0]
             nump_array[i][j][1] = color[1]
             nump_array[i][j][2] = color[2]
+            print(nump_array[i][j])

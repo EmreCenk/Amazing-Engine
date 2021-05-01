@@ -26,7 +26,7 @@ class WindowManager:
 
     
 
-    def draw_pixel(self, x:Sequence, y:Sequence, color:Sequence, depth:int = 0):
+    def draw_pixel(self, x: int, y: int, color:Sequence, depth:int = 0):
         # print(len(self.pixel_depths),len(self.pixel_depths[0]), x, y)
         if self.pixel_depths[x][y]<depth:
             return 
@@ -73,11 +73,9 @@ class WindowManager:
         if new_s_x<0:
             new_s_x = 0
         while new_s_x<new_e_x+1 and new_s_x<self.width:
-            try:
-                self.draw_pixel(new_s_x, y, color, distance)
-            except:
-                # print("WTF",new_s_x,y,len(self.pixels))
-                pass
+            
+            self.draw_pixel(new_s_x, y, color, distance)
+
             new_s_x += 1
 
 
