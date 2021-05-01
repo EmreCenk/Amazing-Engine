@@ -1,6 +1,7 @@
 import pygame
 from pygame import Surface
-from numpy import full, ndarray
+from numpy import full, array, double, ndarray, ubyte
+
 from libc.math cimport round
 
 import pyximport
@@ -15,7 +16,7 @@ cdef class WindowManager:
     cdef double[:, :] pixel_depths
     cdef unsigned char[:, :, :] pixels
 
-    ndarray
+    
     def __init__(self, unsigned char[:, :, :] _pixels, int _height, int _width, unsigned char[:] background_color) :
 
 
@@ -81,3 +82,47 @@ cdef class WindowManager:
             self.draw_pixel(int(new_s_x), int(y), color, distance)
 
             new_s_x += 1
+
+    def flat_fill_top(self, surface, int distance, double[:] v1, double[:] v2, double[:] v3, unsigned char[:] color):
+    
+        
+        """
+        v1, v2: bottom left and bottom right corners of the triangle (in any order)
+        v3: top vertex of triangle
+        
+        This is a helper method for the "draw_triangle" method. It is not meant to be used standalone
+
+        Assumes that the y values of v1 and v2 are the same. 
+        This function uses the fact that increasing y by one increases x by the inverse slope of the line:
+        y=mx+b
+        (y-b)/m = x
+        (y+1-b)/m = x + (1/m)
+        Using this fact, we loop through all the y values given, and find the respective x values"""
+        
+        cdef double inverse_m1, inverse_m2, current_x_1, current_x_2, current_y
+
+        cdef initial = array((0,0), dtype = double)
+        cdef final = ndarray((2))
+        print("TYPES:",type(initial),type(final))
+
+        try:
+            inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
+            inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
+        except ZeroDivisionError:
+            return 
+
+        current_x_1 = v1[0]
+        current_x_2 = v2[0]
+        current_y = v1[1]
+
+        
+        while current_y>v3[1]:
+            initial[0] = current_x_1
+            initial[1] = current_y
+            final[0] = current_x_2
+            final[1] = current_y
+
+            self.draw_horizontal_line(surface,color,distance, initial, final)
+            current_y -= 1
+            current_x_1 -= inverse_m1
+            current_x_2 -= inverse_m2
