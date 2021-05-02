@@ -3,9 +3,6 @@ from pygame import Surface
 from numpy import full, array, double, ndarray, ubyte
 
 from libc.math cimport round
-
-import pyximport
-pyximport.install()
 from pixels import clear_z_buffer, efficient_clear_z_buffer, fill_screen
 
 cdef class WindowManager:
@@ -26,20 +23,20 @@ cdef class WindowManager:
 
         self.pixels = _pixels
         
-    cdef draw_pixel(self, int x, int y, unsigned char[:] color, int depth):
+    cdef void draw_pixel(self, int x, int y, unsigned char[:] color, int depth):
         if self.pixel_depths[x][y]<=depth:
             return 
+
         self.pixel_depths[x][y] = depth
         self.pixels[x][y][0] = color[0]
         self.pixels[x][y][1] = color[1]
         self.pixels[x][y][2] = color[2]
 
     cpdef clear_z_buffer(self,):
-        self.pixel_depths[0][0] = 0
         clear_z_buffer(self.pixel_depths,float("inf"))
     
-    @staticmethod
-    def sort_v_by_ascending(arr):
+
+    cdef void sort_v_by_ascending(self, float arr[3][3]):
         # basically a very efficient insertion sort
         # This method uses as little operations as possible (3 operations)
         # This function also changes the array in place, so be very carefull when using this function
@@ -51,9 +48,9 @@ cdef class WindowManager:
             if (arr[1][1] < arr[0][1]):
                 arr[1], arr[0] = arr[0], arr[1]
 
-        return arr
 
-    def draw_horizontal_line(self, window, unsigned char[:] color, int distance, double[:] start_position, double[:] end_position ):
+
+    cpdef void draw_horizontal_line(self, window, unsigned char[:] color, int distance, double[:] start_position, double[:] end_position ):
 
 
         cdef double y
@@ -82,7 +79,7 @@ cdef class WindowManager:
 
             new_s_x += 1
 
-    def flat_fill_top(self, surface, int distance, double[:] v1, double[:] v2, double[:] v3, unsigned char[:] color):
+    cpdef void flat_fill_top(self, surface, int distance, double[:] v1, double[:] v2, double[:] v3, unsigned char[:] color):
     
         
         """
@@ -99,15 +96,16 @@ cdef class WindowManager:
         Using this fact, we loop through all the y values given, and find the respective x values"""
         
         cdef double inverse_m1, inverse_m2, current_x_1, current_x_2, current_y
+        
+        cdef double initial[2]
+        cdef double final[2]
 
-        cdef initial = array((0,0), dtype = double)
-        cdef final = ndarray((2))
-
-        try:
-            inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
-            inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
-        except ZeroDivisionError:
+        if v1[1] == v3[1] or v2[1] == v3[1]:
             return 
+        
+
+        inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
+        inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
 
         current_x_1 = v1[0]
         current_x_2 = v2[0]
