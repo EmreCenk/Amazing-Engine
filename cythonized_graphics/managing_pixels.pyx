@@ -27,9 +27,8 @@ cdef class WindowManager:
         self.pixels = _pixels
         
     cdef draw_pixel(self, int x, int y, unsigned char[:] color, int depth):
-        if self.pixel_depths[x][y]<depth:
+        if self.pixel_depths[x][y]<=depth:
             return 
-
         self.pixel_depths[x][y] = depth
         self.pixels[x][y][0] = color[0]
         self.pixels[x][y][1] = color[1]
@@ -103,7 +102,6 @@ cdef class WindowManager:
 
         cdef initial = array((0,0), dtype = double)
         cdef final = ndarray((2))
-        print("TYPES:",type(initial),type(final))
 
         try:
             inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
