@@ -5,6 +5,7 @@ a = graphics_manager(600,800,delay_time=25)
 a.init_loop()
 
 
+
 # NO SPINNING:
 
 # NO CYTHON FRAME COMPUTATION TIME: 
