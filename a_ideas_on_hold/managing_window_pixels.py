@@ -4,7 +4,7 @@ from typing import Sequence
 import pygame
 import pyximport
 pyximport.install()
-from cythonized_graphics.pixels import clear_z_buffer, efficient_clear_z_buffer, fill_screen
+# from cythonized_graphics.pixels import clear_z_buffer, efficient_clear_z_buffer, fill_screen
 
 class WindowManager:
     #This class implements a z buffer

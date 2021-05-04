@@ -1,11 +1,11 @@
 import pyximport
 pyximport.install()
 from cythonized_graphics.managing_pixels import WindowManager
-from graphics.managing_window_pixels import WindowManager as pymanag
+from a_ideas_on_hold.managing_window_pixels import WindowManager as pymanag
 import pygame
 from time import perf_counter
 import numpy as np
-from random import randint, uniform
+
 pygame.init()
 window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 pix = pygame.surfarray.pixels3d(window)
