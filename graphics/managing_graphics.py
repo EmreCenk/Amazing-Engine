@@ -5,14 +5,15 @@ from graphics.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
 import numpy as np
 try:
+    a=0/0
     import pyximport
     pyximport.install()
     from cythonized_graphics.managing_pixels import WindowManager
-except Exception as E:
-    print("NO")
-# except ImportError:
-#     print("Could not import cython WinowManager. Python version is runningg. ")
-#     from graphics.managing_window_pixels import WindowManager
+
+except:
+    from graphics.managing_window_pixels import WindowManager
+    print("Could not import cython WinowManager. Python version is runningg. ")
+
 try:
     #Try importing the cython files:
     # import pyximport
@@ -49,6 +50,8 @@ class graphics_manager:
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
 
     def render_frame_alternative(self):
+        #FIXME: Cython WindowManager implementation gives a bunch of errors when implemented into this function
+
         camera_position = self.camera.position
         normalized_camera = normalized(camera_position)
         to_draw = []
@@ -151,7 +154,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<50:
+        while x<5000:
             x+=1
             power_level = p_original * self.delta_time
             zpower = p_z_original * self.delta_time
@@ -163,8 +166,9 @@ class graphics_manager:
                     quit()
                     break
                 elif event.type == pygame.VIDEORESIZE:
-                    self.Window_Manager.width, self.Window_Manager.height = self.width, self.height = pygame.display.get_window_size()
-                    
+                    # self.Window_Manager.width, self.Window_Manager.height = self.width, self.height = pygame.display.get_window_size()
+                    self.width, self.height = pygame.display.get_window_size()
+
 
                 elif event.type == pygame.MOUSEBUTTONDOWN :
                     if event.button == 4:
@@ -201,8 +205,8 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            self.tester_mesh2.rotate("y",1)
-            self.tester_rectangle.rotate("y",1)
+            self.tester_mesh2.rotate("y",10*self.delta_time)
+            self.tester_rectangle.rotate("y",10*self.delta_time)
             # self.tester_mesh2.draw_faces(self.window, self.camera.position)
             self.render_frame()
 
