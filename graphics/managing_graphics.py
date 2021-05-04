@@ -42,6 +42,9 @@ class graphics_manager:
         self.delta_time = 1 #inital value. It gets updated every frame
         self.start_engine()
 
+        #For some reason the following line needs to be there to track the centers of 3d objects
+        self.width, self.height = pygame.display.get_window_size() 
+
         pix = pygame.surfarray.pixels3d(self.window)
         self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
         self.models = []
@@ -115,8 +118,10 @@ class graphics_manager:
 
             pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
 
+
         for model in self.models:
-            pygame.draw.circle(self.window, 
+            pygame.draw.circle(
+                self.window, 
             (255,255,255),
             project_3d_point_to_2d(model.center,self.width,self.height,self.camera.position),
             radius = 3)

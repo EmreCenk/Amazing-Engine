@@ -14,7 +14,7 @@ except Exception as E:
     print("Python math implementation is running")
     #If the cython files don't work, then use the pure pyhton implementations
     from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-    from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+    from Mathematical_Functions.coordinate_system_3d import distance, rotate_around_self ,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 
 import pygame
 from constants import conversion

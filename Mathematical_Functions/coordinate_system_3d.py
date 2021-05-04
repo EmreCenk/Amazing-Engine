@@ -50,6 +50,22 @@ def rotate(vertex, axis, angle, radian_input = False):
 
     return vertex
 
+def rotate_around_self(center, vertex, axis, angle, radian_input = False):
+
+    #Translate the vertex to the origin (relative to the center of the object)
+    new_vertex = [
+        vertex[0] - center[0],
+        vertex[1] - center[1],
+        vertex[2] - center[2],
+        
+    ]
+
+    rotate(new_vertex,axis,angle,radian_input)
+
+    #re-translating it to the original place:
+    vertex[0] = new_vertex[0] + center[0]
+    vertex[1] = new_vertex[1] + center[1]
+    vertex[2] = new_vertex[2] + center[2]
 
 def distance(p1,p2):
     # 8 operations
