@@ -30,6 +30,9 @@ from Mathematical_Functions.shading import get_color
 
 class graphics_manager:
 
+    #TODO: add clipping for triangles
+    #TODO: add camera angles
+
     def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):
         self.delay_time = delay_time
         self.background_color = np.array(background_color,dtype=np.ubyte)
@@ -111,6 +114,14 @@ class graphics_manager:
             coordiantes = efficient_triangle_projection(liste[2],w,h)
 
             pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+
+        for model in self.models:
+            pygame.draw.circle(self.window, 
+            (255,255,255),
+            project_3d_point_to_2d(model.center,self.width,self.height,self.camera.position),
+            radius = 3)
+
+        
     def init_loop(self, functions_to_call=None):
 
         if functions_to_call is None:

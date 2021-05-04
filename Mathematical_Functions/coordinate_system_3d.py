@@ -2,6 +2,7 @@
 from math import radians, sqrt, cos, sin
 from constants import conversion, excluded
 
+print("python math")
 def translate(point,camera_position):
 
     #Has 3 operations
