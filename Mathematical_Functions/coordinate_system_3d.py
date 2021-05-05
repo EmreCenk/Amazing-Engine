@@ -174,9 +174,25 @@ def classify_point(x,y,width,height):
 
     return top, bottom, left, right
 
+
 def clip_line(line_coordinates, width, height):
     x1, y1 = line_coordinates[0]
     x2, y2 = line_coordinates[1]
+
+    clas_p1 = classify_point(x1, y1, width, height)
+    clas_p2 = classify_point(x2, y2, width, height)
+
+
+    #Checking for trivial cases:
+    if clas_p1 == clas_p2:
+        if clas_p1 == (0,0,0,0): #if both are inside, we can leave line as is
+            return line_coordinates
+
+        return [] #if both are in the same sector outside of the screen, then no part of the line is inside the screen
+
+
+
+
 
     
 def clip_2d_triangle(triangle_vertices, width, height):
