@@ -1,7 +1,7 @@
 
 from math import radians, sqrt, cos, sin
 from constants import conversion, excluded
-
+import pygame
 
 def translate(point,camera_position):
 
@@ -133,6 +133,7 @@ def is_visible(translated_triangle_vertices, normalized_camera_position):
     normal = get_normal(new_triangle_vertices) # 15 operations
 
 
+
     if dot_product(normal,normalized_camera_position)>0: #6 operations
         return False
 
@@ -141,6 +142,50 @@ def is_visible(translated_triangle_vertices, normalized_camera_position):
 
 
 ##################cython version of the above code exists#######################################
+
+def classify_point(x,y,width,height):
+    # Finds which sector a given point is:
+    # 1010 | 1000 | 1001 |
+    # ___________________
+    # 0010 | 0000 | 0001 |
+    # ___________________
+    # 0110 | 0100 | 0101 |
+    # ___________________
+    #first digit: check if inside top boundary
+    #Second boolean: check if inside bottom boundary
+    #third boolean: check if inside  left boundary
+    #Fourth boolean: check if inside right boundary
+
+    top = 0
+    bottom = 0
+    left = 0
+    right = 0
+
+    if y>0:
+        top = 1
+    if y<height:
+        bottom = 1
+
+    if x<width:
+        right = 1
+
+    if x>0:
+        left = 1
+
+    return top, bottom, left, right
+
+def clip_line(line_coordinates, width, height):
+    x1, y1 = line_coordinates[0]
+    x2, y2 = line_coordinates[1]
+
+    
+def clip_2d_triangle(triangle_vertices, width, height):
+
+    a = clip_line([triangle_vertices[0], triangle_vertices[1]], width, height)
+    b = clip_line([triangle_vertices[1], triangle_vertices[2]], width, height)
+    c = clip_line([triangle_vertices[0], triangle_vertices[2]], width, height)
+
+
 
 
 def rotate_around_point(point_to_rotate_around, vertex, axis, angle, radian_input=False):

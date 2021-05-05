@@ -32,12 +32,16 @@ class graphics_manager:
         
     def start_engine(self):
         pygame.init()
-        screen_size = (self.height,self.width)
+        screen_size = (self.width, self.height)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
+        pygame.mouse.set_visible(False)
 
 
 
     def render_frame(self):
+        #TODO: Refactor the followıng code so that we don't translate and rotate the objects relative to the camera
+        #in every single frame
+
         camera_position = self.camera.position
         normalized_camera = normalized(camera_position)
         to_draw = []
@@ -80,7 +84,6 @@ class graphics_manager:
         if functions_to_call is None:
             functions_to_call = []
 
-
         shift = 0
         side = 5
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
@@ -113,7 +116,7 @@ class graphics_manager:
         # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
         p_original = 10
-        p_z_original = 10
+        p_z_original = 30
 
         x=0
         total=0
@@ -151,11 +154,14 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-            xr, yr = pygame.mouse.get_rel()
-
-            dsd = 0.05
-            self.camera.rotate("x",yr*dsd)
-            self.camera.rotate("y",xr*dsd)
+            # xr, yr = pygame.mouse.get_rel()
+            #
+            # dsd = 0.2
+            # self.camera.rotate("x",yr*dsd)
+            # self.camera.rotate("y",xr*dsd)
+            #
+            #
+            #
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_DOWN] or keys[pygame.K_s]:
