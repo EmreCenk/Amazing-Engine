@@ -131,8 +131,15 @@ class graphics_manager:
 
 
 
+            xr, yr = pygame.mouse.get_rel()
 
-            # self.tester_rectangle.rotate("x", 1)
+            dsd = 0.2
+            self.camera.rotate("x",yr*dsd)
+            self.camera.rotate("y",xr*dsd)
+
+
+
+            self.tester_rectangle.rotate("x", 1)
 
             for func in functions_to_call:
                 func()
