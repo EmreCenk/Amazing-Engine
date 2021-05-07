@@ -145,7 +145,6 @@ def is_visible(translated_triangle_vertices, normalized_camera_position):
 ##################cython version of the above code exists#######################################
 
 def classify_point(x,y,width,height):
-    print(x,y,width,height)
     # Finds which sector a given point is:
     # 1010 | 1000 | 1001 |
     # ___________________
@@ -153,33 +152,26 @@ def classify_point(x,y,width,height):
     # ___________________
     # 0110 | 0100 | 0101 |
     # ___________________
-    #first digit: check if inside top boundary
-    #Second boolean: check if inside bottom boundary
-    #third boolean: check if inside  left boundary
-    #Fourth boolean: check if inside right boundary
+    #first digit: check if outside top boundary
+    #Second boolean: check if outside bottom boundary
+    #third boolean: check if outside  left boundary
+    #Fourth boolean: check if outside right boundary
+    top = 0
+    bottom = 0
+    left = 0
+    right = 0
 
-    top = 1
-    bottom = 1
-    left = 1
-    right = 1
+    if y<0:
+        top = 1
 
-    if y>0:
-        print("Yes")
-        top = 0
-    if y<height:
+    elif y>height:
+        bottom = 1
 
-        print("Yes2")
-        bottom = 0
+    if x>width:
+        right = 1
 
-    if x<width:
-
-        print("Yes3")
-        right = 0
-
-    if x>0:
-
-        print("Yes4")
-        left = 0
+    elif x<0:
+        left = 1
 
     return top, bottom, left, right
 
@@ -194,9 +186,7 @@ def clip_line(line_coordinates, width, height):
 
     #Checking for trivial cases:
     if clas_p1 == clas_p2:
-        print(clas_p1, clas_p2)
-        print("trivial")
-        print()
+
         if clas_p1 == (0,0,0,0): #if both are inside, we can leave line as is
             return line_coordinates
 
@@ -211,23 +201,29 @@ def clip_line(line_coordinates, width, height):
     else:
         max_x, min_x = x2, x1
 
+    p1_changed = False
+    p2_changed = False
 
     #checking if it intersects with top:
     if max_y>0 and min_y<0:
-        print("TOP")
         if clas_p1 in TOP:
-            x1, y1 = x1 + y1*(x2-x1)/(y2-y1), 0
+            x1, y1 = x1 - y1*(x2-x1)/(y2-y1), 0
+            p1_changed = True
 
         else:
-            x2, y2 = x1 + y1*(x2-x1)/(y2-y1), 0
+            x2, y2 = x1 - y1*(x2-x1)/(y2-y1), 0
+            p2_changed = True
 
     #checking bottom:
     if max_y>height and min_y<height:
 
         if clas_p1 in BOTTOM:
             x1, y1 =  x1 - (y1-height)*(x2-x1)/(y2-y1), height
+            p1_changed = True
+
         else:
             x2, y2 = x1 - (y1-height)*(x2-x1)/(y2-y1), height
+            p2_changed = True
 
     #checking left:
     if max_x>0 and min_x<0:
@@ -238,8 +234,14 @@ def clip_line(line_coordinates, width, height):
         pass
 
 
+    final = []
 
-    return [(x1,y1), (x2,y2)]
+    if clas_p1 == (0,0,0,0) or p1_changed:
+        final.append((x1,y1))
+
+    if clas_p2 == (0,0,0,0) or p2_changed:
+        final.append((x2,y2))
+    return final
 
 def clip_2d_triangle(triangle_vertices, width, height):
 
@@ -283,8 +285,12 @@ if __name__ == "__main__":
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 
 
-    a,b,c = [100,350], [200,600],[400,320]
+    a,b,c = [560,50], [200,600],[400,320]
     while 1:
+        a[1]+=-4
+        b[1]+=-4
+        c[1]+=-4
+
         pygame.draw.line(window, "green", (0, 0), (0, 500))
         pygame.draw.line(window, "green", (0, 0), (500, 0))
         pygame.draw.line(window, "green", (500, 500), (0, 500))
@@ -295,13 +301,23 @@ if __name__ == "__main__":
                 quit()
                 break
 
+        # print(clip_line(
+        #     [(560, 349940), (200, 600)],500,500
+        # ))
+        #
+        # l1, l2 = clip_line([(560, 349850), (200, 600)], 500, 500)
+        # pygame.draw.line(window, "red", l1, l2)
+        # print()
+        # print(l1,l2)
+        # print()
         new = clip_2d_triangle([a,b,c],500,500)
-        print(new)
-        pygame.draw.polygon(window, (255,255,0), new)
 
-        new = [a,b,c]
+        print(len(new))
+        if len(new)>2:
+            print("alpha:",new)
+            pygame.draw.polygon(window, (255,255,0), new)
 
-        pygame.draw.polygon(window, (255,0,0), new)
+
         pygame.time.delay(50)
         pygame.display.update()
         window.fill((0,0,0))
