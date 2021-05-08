@@ -1,6 +1,6 @@
 from Mathematical_Functions.shading import get_color
-from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-from Mathematical_Functions.coordinate_system_3d import distance, rotate_around_point ,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+from Mathematical_Functions.projecting import *
+from Mathematical_Functions.coordinate_system_3d import *
 import pygame
 from constants import conversion
 
@@ -114,13 +114,18 @@ class triangle(shape):
 
 
     def draw(self,window,  normalized_camera, translated_vertices):
-        new_color = get_color(self,
-                              normalized_light_source=normalized_camera
-                              , rgb_colour=self.color)
+
 
         w, h = pygame.display.get_window_size()
         coordiantes = efficient_triangle_projection(translated_vertices, w, h)
 
+        coordiantes = clip_2d_triangle(coordiantes, w, h)
+        if len(coordiantes)<=2:
+            return
+
+        new_color = get_color(self,
+                              normalized_light_source=normalized_camera
+                              , rgb_colour=self.color)
         pygame.draw.polygon(window, points=coordiantes, color=new_color)
 
     def get_normalized(self):
