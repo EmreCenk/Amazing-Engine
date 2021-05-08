@@ -1,8 +1,7 @@
 
 from math import radians, sqrt, cos, sin
 from constants import conversion, excluded
-import pygame
-from constants import TOP, BOTTOM
+
 
 def translate(point,camera_position):
 
@@ -144,7 +143,10 @@ def is_visible(translated_triangle_vertices, normalized_camera_position):
 
 ##################cython version of the above code exists#######################################
 
-def classify_point(x,y,width,height):
+
+IN, LEFT, RIGHT, BOTTOM, TOP = 0, 1, 2, 4, 8
+
+def classify_point(xa, ya, xmax, ymax, xmin = 0, ymin = 0):
     # Finds which sector a given point is:
     # 1010 | 1000 | 1001 |
     # ___________________
@@ -156,113 +158,106 @@ def classify_point(x,y,width,height):
     #Second boolean: check if outside bottom boundary
     #third boolean: check if outside  left boundary
     #Fourth boolean: check if outside right boundary
-    top = 0
-    bottom = 0
-    left = 0
-    right = 0
-
-    if y<0:
-        top = 1
-
-    elif y>height:
-        bottom = 1
-
-    if x>width:
-        right = 1
-
-    elif x<0:
-        left = 1
-
-    return top, bottom, left, right
 
 
-def clip_line(line_coordinates, width, height):
-    x1, y1 = line_coordinates[0]
-    x2, y2 = line_coordinates[1]
+    point = IN  # default is inside
 
-    clas_p1 = classify_point(x1, y1, width, height)
-    clas_p2 = classify_point(x2, y2, width, height)
+    if xa < xmin:
+        point |= LEFT
+
+    elif xa > xmax:
+        point |= RIGHT
+
+    if ya < ymin:
+        point |= BOTTOM  # bitwise OR
+
+    elif ya > ymax:
+        point |= TOP
+
+    return point
+
+def clip_line(
+    v1, v2, xmax, ymax, xmin = 0,  ymin = 0, ):
+    #An implementation of the cohen-sutherland algorithm
+    #Takes two points v1, v2 and clips them so that they will fit in a rectangle with
+    #boundaries at xmax, ymax, xmin and ymin
+
+    x1, y1 = v1
+    x2, y2 = v2
 
 
-    #Checking for trivial cases:
-    if clas_p1 == clas_p2:
 
-        if clas_p1 == (0,0,0,0): #if both are inside, we can leave line as is
-            return line_coordinates
+    clip_class_1 = classify_point(x1, y1, xmax, ymax, xmin, ymin)
+    clip_class_2 = classify_point(x2, y2, xmax, ymax, xmin, ymin)
 
-        return [] #if both are in the same sector outside of the screen, then no part of the line is inside the screen
 
-    if y1>y2:
-        max_y, min_y = y1, y2
-    else:
-        max_y, min_y = y2, y1
-    if x1>x2:
-        max_x, min_x = x1, x2
-    else:
-        max_x, min_x = x2, x1
+    while (clip_class_1 | clip_class_2) != 0:  # stop if both points are in
 
-    p1_changed = False
-    p2_changed = False
+        # if line trivially outside , reject
+        if (clip_class_1 & clip_class_2) != 0:  # bitwise AND &
+            return None, None, None, None
 
-    #checking if it intersects with top:
-    if max_y>0 and min_y<0:
-        if clas_p1 in TOP:
-            x1, y1 = x1 - y1*(x2-x1)/(y2-y1), 0
-            p1_changed = True
+        # non-trivial case, at least one point outside window
+
+        opt = clip_class_1 or clip_class_2  # take first non-zero point
+        if opt & TOP:  # & is a bitwise and
+            x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1)
+            y = ymax
+
+
+        elif opt & BOTTOM:
+            x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1)
+            y = ymin
+
+
+        elif opt & RIGHT:
+            y = y1 + (y2 - y1) * (xmax - x1) / (x2 - x1)
+            x = xmax
+
+
+        elif opt & LEFT:
+            y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1)
+            x = xmin
+
 
         else:
-            x2, y2 = x1 - y1*(x2-x1)/(y2-y1), 0
-            p2_changed = True
+            raise ValueError('Wow buddy you really screwed up lol')
 
-    #checking bottom:
-    if max_y>height and min_y<height:
+        if opt == clip_class_1:
+            x1, y1 = x, y
+            clip_class_1 = classify_point(x1, y1, xmax, ymax, xmin, ymin)
+            # if dbglvl>1: print('checking k1: ' + str(x) + ',' + str(y) + '    ' + str(k1))
+        elif opt == clip_class_2:
+            # if dbglvl>1: print('checking k2: ' + str(x) + ',' + str(y) + '    ' + str(k2))
+            x2, y2 = x, y
+            clip_class_2 = classify_point(x2, y2, xmax, ymax, xmin, ymin)
 
-        if clas_p1 in BOTTOM:
-            x1, y1 =  x1 - (y1-height)*(x2-x1)/(y2-y1), height
-            p1_changed = True
-
-        else:
-            x2, y2 = x1 - (y1-height)*(x2-x1)/(y2-y1), height
-            p2_changed = True
-
-    #checking left:
-    if max_x>0 and min_x<0:
-        pass
-
-    #checking right:
-    if max_x>width and min_x<height:
-        pass
-
-
-    final = []
-
-    if clas_p1 == (0,0,0,0) or p1_changed:
-        final.append((x1,y1))
-
-    if clas_p2 == (0,0,0,0) or p2_changed:
-        final.append((x2,y2))
-    return final
+    return x1, y1, x2, y2
 
 def clip_2d_triangle(triangle_vertices, width, height):
 
-    a = clip_line([triangle_vertices[0], triangle_vertices[1]], width, height)
-    b = clip_line([triangle_vertices[1], triangle_vertices[2]], width, height)
-    c = clip_line([triangle_vertices[0], triangle_vertices[2]], width, height)
+    a = clip_line(triangle_vertices[0], triangle_vertices[1], width, height)
+    b = clip_line(triangle_vertices[1], triangle_vertices[2], width, height)
+    c = clip_line(triangle_vertices[2], triangle_vertices[0], width, height)
 
     final = []
-    for k in a:
-        if k not in final:
-            final.append(k)
+    if a[0] != None:
+        final.append((a[0],a[1]))
 
-    for k in b:
-        if k not in final:
-            final.append(k)
+        final.append((a[2],a[3]))
 
-    for k in c:
-        if k not in final:
-            final.append(k)
 
+    if b[0] != None:
+        final.append((b[0],b[1]))
+
+        final.append((b[2],b[3]))
+
+    if c[0] != None:
+        final.append((c[0],c[1]))
+
+        final.append((c[2],c[3]))
     return final
+
 
 
 def rotate_around_point(point_to_rotate_around, vertex, axis, angle, radian_input=False):
@@ -291,6 +286,10 @@ if __name__ == "__main__":
         b[1]+=-4
         c[1]+=-4
 
+        a[0]+=4
+        b[0]+=4
+        c[0]+=4
+
         pygame.draw.line(window, "green", (0, 0), (0, 500))
         pygame.draw.line(window, "green", (0, 0), (500, 0))
         pygame.draw.line(window, "green", (500, 500), (0, 500))
@@ -301,22 +300,14 @@ if __name__ == "__main__":
                 quit()
                 break
 
-        # print(clip_line(
-        #     [(560, 349940), (200, 600)],500,500
-        # ))
-        #
-        # l1, l2 = clip_line([(560, 349850), (200, 600)], 500, 500)
-        # pygame.draw.line(window, "red", l1, l2)
-        # print()
-        # print(l1,l2)
-        # print()
+
+
         new = clip_2d_triangle([a,b,c],500,500)
 
         print(len(new))
         if len(new)>2:
             print("alpha:",new)
             pygame.draw.polygon(window, (255,255,0), new)
-
 
         pygame.time.delay(50)
         pygame.display.update()
