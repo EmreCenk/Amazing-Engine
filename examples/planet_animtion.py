@@ -1,7 +1,6 @@
 import pygame
-import graphics.shapes_3d as sh3
 from graphics.camera import camera
-from graphics.using_obj_files.using_obj_files import obj_mesh
+from models.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
 
 try:
@@ -13,10 +12,10 @@ try:
 
 except Exception as E:
     #If the cython files don't work, then use the pure pyhton implementations
-    from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-    from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+    from utils.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+    from utils.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 
-from Mathematical_Functions.shading import get_color
+from utils.shading import get_color
 
 class graphics_manager:
 

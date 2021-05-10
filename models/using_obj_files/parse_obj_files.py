@@ -1,5 +1,5 @@
 import os
-from graphics.shapes_2d import triangle
+from models.shapes_2d import triangle
 
 possible_extensions = {".obj", ".txt"}
 
