@@ -45,7 +45,7 @@ class shape:
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
         for liste in to_draw:
-            liste[0].draw(window, normalized_camera, liste[2])
+            liste[0].draw(window, camera_position, liste[2])
 
 
 
@@ -113,7 +113,7 @@ class triangle(shape):
                project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
 
 
-    def draw(self,window,  normalized_camera, translated_vertices):
+    def draw(self,window,  camera_position, translated_vertices):
 
 
         w, h = pygame.display.get_window_size()
@@ -124,9 +124,7 @@ class triangle(shape):
         if len(coordiantes)<=2:
             return
 
-        new_color = get_color(self,
-                              normalized_light_source=normalized_camera
-                              , rgb_colour=self.color)
+        new_color = get_color(self, light_v=camera_position, rgb_colour=self.color)
         pygame.draw.polygon(window, points=coordiantes, color=new_color)
 
     def get_normalized(self):

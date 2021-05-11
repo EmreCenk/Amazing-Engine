@@ -221,6 +221,7 @@ def clip_line(
 
 
         else:
+            #shouldn't be possible
             raise ValueError('Wow buddy you really screwed up lol')
 
         if opt == clip_class_1:
