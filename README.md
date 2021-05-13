@@ -38,11 +38,65 @@ When initializing, you need to specify two values:
 
 An example:
 ```python
+from graphics.managing_graphics import Engine
+import os
+from models.using_obj_files.using_obj_files import obj_mesh
+my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
+mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
+
+my_engine.add_model(mesh_object) #This function must be called when you create any 3d object
+```
+Whenever you create a new 3d object, you need to call the Engine.add_model function. Otherwise your 3d object will
+ not be rendered.
+
+At this point, the mesh_object class can be treated as if it was any other built in shape.
+Any methods that are built into built in 3d shapes are also valid for a mesh_class object.
+ 
+#### Other 3d objects:
+The engine has many built in shapes. * insert examples *
+
+
+ 
+ 
+####Universal Methods for all 3D objects:
+All 3d objects have some common methods that can be called. (These 3d objects can be an obj_mesh class, or any other
+ built in shape)
+
+##### Moving objects
+In order to move an object, you call the .move method for the object. The move method takes in two inputs:
+1) axis: a string "x", "y" or "z". Instead of the axis values as strings, you can also input 0, 1, and 2 respectively.
+2) amount: an integer, how much to move the object by
+
+```python
 from models.using_obj_files.using_obj_files import obj_mesh
 mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
-```
-####Universal Functions for all 3D objects:
 
+#MOVING ALONG THE X AXIS:
+mesh_object.move("x", 10) #moves the object 10 units on the x axis
+mesh_object.move(0, 10) #Equivalent to the above expression
+
+#MOVING ALONG THE Y AXIS:
+mesh_object.move(axis = "y", amount = -10) #moves the object -10 units on the x axis
+
+```
+
+##### Rotating objects
+To rotate an object, you call the .rotate method. Takes in two inputs:
+1) axis: The axis to rotate around, any string "x", "y", "z" or the integers 0, 1, 2 respectively
+2) angle: How many degrees to rotate the object by, any float (By default, the input is in degrees, NOT RADIANS)
+
+The rotate method also takes in one keyword arguement which is False by default:
+3) radian_input: a boolean value specifying whether the input is in radians, when the input is True, the amount
+ variable will be treated as radians
+ 
+```python
+from models.using_obj_files.using_obj_files import obj_mesh
+mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))\
+
+mesh_object.rotate("x", 10) #rotates the mesh_object by 10 degrees along the x axis
+mesh_object.rotate(axis = "y", angle = 1, radian_input=True) #rotates the mesh_object by 1 radian along the y axis
+```
+ 
 
 
 

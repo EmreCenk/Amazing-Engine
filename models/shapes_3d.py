@@ -22,22 +22,22 @@ class shape_3d(shape):
         """
 
         #The lambda part takes the index of the axis as the key when finding max
-        max_x = max(self.vertices, key = lambda tri: tri[0])[0]
-        min_x = min(self.vertices, key = lambda tri: tri[0])[0]
+        self.max_x = max(self.vertices, key = lambda tri: tri[0])[0]
+        self.min_x = min(self.vertices, key = lambda tri: tri[0])[0]
 
-        max_y = max(self.vertices, key = lambda tri: tri[1])[1]
-        min_y = min(self.vertices, key = lambda tri: tri[1])[1]
+        self.max_y = max(self.vertices, key = lambda tri: tri[1])[1]
+        self.min_y = min(self.vertices, key = lambda tri: tri[1])[1]
 
-        max_z = max(self.vertices, key = lambda tri: tri[2])[2]
-        min_z = min(self.vertices, key = lambda tri: tri[2])[2]
+        self.max_z = max(self.vertices, key = lambda tri: tri[2])[2]
+        self.min_z = min(self.vertices, key = lambda tri: tri[2])[2]
 
         #Taking the average of the upper and lower bounds to find the midpoint for all
         #dimensions:
 
         self.center = [
-            (max_x + min_x) / 2,
-            (max_y + min_y) / 2,
-            (max_z + min_z) / 2,
+            (self.max_x + self.min_x) / 2,
+            (self.max_y + self.min_y) / 2,
+            (self.max_z + self.min_z) / 2,
 
         ]
 
@@ -54,11 +54,11 @@ class shape_3d(shape):
 
         self.center[axis] += amount
 
-    def rotate(self,axis,angle):
+    def rotate(self, axis, angle, radian_input = False):
         #Overriding the rotate function to also rotate the center along with everything else:
 
         for vert in self.vertices:
-            rotate_around_point((0,0,0), vert, axis, angle)
+            rotate_around_point((0,0,0), vert, axis, angle, radian_input)
 
         # rotate_around_point(self.center,self.center, axis, angle)
 
