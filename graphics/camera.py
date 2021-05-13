@@ -26,7 +26,7 @@ class camera:
         if axis in conversion:
             axis = conversion[axis]
 
-        self.position[axis] += amount
+        # self.position[axis] += amount
         for i in range(len(self.models_3d)):
             self.models_3d[i].move(axis, -amount)
 
@@ -38,7 +38,7 @@ class camera:
             axis = conversion[axis]
 
         #Angles are 3 after the index of their respective axis
-        self.position[axis+3] += amount
+        # self.position[axis+3] += amount
 
         for i in range(len(self.models_3d)):
             self.models_3d[i].rotate(axis, -amount)
