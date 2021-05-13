@@ -1,6 +1,6 @@
 # Amazing-3D-Engine-A3E-
 
-####What is Amazing Engine?
+#### What is Amazing Engine?
 Amazing Engine is a 3D graphics Engine that brings a third dimension to pygame.
 Pygame is a 2d python graphics library 
 You can use this engine to either create 3d games from scratch, or to add 3d graphics to existing pygame games
@@ -8,9 +8,9 @@ You can use this engine to either create 3d games from scratch, or to add 3d gra
 ** Insert Example Gifs **
 
 
-###Getting Started
+### Getting Started
 Getting set up with Amazing Engine is a very easy process.
-#####Importing and initializing engine:
+##### Importing and initializing engine:
 There are 3 mandatory arguments you need to provide when initializing the engine:
 * The screen width
 * The screen height
@@ -26,7 +26,7 @@ my_engine = Engine(screen_width, screen_height, os.getcwd(), script_name, delay_
 
 ```
 
-###Creating 3D objects:
+### Creating 3D objects:
 Amazing Engine has a variety of 3d shapes such as rectangular prisms. The Engine also supports .obj files. 
 
 #### Importing .obj files:
@@ -58,7 +58,7 @@ The engine has many built in shapes. * insert examples *
 
  
  
-####Universal Methods for all 3D objects:
+#### Universal Methods for all 3D objects:
 All 3d objects have some common methods that can be called. (These 3d objects can be an obj_mesh class, or any other
  built in shape)
 
@@ -91,12 +91,26 @@ The rotate method also takes in one keyword arguement which is False by default:
  
 ```python
 from models.using_obj_files.using_obj_files import obj_mesh
-mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))\
+mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
 
 mesh_object.rotate("x", 10) #rotates the mesh_object by 10 degrees along the x axis
 mesh_object.rotate(axis = "y", angle = 1, radian_input=True) #rotates the mesh_object by 1 radian along the y axis
 ```
  
+#### The Camera
+The camera is an instance attribute that belongs to your Engine object. 
+The move and rotate functions also apply to the camera.
+
+```python
+from graphics.managing_graphics import Engine
+import os
+my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
+
+my_engine.camera.move("x", 10) # moves the camera along the x axis by 20 units
+my_engine.camera.rotate("z", 12) #rotates the camera along the z axis by 12 degrees
+
+```
+
 
 
 
