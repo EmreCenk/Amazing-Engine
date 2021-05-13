@@ -127,6 +127,10 @@ def get_normal(triangle_vertices):
 def is_visible(translated_triangle_vertices, normalized_camera_position):
     #45 operations
 
+    if  translated_triangle_vertices[0][2]>=0 and\
+        translated_triangle_vertices[1][2]>=0 and\
+        translated_triangle_vertices[2][2]>=0 :
+        return False
 
     new_triangle_vertices = normalize_triangle_vertices(translated_triangle_vertices) # 24 operations
 
