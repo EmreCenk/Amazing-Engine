@@ -1,5 +1,6 @@
 from graphics.camera import camera
 from models.using_obj_files.using_obj_files import obj_mesh
+import models.shapes_3d as sh3
 from time import perf_counter
 import numpy as np
 from a_ideas_on_hold.managing_window_pixels import WindowManager
@@ -90,13 +91,20 @@ class graphics_manager:
 
         #                                               )
         # self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (255,0,0))
+        #
+        #
+        # self.tester_rectangle = obj_mesh("models/using_obj_files/sample_object_files/sphere_5_scaled.obj",
+        #                                 color = (0,255,255))
+        self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color = (255,255,255))
 
 
-        self.tester_rectangle = obj_mesh("models/using_obj_files/sample_object_files/sphere_5_scaled.obj",
-                                        color = (0,255,255))
-        # self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color = (255,255,255))
+        K1,K2,K3,K4,K5,K6,K7,K8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
+        [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
-        # #                                               )
+
+        self.tester_rectangle2 = sh3.rectangular_prism(K1,K2,K3,K4,K5,K6,K7,K8, color = (0,255,255))
+
+        #                                               )
         #
         #
         # # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
@@ -109,6 +117,7 @@ class graphics_manager:
 
         
         self.models.extend([
+                            self.tester_rectangle2,
                             self.tester_rectangle])
         # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
@@ -170,10 +179,10 @@ class graphics_manager:
 
 
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                self.camera.move("x",-power_level)
+                self.camera.move("x",power_level)
 
             elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                self.camera.move("x",power_level)
+                self.camera.move("x",-power_level)
 
 
             power_level += self.delta_time*10
@@ -193,11 +202,8 @@ class graphics_manager:
 
 
             if keys[pygame.K_SPACE]:
-                print(self.tester_rectangle.triangles[0].vertices)
                 self.tester_rectangle.move("x", self.delta_time*10)
 
-                print(self.tester_rectangle.triangles[0].vertices)
-                print()
             # self.tester_mesh2.rotate("y",10*self.delta_time)
             # self.tester_rectangle.rotate("y",10*self.delta_time)
             # self.tester_mesh2.draw_faces(self.window, self.camera.position)

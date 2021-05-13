@@ -1,7 +1,7 @@
 
 from utils.coordinate_system_3d import distance, normalized
 
-def get_color(triangle, light_v, luminosity = 25, rgb_colour = (255, 255, 255), background_color = (0,0,0)):
+def get_color(triangle, light_v, luminosity = 50, rgb_colour = (255, 255, 255), background_color = (0,0,0)):
 
     # For now, we will compute the distance between the centroid of the triangle and the light source to find the color
 
@@ -11,7 +11,6 @@ def get_color(triangle, light_v, luminosity = 25, rgb_colour = (255, 255, 255), 
 
     dist = distance(centroid, light_v) # 8 operations
     if dist>luminosity:
-        print(centroid, light_v)
         return background_color
 
 
