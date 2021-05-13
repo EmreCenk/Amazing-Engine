@@ -1,16 +1,16 @@
 from graphics.camera import camera
-from models.using_obj_files.using_obj_files import obj_mesh
-import models.shapes_3d as sh3
 from time import perf_counter
-import numpy as np
 from a_ideas_on_hold.managing_window_pixels import WindowManager
 from utils.coordinate_system_3d import *
 import pygame
-import importlib.util
 import sys
 
+#
+# import importlib.util
+# from models.using_obj_files.using_obj_files import obj_mesh
+# import models.shapes_3d as sh3
 
-class graphics_manager:
+class Engine:
 
     #TODO: add clipping for triangles
     #TODO: add camera angles
@@ -98,6 +98,9 @@ class graphics_manager:
         try:
             update = main_script.update
         except:
+            def update():
+                pass
+
             print("WARNING: 'update' function not found in script")
 
         p_original = 10
