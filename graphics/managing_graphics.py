@@ -17,7 +17,6 @@ class graphics_manager:
         self.background_color = np.array(background_color,dtype=np.ubyte)
         self.height = height_window
         self.width = width_window
-        self.camera = camera( z = 20)
         self.delta_time = 1 #inital value. It gets updated every frame
         self.start_engine()
 
@@ -26,14 +25,16 @@ class graphics_manager:
 
         pix = pygame.surfarray.pixels3d(self.window)
         self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
-        self.models = []
+        self.models_3d = []
+        self.camera = camera(self.models_3d, z = 20)
+
 
         
     def start_engine(self):
         pygame.init()
         screen_size = (self.width, self.height)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
-        pygame.mouse.set_visible(False)
+        # pygame.mouse.set_visible(False)
 
 
 
@@ -44,23 +45,15 @@ class graphics_manager:
         camera_position = self.camera.position
         normalized_camera = normalized(camera_position)
         to_draw = []
-        for model in self.models:
+        for model in self.models_3d:
             for triangle in model.triangles:
 
-                translated_vert = triangle.get_translated(camera_position)
-                for i in range(3):
-                    for j in range(3):
-
-                        rotate_around_point(camera_position,
-                                                              translated_vert[j],
-                                                              i,
-                                                              -camera_position[i+3],
-                                                              )
 
 
-                if is_visible(translated_vert,normalized_camera):
+
+                if is_visible(triangle.vertices,normalized_camera):
                     to_draw.append(
-                        [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
+                        [triangle, distance(triangle.get_centroid(),camera_position),triangle.vertices]
                     )
 
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
@@ -69,13 +62,22 @@ class graphics_manager:
             liste[0].draw(self.window, self.camera.position, liste[2])
 
 
-        # for model in self.models:
+        # for model in self.models_3d:
         #     pygame.draw.circle(
         #         self.window,
         #     (255,255,255),
         #     project_3d_point_to_2d(model.center,self.width,self.height,self.camera.position),
         #     radius = 3)
 
+    def add_model(self, obj_3d):
+        self.models_3d.append(
+                            obj_3d,
+                            )
+
+        obj_3d.move("x", -self.camera.x)
+        obj_3d.move("y", -self.camera.y)
+        obj_3d.move("z", -self.camera.z)
+        self.camera.models_3d = self.models_3d # making sure the camera also has access to our list
         
     def init_loop(self, functions_to_call=None):
 
@@ -93,7 +95,7 @@ class graphics_manager:
         # self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (255,0,0))
         #
         #
-        # self.tester_rectangle = obj_mesh("models/using_obj_files/sample_object_files/sphere_5_scaled.obj",
+        # self.tester_rectangle = obj_mesh("models_3d/using_obj_files/sample_object_files/sphere_5_scaled.obj",
         #                                 color = (0,255,255))
         self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color = (255,255,255))
 
@@ -104,30 +106,15 @@ class graphics_manager:
 
         self.tester_rectangle2 = sh3.rectangular_prism(K1,K2,K3,K4,K5,K6,K7,K8, color = (0,255,255))
 
-        #                                               )
-        #
-        #
-        # # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        # self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
-
-
-
-
-        # self.tester_mesh2.move("x",-10)
-
-        
-        self.models.extend([
-                            self.tester_rectangle2,
-                            self.tester_rectangle])
-        # self.tester_mesh2.move("x",5)a
-        # self.tester_mesh.move("x",-5)
+        self.add_model(self.tester_rectangle)
+        self.add_model(self.tester_rectangle2)
         p_original = 10
         p_z_original = 30
 
         x=0
         total=0
 
-        while x<10000:
+        while x<100:
             x+=1
             power_level = p_original * self.delta_time
             zpower = p_z_original * self.delta_time
