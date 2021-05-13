@@ -10,7 +10,7 @@ def convert_result(x,y,s_width,s_height):
 def efficient_perspective_projection(translated_point,screen_width,screen_height):
     # 6 operations
 
-    d=500
+    d=400
     return convert_result(d*translated_point[0]/translated_point[2],
                           d*translated_point[1]/translated_point[2],
                           screen_width,
