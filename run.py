@@ -3,8 +3,17 @@
 import os
 from graphics.managing_graphics import graphics_manager
 import pygame
+import models.shapes_3d as sh3
 
 Engine = graphics_manager(800, 600, os.getcwd(), "run", delay_time=25)
+shift = 0
+side = 5
+v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side], [side, shift, side], [side, shift, shift], [shift, shift, shift], \
+                                 [shift, side, side], [side, side, side], [side, side, shift], [shift, side, shift]
+
+tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color=(255, 255, 255))
+Engine.add_model(tester_rectangle)
+
 
 def zoom(event):
     zpower = 10*Engine.delta_time
@@ -15,6 +24,10 @@ def zoom(event):
         Engine.camera.move("z", +zpower)
 
 Engine.bind_event(pygame.MOUSEBUTTONDOWN, zoom)
+
+
+
+
 def update():
     p_original = 10
     p_z_original = 10

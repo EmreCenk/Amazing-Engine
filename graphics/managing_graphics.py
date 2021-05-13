@@ -124,7 +124,7 @@ class graphics_manager:
 
 
 
-
+            update()
 
 
 
