@@ -1,8 +1,9 @@
-from models.shapes_2d import quadrilateral,shape
+from models.shapes_2d import quadrilateral, shape, triangle
 from utils.coordinate_system_3d import rotate_around_point, normalized, is_visible
 import pygame
 from constants import conversion
 from utils.shading import get_color
+from math import sqrt
 
 class shape_3d(shape):
 
@@ -145,10 +146,10 @@ class rectangular_prism(shape_3d):
                                         a)
 
 
-class cube(rectangular_prism):
+class Cube(rectangular_prism):
 
     def __init__(self, center_coordinates, side_length, color):
-
+        self.center = center_coordinates
         shift = 0
         v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side_length],\
                                          [side_length, shift, side_length],\
@@ -165,3 +166,45 @@ class cube(rectangular_prism):
         self.move("x", center_coordinates[0])
         self.move("y", center_coordinates[1])
         self.move("z", center_coordinates[2])
+
+class Pyramid(shape_3d):
+
+    def __init__(self, center_coordinates, side_length, color):
+        super().__init__(color)
+
+        self.height = side_length * sqrt(3)/2
+
+        # top vertex
+        self.v1 = list(center_coordinates)
+        self.v1[1] += self.height/2
+
+        #base vertices:
+        self.v2 = list(center_coordinates)
+        self.v3 = list(center_coordinates)
+        self.v4 = list(center_coordinates)
+
+
+        self.v2[1] -= self.height / 2
+        self.v3[1] -= self.height / 2
+        self.v4[1] -= self.height / 2
+
+        self.v2[2] -= self.height / 2
+        self.v3[2] += self.height / 2
+        self.v4[2] += self.height / 2
+
+
+        self.v3[0] -= side_length / 2
+        self.v4[0] += side_length / 2
+
+        self.triangles.append(triangle(self.v1, self.v3, self.v4, color = self.color))
+
+        self.triangles.append(triangle(self.v1, self.v4, self.v2, color = self.color))
+
+        self.triangles.append(triangle(self.v1, self.v2, self.v3, color = self.color))
+        self.triangles.append(triangle(self.v2, self.v3, self.v4, color = self.color))
+
+        self.center = center_coordinates
+
+        self.vertices = [self.v1, self.v2, self.v3, self.v4 ]
+
+
