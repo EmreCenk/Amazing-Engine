@@ -5,7 +5,11 @@ Amazing Engine is a 3D graphics Engine that brings a third dimension to pygame.
 Pygame is a 2d python graphics library 
 You can use this engine to either create 3d games from scratch, or to add 3d graphics to existing pygame games
 
-** Insert Example Gifs **
+#### Example Images/Gifs (don't forget to add gifs)
+
+
+##### Demonstrating some of the available shapes:
+![](example_images/example_image_1.PNG)
 
 
 ### Getting Started

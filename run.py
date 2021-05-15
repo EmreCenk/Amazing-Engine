@@ -16,9 +16,6 @@ my_engine.add_model(tester_rectangle2)
 my_engine.add_model(tester_rectangle3)
 
 
-#axes:
-xcube = sh3.Cube([-20,-20,-20], 10, (255,0,0))
-my_engine.add_model(xcube)
 
 
 
