@@ -54,7 +54,7 @@ Whenever you create a new 3d object, you need to call the Engine.add_model funct
  not be rendered.
 
 At this point, the mesh_object class can be treated as if it was any other built in shape.
-Any methods that are built into built in 3d shapes are also valid for a mesh_class object.
+Any method that is valid for a 3d shape object is also valid for a mesh_class object.
  
 #### Other 3d objects:
 The engine has many built in shapes. * insert examples *

@@ -1,5 +1,6 @@
 
 from utils.coordinate_system_3d import distance, normalized
+from constants import conversion
 
 def get_color(triangle, light_v, luminosity = 75, rgb_colour = (255, 255, 255), background_color = (0,0,0)):
 
@@ -31,6 +32,26 @@ def get_color(triangle, light_v, luminosity = 75, rgb_colour = (255, 255, 255), 
     )
 
 
+
+
+
+class Light:
+    def __init__(self, x, y, z, luminosity):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.luminosity = luminosity
+
+        self.position = [self.x,self.y,self.z]
+
+    def move(self,axis,amount):
+        if axis in conversion:
+            axis = conversion[axis]
+
+        self.position[axis] += amount
+
+    def adjust_luminosity(self, new_luminosity):
+        self.luminosity = new_luminosity
 
 
 
