@@ -6,13 +6,20 @@ import pygame
 import models.shapes_3d as sh3
 from models.using_obj_files.using_obj_files import obj_mesh
 my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
-my_engine.light.luminosity = 1000000
-car = obj_mesh(r"", (255,255,255))
-car.teleport(0,0,-10)
+my_engine.light.luminosity = 500
+
+to_write = "WELCOME"
+letter_objs = []
+
+for i in range(len(to_write)):
+    car = obj_mesh(rf"C:\Users\Murat\Downloads\uploads_files_1950256_{to_write[i]}.obj", (255,255,255))
+    car.teleport(-25*i, 0 ,-10)
+    car.rotate("x", -90)
+    car.rotate("y", 180)
+    letter_objs.append(car)
+    my_engine.add_model(car)
 
 
-my_engine.add_model(car)
-car.shift("z", -100)
 # tester_rectangle3 = sh3.Cube([10, 0, -10], 5, (255, 0, 255))
 # tester_rectangle2 = sh3.Pyramid([25, 0, -10], 5, (255,0,0))
 # tester_rectangle = sh3.Sphere([0,0,-10], 8, (255,255,0))

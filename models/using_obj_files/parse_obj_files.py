@@ -8,8 +8,7 @@ def parse_triangle_list(path, color = (255,255,255)):
     root, extension = os.path.splitext(path)
 
     if extension not in possible_extensions:
-        raise Exception("File must be an obj file") #There might be a better error. At the moment, the name of the
-        # Exception does not really matter
+        raise Exception("Invalid path. File must be an obj file")
 
     try:
         file = open(path, "r") #opening the path
