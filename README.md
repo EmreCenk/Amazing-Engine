@@ -92,28 +92,25 @@ my_engine.add_model(mesh_object) #This function must be called when you create a
 At this point, the mesh_object class can be treated as if it was any other built in shape.
 Any method that is valid for a 3d shape object is also valid for a mesh_class object.
  
-### Other 3d objects:
-The engine has many built in shapes. * insert examples *
 
 
- 
  
 ### Universal Methods for all 3D objects:
 All 3d objects have some common methods that can be called. (These 3d objects can be an obj_mesh class, or any other
  built in shape such as cubes, pyramids or spheres)
 
 #### Moving objects
-In order to move an object, you call the 'move' method for the object. The move method takes in two inputs:
+In order to shift an object, you call the 'shift' method for the object. The shift method takes in two inputs:
 1) axis: a string "x", "y" or "z". Instead of the axis values as strings, you can also input 0, 1, and 2 respectively.
-2) amount: an integer, how much to move the object by
+2) amount: an integer, how much to shift the object by
 
 ```python
 from models.using_obj_files.using_obj_files import obj_mesh
 mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
 
-mesh_object.move("x",  10) #moves the object 10 units along the x axis
-mesh_object.move("y", -10) #moves the object -10 units along the y axis
-mesh_object.move(axis = "z", amount = -10) #moves the object -10 units along the z axis
+mesh_object.shift("x",  10) #moves the object 10 units along the x axis
+mesh_object.shift("y", -10) #moves the object -10 units along the y axis
+mesh_object.shift(axis = "z", amount = -10) #moves the object -10 units along the z axis
 
 ```
 
@@ -137,14 +134,14 @@ mesh_object.rotate(axis = "y", angle = 1, radian_input=True) #rotates the mesh_o
 #### Using The Camera
 The camera is an instance attribute that belongs to your Engine object.
 The camera is accessed via Engine.camera
-The move and rotate functions also apply to the camera.
+The shift and rotate functions also apply to the camera.
 
 ```python
 from graphics.managing_graphics import Engine
 import os
 my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
 
-my_engine.camera.move("x", 10) # moves the Camera along the x axis by 20 units
+my_engine.camera.shift("x", 10) # moves the Camera along the x axis by 20 units
 my_engine.camera.rotate("z", 12) #rotates the camera along the z axis by 12 degrees
 
 ```
@@ -167,8 +164,13 @@ The 'update' function will be called before every frame is rendered.
 ### Example animation of a rotating cube:
 ```python
 from graphics.managing_graphics import Engine
+import models.shapes_3d as sh3
 import os
+
 my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
+cube_to_spin = sh3.Cube([10, 0, -10], 5, (255, 0, 255))
+
+
 ```
 
 

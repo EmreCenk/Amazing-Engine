@@ -72,7 +72,7 @@ class shape:
             if tri.is_visible(camera_position):
                 tri.wireframe_draw(window, camera_position, orthogonal=orthogonal)
 
-    def move(self,axis,amount):
+    def shift(self, axis, amount):
         if axis in conversion:
             axis = conversion[axis]
 

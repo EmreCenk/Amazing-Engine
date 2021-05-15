@@ -18,22 +18,22 @@ class Camera:
 
     def translate_all_models(self, x, y, z):
         for i in range(len(self.models_3d)):
-            self.models_3d[i].move("x",-x)
-            self.models_3d[i].move("y",-y)
-            self.models_3d[i].move("z",-z)
+            self.models_3d[i].shift("x", -x)
+            self.models_3d[i].shift("y", -y)
+            self.models_3d[i].shift("z", -z)
 
-    def move(self,axis,amount):
+    def shift(self,axis,amount):
         if axis in conversion:
             axis = conversion[axis]
 
         # self.position[axis] += amount
         for i in range(len(self.models_3d)):
-            self.models_3d[i].move(axis, -amount)
+            self.models_3d[i].shift(axis, -amount)
 
 
 
     def rotate(self, axis, amount):
-        #Same principle as the move function: Find the axis and add to the angle.
+        #Same principle as the shift function: Find the axis and add to the angle.
         if axis in conversion:
             axis = conversion[axis]
 

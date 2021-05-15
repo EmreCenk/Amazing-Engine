@@ -43,6 +43,12 @@ def parse_triangle_list(path, color = (255,255,255)):
 
 
         elif entry[0:2] == "f ":
+            if len(points)>4: #3 vertex numbers plus the 'f' at the beginning
+                raise ValueError("This Engine does not support obj files with non-triangulated faces")
+
+            for i in range(len(points)):
+                points[i] = points[i].split("/")[0]
+
             current_entries = [int(points[1])-1, int(points[2])-1, int(points[3])-1] #these need to be integers since they are
             # indexes
 
