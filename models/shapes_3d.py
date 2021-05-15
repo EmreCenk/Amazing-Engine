@@ -1,8 +1,8 @@
 from models.shapes_2d import quadrilateral, shape, triangle
 from utils.coordinate_system_3d import rotate_around_point, normalized, is_visible
 import pygame
-from constants import conversion
-from utils.shading import get_color
+from constants import conversion, excluded
+from graphics.shading import get_color
 from math import sqrt
 
 
@@ -13,6 +13,8 @@ class shape_3d(shape):
     # enough)
 
     def __init__(self,color):
+        self.rotations = [0, 0, 0]
+
         super().__init__(color)
 
     def define_center(self):
@@ -57,14 +59,39 @@ class shape_3d(shape):
         self.center[axis] += amount
 
     def rotate(self, axis, angle, radian_input = False):
+        if axis in conversion:
+            axis = conversion[axis]
+        a, b = excluded[axis]
+
+        for vert in self.vertices:
+            rotate_around_point((0, 0, 0), vert, a, -self.rotations[a])
+            rotate_around_point((0, 0, 0), vert, b, -self.rotations[b])
+
+
+        rotate_around_point((0, 0, 0), self.center, a, -self.rotations[a])
+        rotate_around_point((0, 0, 0), self.center, b, -self.rotations[b])
+
+
+        for vert in self.vertices:
+            rotate_around_point(self.center, vert, axis, angle, radian_input)
+
+
+        for vert in self.vertices:
+            rotate_around_point((0, 0, 0), vert, a, self.rotations[a])
+            rotate_around_point((0, 0, 0), vert, b, self.rotations[b])
+
+
+        rotate_around_point((0, 0, 0), self.center, a, self.rotations[a])
+        rotate_around_point((0, 0, 0), self.center, a, self.rotations[b])
+
+
+    def rotate_around_point(self, point, axis, angle, radian_input = False):
         #Overriding the rotate function to also rotate the center along with everything else:
 
         for vert in self.vertices:
-            rotate_around_point((0,0,0), vert, axis, angle, radian_input)
+            rotate_around_point(point, vert, axis, angle, radian_input)
 
-        # rotate_around_point(self.center,self.center, axis, angle)
-
-
+        rotate_around_point(point, self.center, axis, angle)
 #We have to import obj_mesh here since obj_mesh imports the shape_3d class. We need to initialize shape_3d before
 # trying to import it from obj_mesh
 from models.using_obj_files.using_obj_files import obj_mesh
@@ -153,6 +180,7 @@ class Cube(rectangular_prism):
 
     def __init__(self, center_coordinates, side_length, color):
         self.center = center_coordinates
+        self.side_length = side_length
         shift = 0
         v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side_length],\
                                          [side_length, shift, side_length],\
@@ -165,6 +193,9 @@ class Cube(rectangular_prism):
 
 
         super().__init__(v1, v2,v3 ,v4 ,v5 ,v6 ,v7 ,v8, color)
+        self.move("x", side_length/2)
+        self.move("y", -side_length/2)
+        self.move("z", -side_length/2)
 
         self.move("x", center_coordinates[0])
         self.move("y", center_coordinates[1])

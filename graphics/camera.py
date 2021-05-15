@@ -1,9 +1,9 @@
 
 from constants import conversion
-class camera:
+class Camera:
     def __init__(self, models_3d, x=0,y=0,z=0, x_theta = 0, y_theta = 0, z_theta = 0):
 
-        #TODO: add angles to camera
+        #TODO: add angles to Camera
         self.x=x
         self.y=y
         self.z=z
@@ -41,5 +41,5 @@ class camera:
         # self.position[axis+3] += amount
 
         for i in range(len(self.models_3d)):
-            self.models_3d[i].rotate(axis, -amount)
-
+            self.models_3d[i].rotate_around_point((0,0,0), axis, -amount)
+            self.models_3d[i].rotations[axis] += -amount
