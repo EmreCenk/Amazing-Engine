@@ -2,6 +2,7 @@ from graphics.camera import Camera
 from time import perf_counter
 from a_ideas_on_hold.managing_window_pixels import WindowManager
 from utils.coordinate_system_3d import *
+from graphics.shading import Light
 import pygame
 import sys
 
@@ -39,7 +40,9 @@ class Engine:
 
         pix = pygame.surfarray.pixels3d(self.window)
         self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
-        self.models_3d = []
+
+        self.models_3d = [] #list of all 3d objects crated
+        self.light = Light(0,0,0,10)
         self.camera = Camera(self.models_3d, z = 20)
 
         self.event_bindings = {} # pygame events mapped to functions
@@ -65,7 +68,7 @@ class Engine:
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
         for liste in to_draw:
-            liste[0].draw(self.window, self.camera.position, liste[2])
+            liste[0].draw(self.window, liste[2],  self.light.position, self.light.luminosity)
 
 
         # for model in self.models_3d:
