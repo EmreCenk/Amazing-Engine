@@ -6,19 +6,9 @@ import pygame
 import models.shapes_3d as sh3
 from models.using_obj_files.using_obj_files import obj_mesh
 my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
-my_engine.light.luminosity = 500
+my_engine.light.luminosity = 100
 
-to_write = "WELCOME"
-letter_objs = []
-
-for i in range(len(to_write)):
-    car = obj_mesh(rf"C:\Users\Murat\Downloads\uploads_files_1950256_{to_write[i]}.obj", (255,255,255))
-    car.teleport(-8*i+23, 0 ,-10)
-    car.rotate("x", -90)
-    car.rotate("y", 180)
-    car.scale(0.3)
-    letter_objs.append(car)
-    my_engine.add_model(car)
+my_engine.create_text("Amazing Engine \nby Emre Cenk", [0,0,-10], 3, 0.1)
 
 
 # tester_rectangle3 = sh3.Cube([10, 0, -10], 5, (255, 0, 255))
@@ -27,7 +17,6 @@ for i in range(len(to_write)):
 # my_engine.add_model(tester_rectangle)
 # my_engine.add_model(tester_rectangle2)
 # my_engine.add_model(tester_rectangle3)
-
 
 
 
@@ -41,7 +30,6 @@ def zoom(event):
         my_engine.camera.shift("z", +zpower)
 
 my_engine.bind_event(pygame.MOUSEBUTTONDOWN, zoom)
-
 
 
 
@@ -78,8 +66,6 @@ def update():
         my_engine.camera.rotate("y", +power_level-0.1)
 
 
-    if keys[pygame.K_SPACE]:
-        print(car.center)
 
     # tester_rectangle.rotate("y",10 * my_engine.delta_time)
     #
