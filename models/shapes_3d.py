@@ -46,7 +46,17 @@ class shape_3d(shape):
         ]
 
 
+    def scale(self, ratio):
+        ix, iy, iz = self.center[0], self.center[1], self.center[2]
 
+        self.teleport(0,0,0)
+
+        for i in range(len(self.vertices)):
+            self.vertices[i][0] *= ratio
+            self.vertices[i][1] *= ratio
+            self.vertices[i][2] *= ratio
+
+        self.teleport(ix, iy, iz)
     def shift(self, axis, amount):
         #Overriding the shift function to also shift the center along with everything else:
         if axis in conversion:

@@ -13,9 +13,10 @@ letter_objs = []
 
 for i in range(len(to_write)):
     car = obj_mesh(rf"C:\Users\Murat\Downloads\uploads_files_1950256_{to_write[i]}.obj", (255,255,255))
-    car.teleport(-25*i, 0 ,-10)
+    car.teleport(-8*i+23, 0 ,-10)
     car.rotate("x", -90)
     car.rotate("y", 180)
+    car.scale(0.3)
     letter_objs.append(car)
     my_engine.add_model(car)
 
