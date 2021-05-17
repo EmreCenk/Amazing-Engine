@@ -1,7 +1,7 @@
 from models.shapes_2d import quadrilateral, shape, triangle
 from utils.coordinate_system_3d import rotate_around_point, normalized, is_visible
 import pygame
-from constants import conversion, excluded, CUBE, PYRAMID, SPHERE
+from constants import conversion, excluded, CUBE, PYRAMID, SPHERE, SOLID
 from graphics.shading import get_color
 from math import sqrt
 
@@ -14,7 +14,6 @@ class shape_3d(shape):
 
     def __init__(self,color):
         self.rotations = [0, 0, 0]
-
         super().__init__(color)
 
     def define_center(self):
@@ -115,6 +114,12 @@ class shape_3d(shape):
     def define_tag(self, tag):
         for i in range(len(self.triangles)):
             self.triangles[i].tag = tag
+
+    def change_draw_style(self, style):
+        for i in range(len(self.triangles)):
+            self.triangles[i].draw_style = style
+
+        self.draw_style = style
 
 #We have to import obj_mesh here since obj_mesh imports the shape_3d class. We need to initialize shape_3d before
 # trying to import it from obj_mesh

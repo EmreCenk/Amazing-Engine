@@ -8,11 +8,11 @@ def get_color(triangle, light_v, luminosity = 75, rgb_colour = (255, 255, 255), 
 
     # For now, we will compute the distance between the centroid of the triangle and the light source to find the color
 
-    if triangle.tag == OBJ or triangle.tag == SPHERE:
-        centroid = triangle.get_centroid() # 8+9 = 17 ops
+    if triangle.tag == CUBE:
+        centroid = triangle.vertices[0]
 
     else:
-        centroid = triangle.vertices[0]
+        centroid = triangle.get_centroid() # 8+9 = 17 ops
 
     dist = distance(centroid, light_v) # 8 operations
     if dist>luminosity:

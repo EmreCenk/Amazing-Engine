@@ -2,7 +2,7 @@ from graphics.shading import get_color
 from utils.projecting import *
 from utils.coordinate_system_3d import *
 import pygame
-from constants import conversion
+from constants import conversion, SOLID
 
 pygame.font.init()
 font = pygame.font.Font(None, 50)  # Setting the font
@@ -12,6 +12,7 @@ class shape:
 
     def __init__(self,color):
         self.color = color
+        self.draw_style = SOLID
         self.triangles = [] #all shapes are represented as combined triangles. This is the list of triangles
         self.edges = []
         self.vertices = []
