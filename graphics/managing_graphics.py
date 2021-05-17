@@ -180,6 +180,8 @@ class Engine:
 
         print(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
 
+
+
     def proper_delay(self, frame_time):
         if frame_time >= self.delay_time:
             return None
