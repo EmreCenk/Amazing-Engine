@@ -1,7 +1,7 @@
 from models.shapes_2d import quadrilateral, shape, triangle
 from utils.coordinate_system_3d import rotate_around_point, normalized, is_visible
 import pygame
-from constants import conversion, excluded
+from constants import conversion, excluded, CUBE, PYRAMID, SPHERE
 from graphics.shading import get_color
 from math import sqrt
 
@@ -112,6 +112,10 @@ class shape_3d(shape):
         self.shift(1, y_shift)
         self.shift(2, z_shift)
 
+    def define_tag(self, tag):
+        for i in range(len(self.triangles)):
+            self.triangles[i].tag = tag
+
 #We have to import obj_mesh here since obj_mesh imports the shape_3d class. We need to initialize shape_3d before
 # trying to import it from obj_mesh
 from models.using_obj_files.using_obj_files import obj_mesh
@@ -181,6 +185,8 @@ class rectangular_prism(shape_3d):
 
 
 
+
+
     def draw_faces(self,window,camera_position,orthogonal=False):
         #This overrides the inherited draw_faces function
         normalized_camera = normalized(camera_position)
@@ -221,6 +227,8 @@ class Cube(rectangular_prism):
         self.shift("x", center_coordinates[0])
         self.shift("y", center_coordinates[1])
         self.shift("z", center_coordinates[2])
+
+        self.define_tag(CUBE)
 
 
 
@@ -269,6 +277,9 @@ class Pyramid(shape_3d):
 
         self.vertices = [self.v1, self.v2, self.v3, self.v4 ]
 
+        self.define_tag(PYRAMID)
+
+
 
 class Sphere(obj_mesh):
 
@@ -289,4 +300,6 @@ class Sphere(obj_mesh):
         self.shift("z", center[2])
 
         self.center = center
+
+        self.define_tag(SPHERE)
 

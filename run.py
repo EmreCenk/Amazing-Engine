@@ -10,22 +10,22 @@ from random import randint
 my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
 my_engine.light.luminosity = 50
 
-letters = my_engine.create_text("Amazing Engine \nby Emre Cenk", [20,0,-10], 3, 0.1)
-for i in range(len(letters)):
-    letters[i].change_color(
-        (255,0,0)
-                             )
-
-    print(letters[i].color)
+# letters = my_engine.create_text("Amazing Engine \nby Emre Cenk", [20,0,-10], 3, 0.1)
+# for i in range(len(letters)):
+#     letters[i].change_color(
+#         (255,0,0)
+#                              )
+#
+#     print(letters[i].color)
 
 # my_engine.create_text("Press space", [20,-7,-10], 3, 0.1)
     #75+10*
-# tester_rectangle3 = sh3.Cube([10, 0, -10], 5, (255, 0, 255))
-# tester_rectangle2 = sh3.Pyramid([25, 0, -10], 5, (255,0,0))
-# tester_rectangle = sh3.Sphere([0,0,-10], 8, (255,255,0))
-# my_engine.add_model(tester_rectangle)
-# my_engine.add_model(tester_rectangle2)
-# my_engine.add_model(tester_rectangle3)
+tester_rectangle3 = sh3.Cube([10, 0, -10], 5, (255, 0, 255))
+tester_rectangle2 = sh3.Pyramid([25, 0, -10], 5, (255,0,0))
+tester_rectangle = sh3.Sphere([0,0,-10], 8, (255,255,0))
+my_engine.add_model(tester_rectangle)
+my_engine.add_model(tester_rectangle2)
+my_engine.add_model(tester_rectangle3)
 
 # toshift = [
 #     tester_rectangle,
