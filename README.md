@@ -14,6 +14,9 @@ You can use this engine to either create 3d games from scratch, or to add 3d gra
 #### Example of an imported obj file:
 ![](example_images/utah_teapot_example.PNG)
 
+#### Inserting Text Onto The 3D world:
+![](example_images/writing.PNG)
+
 ## Getting Started
 Getting set up with Amazing Engine is a very easy process.
 ##### Importing and initializing engine:
