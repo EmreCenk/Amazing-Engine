@@ -124,14 +124,9 @@ class Engine:
 
         if ".py" in name:
             name = name.replace(".py", "")
-        main_script = __import__(name)
-        try:
-            main_script.start()
-        except:
-            print("WARNING: 'start' function not found in script")
 
         try:
-            update = main_script.update
+            update = __import__(name).update
         except:
             def update():
                 pass
@@ -173,6 +168,7 @@ class Engine:
             time_took_for_frame = perf_counter()-s
             self.proper_delay(time_took_for_frame)
             self.delta_time = perf_counter()-s
+
             total += self.delta_time
 
 
