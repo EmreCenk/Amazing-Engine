@@ -6,26 +6,25 @@ from utils.coordinate_system_3d import *
 from graphics.shading import Light
 import pygame
 import sys
-
-import models.shapes_3d as sh3 #do not delete this line. Due to some import dependencies, we need to first import
+import os
+import models.shapes_3d as sh3 #DO NOT DELETE. Due to some import dependencies, we need to first import
 # this before importing the obj_mesh class
 from models.using_obj_files.using_obj_files import obj_mesh
 
 class Engine:
 
     #TODO: add clipping for triangles
-    #TODO: add Camera angles
 
-    def __init__(self,  width_window , height_window, path, script_name, window = None, delay_time = 100,background_color = (
+
+    def __init__(self,  width_window , height_window, __file, window = None, delay_time = 100,background_color = (
         0,0,0)):
         self.keep_the_engine_going = True
 
-        self.path = path #the path to where the main script is running at
         self.delay_time = delay_time
         self.background_color = background_color
         self.height = height_window
         self.width = width_window
-        self.script_name = script_name
+        self.__file = __file
 
         self.delta_time = 1 #inital value. It gets updated every frame
 
@@ -120,9 +119,12 @@ class Engine:
     def bind_event(self, event_type, function_to_execute):
         self.event_bindings[event_type] = function_to_execute
     def start_engine(self, ):
+        path, name = os.path.split(self.__file)
+        sys.path.append(path)
 
-        sys.path.append(self.path)
-        main_script = __import__(self.script_name)
+        if ".py" in name:
+            name = name.replace(".py", "")
+        main_script = __import__(name)
         try:
             main_script.start()
         except:
