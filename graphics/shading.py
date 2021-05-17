@@ -1,12 +1,14 @@
 
 from utils.coordinate_system_3d import distance, normalized
 from constants import conversion
+from utils.coordinate_system_3d import get_normal, dot_product, normalize_triangle_vertices
+from math import atan, degrees
 
 def get_color(triangle, light_v, luminosity = 75, rgb_colour = (255, 255, 255), background_color = (0,0,0)):
 
     # For now, we will compute the distance between the centroid of the triangle and the light source to find the color
 
-    # centroid = triangle.get_centroid() # 8+9 = 17 ops
+    centroid = triangle.get_centroid() # 8+9 = 17 ops
 
     a, b = 0, 1
     centroid = [
@@ -21,8 +23,10 @@ def get_color(triangle, light_v, luminosity = 75, rgb_colour = (255, 255, 255), 
 
     dist = 1 - (dist/luminosity)
 
-
-    # 3 operations:
+    # new_triangle_vertices = normalize_triangle_vertices(triangle.vertices)
+    #
+    # normal = get_normal(new_triangle_vertices)
+    # alpha = (1+ dot_product(normal, (0,0,0)))/2
 
     return (
         rgb_colour[0] * dist,

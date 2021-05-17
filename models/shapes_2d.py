@@ -91,6 +91,12 @@ class shape:
         for vert in self.vertices:
             rotate_around_point(point, vert, axis, angle, radian_input)
 
+    def change_color(self, new_color):
+        for i in range(len(self.triangles)):
+            self.triangles[i].color = new_color
+
+        self.color = new_color
+
 class triangle(shape):
 
     def __init__(self,v1,v2,v3,color = (255,255,255)):
@@ -129,6 +135,7 @@ class triangle(shape):
             return
 
         new_color = get_color(self, light_v=light_source_position, rgb_colour=self.color, luminosity=light_luminosity)
+
         pygame.draw.polygon(window, points=coordiantes, color=new_color)
 
     def get_normalized(self):
@@ -156,6 +163,8 @@ class triangle(shape):
             (self.v1[2] + self.v2[2] + self.v3[2]) / 3,
 
         )
+
+
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = (255,255,255)):
         #This class basically exists for the sole purpose of converting quadrilaterals to triangles
@@ -180,4 +189,17 @@ class quadrilateral(shape):
 
         self.triangles.append(t1)
         self.triangles.append(t2)
+
+if __name__ == '__main__':
+    import models.shapes_3d as sh3
+
+    shift = 1
+    side = 100
+
+    v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side], [side, shift, side], [side, shift, shift], [shift, shift,
+                                                                                                       shift], \
+                                     [shift, side, side], [side, side, side], [side, side, shift], [shift, side, shift]
+    self = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8)
+
+    self.rotate("x",60)
 

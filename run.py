@@ -5,12 +5,19 @@ from graphics.managing_graphics import Engine
 import pygame
 import models.shapes_3d as sh3
 from models.using_obj_files.using_obj_files import obj_mesh
+from random import randint
+
 my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
-my_engine.light.luminosity = 100
+my_engine.light.luminosity = 50
 
-my_engine.create_text("Amazing Engine \nby Emre Cenk", [0,0,-10], 3, 0.1)
+letters = my_engine.create_text("Amazing Engine \nby Emre Cenk", [20,0,-10], 3, 0.1)
+for i in range(len(letters)):
+    letters[i].change_color(
+        (255,0,0)
+                             )
 
-
+    print(letters[i].color)
+    #75+10*
 # tester_rectangle3 = sh3.Cube([10, 0, -10], 5, (255, 0, 255))
 # tester_rectangle2 = sh3.Pyramid([25, 0, -10], 5, (255,0,0))
 # tester_rectangle = sh3.Sphere([0,0,-10], 8, (255,255,0))
@@ -64,7 +71,6 @@ def update():
 
     if keys[pygame.K_l]:
         my_engine.camera.rotate("y", +power_level-0.1)
-
 
 
     # tester_rectangle.rotate("y",10 * my_engine.delta_time)
