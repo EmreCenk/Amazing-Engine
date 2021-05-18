@@ -240,66 +240,32 @@ def clip_line(
     return x1, y1, x2, y2
 
 
-def clip_2d_triangle(subjectPolygon, width, height):
 
-    def inside(p):
-        return (cp2[0] - cp1[0]) * (p[1] - cp1[1]) > (cp2[1] - cp1[1]) * (p[0] - cp1[0])
 
-    def computeIntersection():
-        dc = [cp1[0] - cp2[0], cp1[1] - cp2[1]]
-        dp = [s[0] - e[0], s[1] - e[1]]
-        n1 = cp1[0] * cp2[1] - cp1[1] * cp2[0]
-        n2 = s[0] * e[1] - s[1] * e[0]
-        n3 = 1.0 / (dc[0] * dp[1] - dc[1] * dp[0])
-        return [(n1 * dp[0] - n2 * dc[0]) * n3, (n1 * dp[1] - n2 * dc[1]) * n3]
 
-    clipPolygon = [
-        [0,width],[0,height]
-    ]
-    outputList = subjectPolygon
-    cp1 = clipPolygon[-1]
+def clip_2d_triangle(triangle_vertices, width, height):
 
-    for clipVertex in clipPolygon:
-        cp2 = clipVertex
-        inputList = outputList
-        outputList = []
-        s = inputList[-1]
+    a = clip_line(triangle_vertices[0], triangle_vertices[1], width, height)
+    b = clip_line(triangle_vertices[1], triangle_vertices[2], width, height)
+    c = clip_line(triangle_vertices[2], triangle_vertices[0], width, height)
 
-        for subjectVertex in inputList:
-            e = subjectVertex
-            if inside(e):
-                if not inside(s):
-                    outputList.append(computeIntersection())
-                outputList.append(e)
-            elif inside(s):
-                outputList.append(computeIntersection())
-            s = e
-        cp1 = cp2
-    return (outputList)
-# def clip_2d_triangle(triangle_vertices, width, height):
-#
-#     a = clip_line(triangle_vertices[0], triangle_vertices[1], width, height)
-#     b = clip_line(triangle_vertices[1], triangle_vertices[2], width, height)
-#     c = clip_line(triangle_vertices[2], triangle_vertices[0], width, height)
-#
-#     final = []
-#     if a[0] != None:
-#         final.append((a[0],a[1]))
-#
-#         final.append((a[2],a[3]))
-#
-#
-#     if b[0] != None:
-#         final.append((b[0],b[1]))
-#
-#         final.append((b[2],b[3]))
-#
-#     if c[0] != None:
-#         final.append((c[0],c[1]))
-#
-#         final.append((c[2],c[3]))
-#     return final
+    final = []
+    if a[0] != None:
+        final.append((a[0],a[1]))
 
+        final.append((a[2],a[3]))
+
+
+    if b[0] != None:
+        final.append((b[0],b[1]))
+
+        final.append((b[2],b[3]))
+
+    if c[0] != None:
+        final.append((c[0],c[1]))
+
+        final.append((c[2],c[3]))
+    return final
 
 
 def rotate_around_point(point_to_rotate_around, vertex, axis, angle, radian_input=False):
