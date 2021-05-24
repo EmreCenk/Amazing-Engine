@@ -1,21 +1,54 @@
-import os
 from graphics.managing_graphics import Engine
 from models.shapes_3d import Cube
 import pygame
 
 def get_color(offset, OFF_MAX=15):
     return ((offset + OFF_MAX) / (2.0 * OFF_MAX) * 255)
-def update():
-    keys = pygame.key.get_pressed()
 
+alp = -1
+def update():
+    global alp
+    keys = pygame.key.get_pressed()
+    vara=18
     if keys[pygame.K_SPACE]:
         engine.stop_engine()
 
     a, b, c = cubes[len(cubes)//2].center
     for i in range(len(cubes)):
+
         cubes[i].rotate_around_point([a, b, c],"y",30*engine.delta_time)
         cubes[i].rotate_around_point([a, b, c],"x",29*engine.delta_time)
         cubes[i].rotate_around_point([a, b, c],"z",28*engine.delta_time)
+
+
+        if cubes[i].color[0] <= 0:
+            alp = vara
+
+
+        elif cubes[i].color[0] >= 255:
+            alp = -vara
+
+
+
+        if cubes[i].color[1] <= 0:
+            alp = vara
+
+
+        elif cubes[i].color[1] >= 255:
+            alp = -vara
+
+
+        if cubes[i].color[2] <= 0:
+            alp = vara
+
+        elif cubes[i].color[2] >= 255:
+            alp = -vara
+
+
+        col = cubes[i].color
+
+        cubes[i].change_color([col[0]+alp,col[1]+alp,col[2]+alp])
+
 
 
 engine = Engine(800, 600, __file__, delay_time=25)

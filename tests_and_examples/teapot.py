@@ -6,7 +6,7 @@ screen_height = 600
 
 engine = Engine(screen_width, screen_height, __file__, delay_time=25)
 engine.light.luminosity = 10
-teapot = obj_mesh("models/using_obj_files/sample_object_files/utah_teapot.obj")
+teapot = obj_mesh("models/using_obj_files/sample_object_files/utah_teapot.obj", (255,255,255))
 teapot.shift("z", 15)
 teapot.shift("y", -2)
 teapot.rotate("x", -30)
