@@ -19,6 +19,8 @@ You can use this engine to either create 3d games from scratch, or to add 3d gra
 
 ![](example_images/cube_of_cubes_img.PNG)
 
+![](example_images/dna_example.PNG)
+
 ## Getting Started
 Getting set up with Amazing Engine is a very easy process.
 ##### Importing and initializing engine:
