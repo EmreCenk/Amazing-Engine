@@ -45,9 +45,9 @@ def update():
             alp = -vara
 
 
-        col = cubes[i].color
+        # col = cubes[i].color
 
-        cubes[i].change_color([col[0]+alp,col[1]+alp,col[2]+alp])
+        # cubes[i].change_color([col[0]+alp,col[1]+alp,col[2]+alp])
 
 
 

@@ -27,15 +27,14 @@ Getting set up with Amazing Engine is a very easy process.
 There are 3 mandatory arguments you need to provide when initializing the engine:
 * The screen width
 * The screen height
-* The current working directory 
-* The name of the script you are currently running
+* the built in __file__ variable
+
 ```python
 from graphics.managing_graphics import Engine
 import os
 screen_width = 800
 screen_height = 600
-script_name = "my_script"
-my_engine = Engine(screen_width, screen_height, os.getcwd(), script_name, delay_time=25)
+my_engine = Engine(screen_width, screen_height, __file__, delay_time=25)
 
 ```
 
