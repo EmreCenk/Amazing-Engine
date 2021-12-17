@@ -7,6 +7,7 @@ from graphics.shading import Light
 import pygame
 import sys
 import os
+import sys
 import models.shapes_3d as sh3 #DO NOT DELETE. Due to some import dependencies, we need to first import this before importing the obj_mesh class
 from models.using_obj_files.using_obj_files import obj_mesh
 
@@ -15,7 +16,7 @@ class Engine:
     #TODO: add clipping for triangles
 
 
-    def __init__(self,  width_window , height_window, __file, window = None, delay_time = 100,background_color = (
+    def __init__(self,  width_window, height_window, __file, window = None, delay_time = 100,background_color = (
         0,0,0)):
         self.keep_the_engine_going = True
 
@@ -174,9 +175,9 @@ class Engine:
 
 
 
+            sys.stdout.write("\r")
 
-            print(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
-
+            sys.stdout.write(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
 
 
     def proper_delay(self, frame_time):
