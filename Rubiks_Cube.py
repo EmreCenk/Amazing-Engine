@@ -1,29 +1,41 @@
 from graphics.managing_graphics import Engine
 import models.shapes_3d as sh3
 import pygame
-
-class Rubiks_Cube:
+import constants
+class Rubiks_Cube(sh3.shape_3d):
     """
     A wrapper class that basically holds 9 cubes.
     """
-    def __init__(self, center_coordinates, cube_side_length, color):
+    def __init__(self, engine, center_coordinates, cube_side_length, color):
+        super().__init__(color)
         self.cubes = []
+        things = "ABCDEFGHIJKLMNOPQRSTUVWXYZA123"
+        d = 0
         for i in range(3):
             for j in range(3):
                 for b in range(3):
-                    current_cube = sh3.Cube(center_coordinates=center_coordinates,
-                                        side_length=cube_side_length,
-                                        color=color)
+                    lets = engine.create_text(things[d], center_coordinates)
+                    lets[0].shift("x", -cube_side_length * j)
+                    lets[0].shift("y", cube_side_length * i)
+                    lets[0].shift("z", cube_side_length * b)
+                    self.cubes.append(lets[0])
+                    d += 1
+                    # current_cube = sh3.Cube(center_coordinates=center_coordinates,
+                    #                     side_length=cube_side_length,
+                    #                     color=color)
+                    # current_cube = sh3
+                    # current_cube.shift("x", -cube_side_length * j)
+                    # current_cube.shift("y", cube_side_length * i)
+                    # current_cube.shift("z", cube_side_length * b)
+                    # self.cubes.append(current_cube)
 
-                    current_cube.shift("x", -cube_side_length * j)
-                    current_cube.shift("y", cube_side_length * i)
-                    current_cube.shift("z", cube_side_length * b)
-                    self.cubes.append(current_cube)
+    # def rotate(self):
 
 
-engine = Engine(800, 600, __file__, delay_time=10)
 
-ex_cube = Rubiks_Cube(center_coordinates=[0, 0, 0], color=(255, 255, 255), cube_side_length=4)
+engine = Engine(800, 600, __file__, delay_time=0)
+
+ex_cube = Rubiks_Cube(engine = engine, center_coordinates=[0, 0, 0], color=(255, 255, 255), cube_side_length=4)
 for k in ex_cube.cubes:
     engine.add_model(k)
 
