@@ -177,7 +177,7 @@ class Engine:
 
             sys.stdout.write("\r")
 
-            sys.stdout.write(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
+            sys.stdout.write(f"Average time between frames: {round(total/x, 2)} seconds ({round(x/total, 2)} fps)")
 
 
     def proper_delay(self, frame_time):
