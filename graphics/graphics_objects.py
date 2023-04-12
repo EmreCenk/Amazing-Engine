@@ -1,6 +1,6 @@
 
 from Mathematical_Functions.projecting import project_triangle
-
+import graphics.shapes_2d as shapes_2d
 
 import pygame
 
@@ -24,8 +24,8 @@ class graphics_manager:
         if functions_to_call is None:
             functions_to_call = []
 
-        self.test_triangle = triangle([100,100,100],[200,200,100],[300,300,100])
-        self.test_triangle_2 = triangle([-200,-200,50],[200,200,50],[0,500,50])
+        self.test_triangle = shapes_2d.triangle([100,100,100],[200,200,100],[300,300,100])
+        self.test_triangle_2 = shapes_2d.triangle([-200,-200,50],[200,200,50],[0,500,50])
 
         self.start_engine()
 
@@ -79,11 +79,7 @@ class graphics_manager:
 
             self.window.fill(self.background_color)
 
-class triangle:
-    def __init__(self,vertex1,vertex2,vertex3):
-        self.vertex1 = vertex1
-        self.vertex2 = vertex2
-        self.vertex3 = vertex3
+
 
 # class cube:
 #     def __init__(self, center_x, center_y, center_z, side_length):
