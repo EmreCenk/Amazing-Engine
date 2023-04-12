@@ -25,7 +25,7 @@ class graphics_manager:
             functions_to_call = []
 
         self.test_triangle = shapes_2d.triangle([100,100,100],[200,200,100],[300,300,100])
-        self.test_triangle_2 = shapes_2d.triangle([-200,-200,50],[200,200,50],[0,500,50])
+        self.test_triangle_2 = shapes_2d.triangle([-200,-200,50],[200,200,50],[0,500,50],color="blue")
 
         self.start_engine()
 
@@ -49,26 +49,15 @@ class graphics_manager:
             self.test_triangle.vertex1[2] -= 1
             self.test_triangle.vertex2[2] -= 1
             self.test_triangle.vertex3[2] -= 1
-            new_vertices = project_triangle(self.test_triangle.vertex1,
-                                   self.test_triangle.vertex2,
-                                   self.test_triangle.vertex3,
-                                    self.width,
-                                    self.height
 
-                                            )
 
             self.test_triangle_2.vertex1[2] -= 1
             self.test_triangle_2.vertex2[2] -= 1
             self.test_triangle_2.vertex3[2] -= 1
-            new_vertices2 = project_triangle(self.test_triangle_2.vertex1,
-                                   self.test_triangle_2.vertex2,
-                                   self.test_triangle_2.vertex3,
-                                             self.width,
-                                             self.height
-                                             )
-            pygame.draw.polygon(self.window, points = new_vertices,color = "white")
-            pygame.draw.polygon(self.window, points = new_vertices2,color = "blue")
-            print(new_vertices)
+
+            self.test_triangle_2.draw(self.window)
+            self.test_triangle.draw(self.window)
+
             for func in functions_to_call:
                 func()
 
