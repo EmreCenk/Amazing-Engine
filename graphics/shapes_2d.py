@@ -1,5 +1,6 @@
 import pygame
 from Mathematical_Functions.projecting import project_triangle
+conversion = {"x":0,"y":1,"z":2}
 class shape_2d:
 
     def __init__(self,color,fill_bool=False):
@@ -8,6 +9,7 @@ class shape_2d:
         self.triangles = [] #all shapes are represented as combined triangles. This is the list of triangles
 
     def draw(self,window):
+
         for tri in self.triangles:
             height = window.get_height()
             width = window.get_width()
@@ -26,6 +28,12 @@ class shape_2d:
                 pygame.draw.line(window,start_pos=v3_2d,end_pos=v1_2d,color=self.color)
 
 
+    def move(self, axis, how_much):
+
+        for tri in self.triangles:
+            tri.move_all(axis,how_much)
+
+
 
 class triangle(shape_2d):
     def __init__(self,vertex1,vertex2,vertex3,color = "white",fill_bool=False):
@@ -33,16 +41,26 @@ class triangle(shape_2d):
         self.vertex1 = vertex1
         self.vertex2 = vertex2
         self.vertex3 = vertex3
-        self.vertices = [vertex1,vertex2,vertex3]
 
         self.triangles.append(self) #there is only one triangle
+
+    def move_all(self,axis, how_much):
+        if axis in conversion:
+            axis = conversion[axis]
+        print(self.vertex1,self.vertex2,self.vertex3)
+        self.vertex1[axis]+=how_much
+        self.vertex2[axis]+=how_much
+        self.vertex3[axis]+=how_much
+
+
 
 
 
 class quadrilateral(shape_2d):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
+        #This class basically exists for the sole purpose of converting quadrilaterals to triangles
 
-        super().__init__(color=_color)
+        super().__init__(color=_color,fill_bool=fill_bool)
         self.convert_to_triangles(v1,v2,v3,v4)
 
     def convert_to_triangles(self,v1,v2,v3,v4):
@@ -54,7 +72,7 @@ class quadrilateral(shape_2d):
 
         self.triangles.append(
             triangle(
-                v3[0], v4[1], v1[2], color=self.color, fill_bool=self.fill
+                v3, v4, v1, color=self.color, fill_bool=self.fill
             )
         )
 
