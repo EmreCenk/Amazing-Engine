@@ -18,6 +18,7 @@ class rectangular_prism(shape_3d):
     def __init__(self,v1, v2, v3, v4, v5, v6, v7, v8, color="white",fill_bool=False):
         super().__init__(color,fill_bool)
         self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
+        self.vertices= (v1, v2, v3, v4, v5, v6, v7, v8)
 
 
     def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
@@ -36,6 +37,20 @@ class rectangular_prism(shape_3d):
 
         for side in self.faces:
             self.triangles.extend(side.triangles)
+
+    def define_center(self):
+        #We find the center of this cube by taking the average of all coordinates
+
+        x=0
+        y=0
+        z=0
+        for s in self.vertices:
+           x+=s[0]
+           y+=s[1]
+           z+=s[2]
+
+
+        return x/8,y/8,z/8
 
 
 
