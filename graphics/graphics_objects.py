@@ -28,8 +28,17 @@ class graphics_manager:
         self.test_triangle = shapes_2d.triangle([100,100,100],[200,200,100],[300,300,100])
         self.test_triangle_2 = shapes_2d.triangle([-200,-200,50],[200,200,50],[0,500,50],color="blue")
 
-        self.quad_test = shapes_2d.quadrilateral([1000,-200,50], [200,200,50], [0,500,50], [1000,1000,50],
+        self.quad_test = shapes_2d.quadrilateral([200,-200,50], [200,200,50], [0,500,50], [1000,1000,50],
                                                  _color = "green")
+
+        self.test_cube = shapes_2d.shape_2d(color="blue")
+
+        self.test_cube.triangles.extend([
+            shapes_2d.quadrilateral.convert_to_triangles(self.test_cube,(0,0,1),(0,0,0),(1,0,0),(1,0,1))
+        ])
+        s=10
+        t=-100
+
 
         self.start_engine()
 
