@@ -26,10 +26,18 @@ class rectangular_prism(shape_3d):
         s1 = quadrilateral(v1,v2,v3,v4,self.color,self.fill)
         s2 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
 
-        s3 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
-        s4 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
-        s5 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
-        s6 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
+        s3 = quadrilateral(v5,v6,v7,v8,self.color,self.fill)
+        s4 = quadrilateral(v5,v6,v2,v1,self.color,self.fill)
+
+        s5 = quadrilateral(v2,v3,v7,v6,self.color,self.fill)
+        s6 = quadrilateral(v1,v4,v8,v5,self.color,self.fill)
+
+        self.faces = [s1,s2,s3,s4,s5,s6]
+
+        for side in self.faces:
+            self.triangles.extend(side.triangles)
+
+
 
 
 
