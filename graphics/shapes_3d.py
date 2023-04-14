@@ -19,5 +19,26 @@ class rectangular_prism(shape_3d):
         super().__init__(color,fill_bool)
         self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
 
+
     def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
-        pass
+        self.quadrilaterals = []
+
+        s1 = quadrilateral(v1,v2,v3,v4,self.color,self.fill)
+        s2 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
+
+        s3 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
+        s4 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
+        s5 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
+        s6 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
+
+
+
+
+
+
+
+
+
+
+
+
