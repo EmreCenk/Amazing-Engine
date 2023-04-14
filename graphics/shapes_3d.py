@@ -15,10 +15,9 @@ class shape_3d(shape_2d):
 
 class rectangular_prism(shape_3d):
 
-    def __init__(self,top_1, top_2, bottom_1, bottom_2,color="white",fill_bool=False):
+    def __init__(self,v1, v2, v3, v4, v5, v6, v7, v8, color="white",fill_bool=False):
         super().__init__(color,fill_bool)
-        self.generate_coordinates(top_1, top_2, bottom_1, bottom_2)
-        #We only need 4 coordinates to represent the rectangular prism
+        self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
 
-    def generate_coordinates(self,v1,v2,v3,v4):
+    def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
         pass
