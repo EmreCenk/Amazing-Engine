@@ -12,6 +12,8 @@ def project_3d_point_to_2d(x,y,z,screen_width,screen_height,d=1):
 
 
     #This is currently a very basic perspective projection. It is derived using similar triangles
+    # At some point the engine will implement quaternions. For now, I will be using 3 coordinates to get some basic
+    # functionality
 
     newx = d*x/z
     newy = d*y/z
@@ -24,7 +26,32 @@ def project_triangle(v1,v2,v3,screen_width,screen_height,d=1):
             project_3d_point_to_2d(v2[0],v2[1],v2[2],screen_width,screen_height,d),
             project_3d_point_to_2d(v3[0],v3[1],v3[2],screen_width,screen_height,d))
 
-def generate_cube_vertices(x_center,y_center,z_center,side_length):
-    pass
+
+def matrix_multiplication(matrix1,matrix2):
+
+    #checking to see if it is possible to multiply the matrices:
+    if len(matrix1[0])!=len(matrix2):
+        raise ValueError("It is not possible to multiply these matrices. ")
+
+    result = []
+
+    rows1 = len(matrix1)
+    columns1 = len(matrix1[0])
+
+    rows2 = len(matrix2)
+    columns2 = len(matrix2[0])
+
+
+
+    for i in range():
+
+
+    return result
+
+
+
+
+
 if __name__ == '__main__':
-    print(project_triangle((260, 260), (270, 270), (280, 280),500,500))
+
+    print(matrix_multiplication([[1,2,3]],[[4,3],[2,5],[6,8]]))
