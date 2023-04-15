@@ -26,18 +26,17 @@ class rectangular_prism(shape_3d):
 
 
     def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
-        self.quadrilaterals = []
 
-        # s1 = quadrilateral(v1,v2,v3,v4,self.color,self.fill)
-        s2 = quadrilateral(v3,v4,v8,v7,self.color,self.fill)
-        #
-        # s3 = quadrilateral(v5,v6,v7,v8,self.color,self.fill)
-        # s4 = quadrilateral(v5,v6,v2,v1,self.color,self.fill)
-        #
-        # s5 = quadrilateral(v2,v3,v7,v6,self.color,self.fill)
-        # s6 = quadrilateral(v1,v4,v8,v5,self.color,self.fill)
+        s1 = quadrilateral(list(v1),list(v2),list(v3),list(v4),self.color,self.fill)
+        s2 = quadrilateral(list(v8),list(v7),list(v3),list(v4),self.color,self.fill)
 
-        self.faces = [s2]
+        s3 = quadrilateral(list(v5),list(v6),list(v7),list(v8),self.color,self.fill)
+        s4 = quadrilateral(list(v5),list(v6),list(v2),list(v1),self.color,self.fill)
+
+        s5 = quadrilateral(list(v2),list(v3),list(v7),list(v6),self.color,self.fill)
+        s6 = quadrilateral(list(v5),list(v8),list(v1),list(v4),self.color,self.fill)
+
+        self.faces = [s1, s2, s3, s4, s5, s6 ]
 
         for side in self.faces:
             self.triangles.extend(side.triangles)

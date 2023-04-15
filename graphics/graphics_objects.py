@@ -27,27 +27,19 @@ class graphics_manager:
 
         shift = 1
         side = 100
+        v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
+        [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
+
+
         self.test_rect3 = sh3.rectangular_prism(
 
-            [shift, shift, side],
-            [side, shift, side],
-            [side, shift, shift],
-            [shift, shift, shift],
-
-             [shift, side, side],
-            [side, side, side],
-            [side,side, shift],
-             [shift, side, shift]
+            v1,v2,v3,v4,v5,v6,v7,v8
         )
-        self.testtriangle = sh2.triangle(            [shift, shift, shift],
-            [side, shift, shift],
-            [shift, side, shift],color = "green" )
 
-        self.tt2 = sh2.triangle(            [shift, side, shift],
-            [side, shift, shift],
-            [side, side, shift],color = "blue" )
+        self.test2d = sh2.quadrilateral(v1,v2,v3,v4,_color="green")
 
         self.start_engine()
+        print(v1,v2,v3,v4,v5,v6,v7,v8)
 
         while True:
             pygame.time.delay(self.delay_time)
@@ -76,15 +68,12 @@ class graphics_manager:
                 func()
 
 
-            self.testtriangle.draw(self.window)
-            self.testtriangle.move("y",-1)
-
-
-            self.tt2.draw(self.window)
-            self.tt2.move("y",-1)
+            self.test2d.move("y",-5)
+            self.test2d.draw(self.window)
 
             self.test_rect3.draw(self.window)
-            self.test_rect3.move("y",-1)
+
+            self.test_rect3.move("y",-5)
             pygame.display.update()
 
             self.window.fill(self.background_color)
