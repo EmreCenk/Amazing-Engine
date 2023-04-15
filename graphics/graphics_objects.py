@@ -1,7 +1,7 @@
 
 from Mathematical_Functions.projecting import project_triangle
 import graphics.shapes_3d as sh3
-
+import graphics.shapes_2d as sh2
 import pygame
 
 
@@ -39,7 +39,13 @@ class graphics_manager:
             [side,side, shift],
              [shift, side, shift]
         )
+        self.testtriangle = sh2.triangle(            [shift, shift, shift],
+            [side, shift, shift],
+            [shift, side, shift],color = "green" )
 
+        self.tt2 = sh2.triangle(            [shift, side, shift],
+            [side, shift, shift],
+            [side, side, shift],color = "blue" )
 
         self.start_engine()
 
@@ -70,9 +76,15 @@ class graphics_manager:
                 func()
 
 
+            self.testtriangle.draw(self.window)
+            self.testtriangle.move("y",-1)
+
+
+            self.tt2.draw(self.window)
+            self.tt2.move("y",-1)
 
             self.test_rect3.draw(self.window)
-            self.test_rect3.move("x",-0.5)
+            self.test_rect3.move("y",-1)
             pygame.display.update()
 
             self.window.fill(self.background_color)
