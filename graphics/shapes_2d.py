@@ -47,10 +47,14 @@ class triangle(shape_2d):
     def move_all(self,axis, how_much):
         if axis in conversion:
             axis = conversion[axis]
-        print(self.vertex1,self.vertex2,self.vertex3)
+
+
         self.vertex1[axis]+=how_much
         self.vertex2[axis]+=how_much
         self.vertex3[axis]+=how_much
+
+
+        print()
 
 
 
