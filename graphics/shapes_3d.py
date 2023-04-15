@@ -4,8 +4,9 @@ from Mathematical_Functions.coordinate_system_3d import distance
 
 class shape_3d(shape_2d):
 
-    #Surprısınglyö every functıon ın a 2d shape ıs actually really usefull for 3d shapes. Perhaps I should rename the
-    # shape_2d class to just shape in the future? (shape_3d should start branching off of shape_2d soon enough)
+    # Surprisingly, every function in the 2d shape class is actually really usefull for 3d shapes. Perhaps I should
+    # rename the shape_2d class to just shape in the future? (shape_3d should start branching off of shape_2d soon
+    # enough)
 
     def __init__(self,color,fill_bool):
         super().__init__(color,fill_bool)

@@ -36,7 +36,8 @@ def matrix_multiplication(matrix1,matrix2):
     result = []
 
     rows1 = len(matrix1)
-    columns1 = len(matrix1[0])
+    # columns1 = len(matrix1[0])
+
 
     rows2 = len(matrix2)
     columns2 = len(matrix2[0])
