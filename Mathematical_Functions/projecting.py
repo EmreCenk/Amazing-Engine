@@ -42,8 +42,23 @@ def matrix_multiplication(matrix1,matrix2):
     columns2 = len(matrix2[0])
 
 
+    for i in range(rows1):
+        current = []
+        for j in range(columns2):
+            current.append(0)
 
-    for i in range():
+        result.append(current)
+
+
+
+    for i in range(rows1):
+
+        for j in range(columns2):
+
+            for w in range(rows2):
+
+                result[i][j] += matrix1[i][w] * matrix2[w][j]
+
 
 
     return result
@@ -53,5 +68,5 @@ def matrix_multiplication(matrix1,matrix2):
 
 
 if __name__ == '__main__':
-
-    print(matrix_multiplication([[1,2,3]],[[4,3],[2,5],[6,8]]))
+    m,mm=[[1,2,3]],[[4,3],[2,5],[6,8]]
+    print(matrix_multiplication(m,mm))
