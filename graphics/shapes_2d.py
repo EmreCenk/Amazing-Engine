@@ -63,9 +63,9 @@ class shape_2d:
 class triangle(shape_2d):
     def __init__(self,vertex1,vertex2,vertex3,color = "white",fill_bool=False):
         super().__init__(color,fill_bool)
-        self.vertex1 = vertex1
-        self.vertex2 = vertex2
-        self.vertex3 = vertex3
+        self.vertex1 = list(vertex1)
+        self.vertex2 = list(vertex2)
+        self.vertex3 = list(vertex3)
 
         self.triangles.append(self) #there is only one triangle
 
