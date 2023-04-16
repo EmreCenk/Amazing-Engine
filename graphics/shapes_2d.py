@@ -1,6 +1,9 @@
 import pygame
-from Mathematical_Functions.projecting import project_triangle
-conversion = {"x":0,"y":1,"z":2}
+from Mathematical_Functions.projecting import project_triangle,convert_result
+conversion = {"x":0,
+              "y":1,
+              "z":2}
+
 class shape_2d:
 
     def __init__(self,color,fill_bool=False):
@@ -10,27 +13,48 @@ class shape_2d:
         self.vertices = set()
 
     def draw(self,window):
-
+        i=-1
+        colors = ["red","blue","green","yellow"]
         for tri in self.triangles:
+            i+=1
+            newcol = colors[i%len(colors)]
+
             height = window.get_height()
             width = window.get_width()
 
             #getting the 2d points:
-            v1_2d,v2_2d,v3_2d = project_triangle(tri.vertex1,tri.vertex2,tri.vertex3,width,height)
+
+
+            v1_2d,v2_2d,v3_2d = project_triangle(tri.vertex1,tri.vertex2,tri.vertex3,width,height) #points are
+            # already converted so that the top left is origin
+
+            pygame.draw.circle(window,"white",v1_2d,5)
+            pygame.draw.circle(window,"white",v2_2d,5)
+
+
+            pygame.draw.circle(window,"white",v3_2d,5)
+
+            print(tri.vertex3,v3_2d,width,height)
+            print()
+
 
             if self.fill:
                 pygame.draw.polygon(window, self.color,(v1_2d,v2_2d,v3_2d))
 
             else:
 
+                pygame.draw.line(window,start_pos=v1_2d,end_pos=v2_2d,color=newcol)
 
-                pygame.draw.line(window,start_pos=v1_2d,end_pos=v2_2d,color=self.color)
-                pygame.draw.line(window,start_pos=v2_2d,end_pos=v3_2d,color=self.color)
-                pygame.draw.line(window,start_pos=v3_2d,end_pos=v1_2d,color=self.color)
+
+                pygame.draw.line(window,start_pos=v2_2d,end_pos=v3_2d,color=newcol)
+
+
+                pygame.draw.line(window,start_pos=v3_2d,end_pos=v1_2d,color=newcol)
+
+
 
 
     def move(self, axis, how_much):
-
         for tri in self.triangles:
             tri.move_all(axis,how_much)
 
@@ -48,7 +72,6 @@ class triangle(shape_2d):
     def move_all(self,axis, how_much):
         if axis in conversion:
             axis = conversion[axis]
-
 
         self.vertex1[axis]+=how_much
         self.vertex2[axis]+=how_much
@@ -69,7 +92,7 @@ class quadrilateral(shape_2d):
 
     def convert_to_triangles(self,v1,v2,v3,v4):
         t1=triangle(
-            v3,v2,v1, color = self.color, fill_bool=self.fill
+            list(v3),list(v2),list(v1), color = self.color, fill_bool=self.fill
         )
 
 

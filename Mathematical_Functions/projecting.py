@@ -5,13 +5,13 @@ def convert_result(x,y,s_width,s_height):
 
     return x+s_width/2,y+s_height/2
 
-def project_3d_point_to_2d(x,y,z,screen_width,screen_height,d=1):
+def project_3d_point_to_2d(x,y,z,screen_width,screen_height,d=10):
 
     """x,y,z are the coordinates for the point on a 3d plane.
     d is the distance between the focal point and the screen"""
 
 
-    #This is currently a very basic perspective projection. It is derived using similar triangles
+    # This is currently a very basic perspective projection. It is derived using similar triangles
     # At some point the engine will implement quaternions. For now, I will be using 3 coordinates to get some basic
     # functionality
 
@@ -20,7 +20,7 @@ def project_3d_point_to_2d(x,y,z,screen_width,screen_height,d=1):
 
     return convert_result(newx,newy,screen_width,screen_height)
 
-def project_triangle(v1,v2,v3,screen_width,screen_height,d=1):
+def project_triangle(v1,v2,v3,screen_width,screen_height,d=10):
 
     return (project_3d_point_to_2d(v1[0],v1[1],v1[2],screen_width,screen_height,d),
             project_3d_point_to_2d(v2[0],v2[1],v2[2],screen_width,screen_height,d),
@@ -69,5 +69,6 @@ def matrix_multiplication(matrix1,matrix2):
 
 
 if __name__ == '__main__':
-    m,mm=[[1,2,3]],[[4,3],[2,5],[6,8]]
-    print(matrix_multiplication(m,mm))
+    print(project_3d_point_to_2d(70, -189, 70,500,500))
+    # m,mm=[[1,2,3]],[[4,3],[2,5],[6,8]]
+    # print(matrix_multiplication(m,mm))

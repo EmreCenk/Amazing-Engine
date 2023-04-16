@@ -22,7 +22,7 @@ class rectangular_prism(shape_3d):
         From there, keep labeling in a clockwise direction. """
         super().__init__(color,fill_bool)
         self.generate_triangles(v1, v2, v3, v4, v5, v6, v7, v8)
-        self.vertices= [v1, v2, v3, v4, v5, v6, v7, v8]
+
 
 
     def generate_triangles(self,v1, v2, v3, v4, v5, v6, v7, v8):
@@ -36,7 +36,7 @@ class rectangular_prism(shape_3d):
         s5 = quadrilateral(list(v2),list(v3),list(v7),list(v6),self.color,self.fill)
         s6 = quadrilateral(list(v5),list(v8),list(v1),list(v4),self.color,self.fill)
 
-        self.faces = [s1, s2, s3, s4, s5, s6 ]
+        self.faces = [s1,s2,s3,s4,s5,s6]
 
         for side in self.faces:
             self.triangles.extend(side.triangles)
