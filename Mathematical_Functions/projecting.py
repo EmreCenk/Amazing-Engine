@@ -71,6 +71,6 @@ def matrix_multiplication(matrix1,matrix2):
 
 
 if __name__ == '__main__':
-    print(project_3d_point_to_2d(70, -189, 70,500,500))
+    print(project_3d_point_to_2d([70, -189, 70],500,500))
     # m,mm=[[1,2,3]],[[4,3],[2,5],[6,8]]
     # print(matrix_multiplication(m,mm))
