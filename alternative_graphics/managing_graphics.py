@@ -53,11 +53,11 @@ class graphics_manager:
                         quit()
 
 
-            self.test_triangle.rotate("z", 0.5)
-            self.test_triangle.rotate("y", 1)
+            # self.test_triangle.rotate("z", 0.5)
+            # self.test_triangle.rotate("y", 1)
 
-            self.tester_rectangle.move("y",10)
-
+            self.tester_rectangle.rotate("z", 0.5)
+            self.tester_rectangle.rotate("y", 1)
 
             for func in functions_to_call:
                 func()
