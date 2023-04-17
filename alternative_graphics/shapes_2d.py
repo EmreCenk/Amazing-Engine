@@ -21,9 +21,11 @@ class shape:
             p1=project_3d_point_to_2d(edge[0],width,height,d)
             p2=project_3d_point_to_2d(edge[1],width,height,d)
 
-
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
 
+    def move(self,axis,amount):
+        for tri in self.triangles:
+            tri.move_yourself(axis,amount)
 
 class triangle(shape):
 
@@ -57,12 +59,11 @@ class triangle(shape):
                project_3d_point_to_2d(self.v3,w,h)
 
     def rotate(self,axis,angle):
-        print(self.vertices)
         rotate(self.v1,axis,angle)
         rotate(self.v2, axis,angle)
         rotate(self.v3,axis,angle)
-        print(self.vertices)
-        print()
+
+
 
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
@@ -80,7 +81,7 @@ class quadrilateral(shape):
         t2 = triangle(
                 list(v3), list(v4), list(v1), color=self.color,
             )
-        print("Yes")
+
         self.triangles.append(t1)
         self.triangles.append(t2)
 

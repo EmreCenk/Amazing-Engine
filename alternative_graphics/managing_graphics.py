@@ -1,6 +1,6 @@
 import pygame
 import alternative_graphics.shapes_2d as sh2
-
+import alternative_graphics.shapes_3d as sh3
 class graphics_manager:
 
     def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):
@@ -26,6 +26,15 @@ class graphics_manager:
         self.test_triangle = sh2.triangle(
                 [0,s,0],[s,0,0],[s,s,0]
         )
+
+        shift = 0
+        side = 100
+        v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
+        [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
+
+        self.tester_rectangle = sh3.rectangular_prism(v1,v2,v3,v4,v5,v6,v7,v8,color="green"
+
+        )
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -47,10 +56,13 @@ class graphics_manager:
             self.test_triangle.rotate("z", 0.5)
             self.test_triangle.rotate("y", 1)
 
+            self.tester_rectangle.move("y",10)
+
 
             for func in functions_to_call:
                 func()
             self.test_triangle.wireframe_draw(self.window)
+            self.tester_rectangle.wireframe_draw(self.window)
 
             pygame.display.update()
             self.window.fill(self.background_color)
