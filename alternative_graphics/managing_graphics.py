@@ -24,7 +24,7 @@ class graphics_manager:
         self.start_engine()
         s=200
         self.test_triangle = sh2.triangle(
-            [0,s,5],[s,0,5],[s,s,5]
+                [0,s,0],[s,0,0],[s,s,0]
         )
         while True:
 
@@ -44,11 +44,12 @@ class graphics_manager:
                         quit()
 
 
+            self.test_triangle.rotate("z", 0.5)
+            self.test_triangle.rotate("y", 1)
+
 
             for func in functions_to_call:
                 func()
-
-            self.test_triangle.rotate("z",10)
             self.test_triangle.wireframe_draw(self.window)
 
             pygame.display.update()

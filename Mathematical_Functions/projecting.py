@@ -18,7 +18,7 @@ def project_3d_to_2d(point,screen_width,screen_height,d=1):
     x=point[0]
     y=point[1]
     z=point[2]
-    newx = d*x/z
-    newy = d*y/z
+    newx = (d*x)
+    newy = (d*y)
 
     return convert_result(newx,newy,screen_width,screen_height)
