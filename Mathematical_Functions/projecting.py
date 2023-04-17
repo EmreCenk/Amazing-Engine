@@ -16,18 +16,29 @@ def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
     # At some point the engine will implement quaternions. For now, I will be using 3 coordinates to get some basic
     # functionality
 
+    #
+    # x=point[0]
+    # y=point[1]
+    # z=point[2]
+    #
+    # d=1
+    #
+    #
+    # newx = x*d/z
+    # newy = y*d/z
+
+
+    # return convert_result(newx,newy,screen_width,screen_height)
 
 
     x=point[0]
     y=point[1]
     z=point[2]
+    if z>=d:
+        return [-111111,-1111111]
+    scale=100
 
-
-    newx = x
-    newy = y
-
-    return convert_result(newx,newy,screen_width,screen_height)
-
+    return convert_result(scale*x/(z-d),scale*y/(z-d),screen_width,screen_height)
 def project_triangle(v1,v2,v3,screen_width,screen_height,d=10):
 
     return (project_3d_point_to_2d(v1,screen_width,screen_height,d),

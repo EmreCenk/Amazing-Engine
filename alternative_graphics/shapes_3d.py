@@ -42,8 +42,8 @@ class rectangular_prism(shape_3d):
         s3 = quadrilateral(self.v5,self.v6,self.v7,self.v8,self.color)
         s4 = quadrilateral(self.v5,self.v6,self.v2,self.v1,self.color)
 
-        s5 = quadrilateral(self.v2,self.v3,self.v7,self.v6,self.color)
-        s6 = quadrilateral(self.v5,self.v8,self.v1,self.v4,self.color)
+        s5 = quadrilateral(self.v2,self.v6,self.v7,self.v3,self.color)
+        s6 = quadrilateral(self.v1,self.v5,self.v8,self.v4,self.color)
 
         self.vertices = [self.v1,
                          self.v2,
