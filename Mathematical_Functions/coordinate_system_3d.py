@@ -3,17 +3,6 @@ from math import radians, sqrt, cos, sin
 from constants import conversion,excluded
 
 
-def rotateX3D(node,theta):
-
-    sinTheta = sin(theta)
-    cosTheta = cos(theta)
-
-
-    y = node[1]
-    z = node[2]
-    node[1] = y * cosTheta - z * sinTheta
-    node[2] = z * cosTheta + y * sinTheta
-    return node
 def rotate(vertex, axis, angle, radian_input = False):
     if not radian_input:
         angle = radians(angle)
@@ -22,9 +11,7 @@ def rotate(vertex, axis, angle, radian_input = False):
     if axis in conversion:
         axis = conversion[axis]
 
-    if axis==0:
-        print("XXXX")
-        return rotateX3D(vertex,angle)
+
     #Getting the other 2 axes:
     a1, a2 = excluded[axis]
 
