@@ -56,11 +56,13 @@ class triangle(shape):
                project_3d_to_2d(self.v2,w,h),\
                project_3d_to_2d(self.v3,w,h)
 
-    def rotate(self,angle,axis):
-        rotate(self.v1,angle,axis)
-        rotate(self.v2, angle, axis)
-        rotate(self.v3,angle,axis)
-
+    def rotate(self,axis,angle):
+        print(self.vertices)
+        rotate(self.v1,axis,angle)
+        rotate(self.v2, axis,angle)
+        rotate(self.v3,axis,angle)
+        print(self.vertices)
+        print()
 
 if __name__ == '__main__':
     self = triangle([1,2,3],[3,4,5],[4,5,6],"white")

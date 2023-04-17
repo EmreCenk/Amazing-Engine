@@ -1,10 +1,11 @@
 
-from math import radians, sqrt, cos
+from math import radians, sqrt, cos, sin
 from constants import conversion,excluded
 
-def rotate(vertex, angle, axis, radian_input = False):
+def rotate(vertex, axis, angle, radian_input = False):
     if not radian_input:
         angle = radians(angle)
+
 
     if axis in conversion:
         axis = conversion[axis]
@@ -12,8 +13,11 @@ def rotate(vertex, angle, axis, radian_input = False):
     #Getting the other 2 axes:
     a1, a2 = excluded[axis]
 
-    vertex[a1] = vertex[a1]*cos(angle) - vertex[a2]
-    vertex[a2] = vertex[a2]*cos(angle) - vertex[a1]
+    newa1 = vertex[a1]*cos(angle) - vertex[a2]*sin(angle)
+    newa2 = vertex[a2]*cos(angle) + vertex[a1]*sin(angle)
+
+    vertex[a1] = newa1
+    vertex[a2] = newa2
 
     return vertex
 

@@ -48,8 +48,9 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-            self.test_triangle.rotate(0.1,"y")
+            self.test_triangle.rotate("z",10)
             self.test_triangle.wireframe_draw(self.window)
+
             pygame.display.update()
             self.window.fill(self.background_color)
 
