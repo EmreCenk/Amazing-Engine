@@ -1,6 +1,5 @@
 import pygame
-import alternative_graphics.shapes_2d as sh2
-import alternative_graphics.shapes_3d as sh3
+import graphics.shapes_3d as sh3
 class graphics_manager:
 
     def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):

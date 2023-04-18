@@ -8,29 +8,7 @@ def convert_result(x,y,s_width,s_height):
 
 def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
 
-    """x,y,z are the coordinates for the point on a 3d plane.
-    d is the distance between the focal point and the screen"""
 
-
-    # This is currently a very basic perspective projection. It is derived using similar triangles
-    # At some point the engine will implement quaternions. For now, I will be using 3 coordinates to get some basic
-    # functionality
-
-    #
-    # x=point[0]
-    # y=point[1]
-    # z=point[2]
-    #
-    # d=1
-    #
-    #
-    # newx = x*d/z
-    # newy = y*d/z
-
-
-    # return convert_result(newx,newy,screen_width,screen_height)
-
-    d=100
 
     x=point[0]
     y=point[1]
