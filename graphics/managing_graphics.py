@@ -1,14 +1,15 @@
 import pygame
 import graphics.shapes_3d as sh3
+from graphics.camera import camera
+
 class graphics_manager:
 
     def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):
         self.delay_time = delay_time
         self.background_color = background_color
-
-
         self.height = height_window
         self.width = width_window
+        self.camera = camera(z=2)
 
     def start_engine(self):
         pygame.init()
@@ -25,7 +26,7 @@ class graphics_manager:
 
 
         shift = 0
-        side = 50
+        side = 1
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
@@ -60,11 +61,10 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-            self.tester_rectangle.color="green"
-            self.tester_rectangle.wireframe_draw(self.window)
+            self.tester_rectangle.wireframe_draw(self.window,self.camera.position)
+            self.camera.move("z",0.01)
+            print(self.camera.position)
 
-            self.tester_rectangle.color="white"
-            self.tester_rectangle.wireframe_draw(self.window,orthogonal=True)
 
             pygame.display.update()
             self.window.fill(self.background_color)

@@ -1,17 +1,17 @@
 
 from constants import conversion
 class camera:
-    def __init__(self):
+    def __init__(self,x=0,y=0,z=0):
 
         #TODO: add angles to camera
-        self.x=0
-        self.y=0
-        self.z=0
+        self.x=x
+        self.y=y
+        self.z=z
 
-        self.coordinates = [self.x,self.y,self.z]
+        self.position = [self.x,self.y,self.z]
     def move(self,axis,amount):
         if axis in conversion:
             axis = conversion[axis]
 
-        self.coordinates[axis] += amount
+        self.position[axis] += amount
 
