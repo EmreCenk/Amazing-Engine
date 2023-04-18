@@ -4,9 +4,9 @@ def convert_result(x,y,s_width,s_height):
     #the output of all the other functions take the center of the screen as the origin. Here, we convert it back such
 # that the top left corner is the origin
 
-    return x+s_width/2,y+s_height/2
+    return [x+s_width/2,y+s_height/2]
 
-def project_3d_point_to_2d(point,screen_width,screen_height,camera_position):
+def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orthogonal=False):
 
 
 
@@ -25,6 +25,10 @@ def project_3d_point_to_2d(point,screen_width,screen_height,camera_position):
 
     scale=100
 
+    if orthogonal:
+        return convert_result(
+            x,y,screen_width,screen_height
+        )
     return convert_result(scale*x/(z-d),        #projected x coordinate
                           scale*y/(z-d),        #projected y coordinate
                           screen_width,

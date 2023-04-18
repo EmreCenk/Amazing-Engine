@@ -9,7 +9,7 @@ class graphics_manager:
         self.background_color = background_color
         self.height = height_window
         self.width = width_window
-        self.camera = camera(z=2)
+        self.camera = camera(z=300)
 
     def start_engine(self):
         pygame.init()
@@ -26,7 +26,7 @@ class graphics_manager:
 
 
         shift = 0
-        side = 1
+        side = 100
         v1,v2,v3,v4,v5,v6,v7,v8 = [shift, shift, side], [side, shift, side], [side, shift, shift],[shift, shift, shift],\
         [shift,side, side],[side, side, side],[side,side, shift],[shift, side, shift]
 
@@ -62,7 +62,7 @@ class graphics_manager:
 
             keys = pygame.key.get_pressed()
 
-            power_level=0.1
+            power_level=10
             if keys[pygame.K_DOWN]:
                 self.camera.move("y",-power_level)
 
@@ -75,10 +75,10 @@ class graphics_manager:
 
             if keys[pygame.K_RIGHT]:
                 self.camera.move("x",power_level)
-
+            print(self.camera.position)
             # self.tester_rectangle.rotate("z", 10)
-            # self.tester_rectangle.rotate("y", 1)
-            self.tester_rectangle.wireframe_draw(self.window, self.camera.position)
+            self.tester_rectangle.rotate("y", 10)
+            self.tester_rectangle.wireframe_draw(self.window, self.camera.position,orthogonal=False)
 
             pygame.display.update()
             self.window.fill(self.background_color)
