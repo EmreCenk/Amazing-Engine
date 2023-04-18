@@ -37,6 +37,9 @@ class graphics_manager:
         self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
 
                                                       )
+
+        power_level = 10
+
         while True:
 
             pygame.time.delay(self.delay_time)
@@ -45,10 +48,16 @@ class graphics_manager:
                     pygame.quit()
                     quit()
                     break
-                if event.type == pygame.VIDEORESIZE:
+                elif event.type == pygame.VIDEORESIZE:
                     self.width, self.height = pygame.display.get_window_size()
                     print(self.width,self.height)
 
+                elif event.type == pygame.MOUSEBUTTONDOWN :
+                    if event.button == 4:
+                        self.camera.move("z",-power_level)
+
+                    elif event.button == 5:
+                        self.camera.move("z",power_level)
 
 
 
@@ -62,23 +71,29 @@ class graphics_manager:
 
             keys = pygame.key.get_pressed()
 
-            power_level=10
             if keys[pygame.K_DOWN]:
                 self.camera.move("y",-power_level)
 
-            if keys[pygame.K_UP]:
+            elif keys[pygame.K_UP]:
                 self.camera.move("y",power_level)
 
 
             if keys[pygame.K_LEFT]:
                 self.camera.move("x",-power_level)
 
-            if keys[pygame.K_RIGHT]:
+            elif keys[pygame.K_RIGHT]:
                 self.camera.move("x",power_level)
-            print(self.camera.position)
+
+
             # self.tester_rectangle.rotate("z", 10)
             self.tester_rectangle.rotate("y", 10)
+
+            self.tester_rectangle.color = "green"
             self.tester_rectangle.wireframe_draw(self.window, self.camera.position,orthogonal=False)
+
+
+            self.tester_rectangle.color = "white"
+            self.tester_rectangle.wireframe_draw(self.window, self.camera.position, orthogonal=True)
 
             pygame.display.update()
             self.window.fill(self.background_color)
