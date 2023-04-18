@@ -30,6 +30,7 @@ def project_3d_point_to_2d(point,screen_width,screen_height,d=1):
 
     # return convert_result(newx,newy,screen_width,screen_height)
 
+    d=100
 
     x=point[0]
     y=point[1]
