@@ -1,7 +1,7 @@
 
 import pygame
 from Mathematical_Functions.projecting import project_3d_point_to_2d,convert_result
-from Mathematical_Functions.coordinate_system_3d import rotate
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized
 from constants import conversion
 
 class shape:
@@ -28,6 +28,7 @@ class shape:
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
 
     def draw_faces(self,window,camera_position,orthogonal=False):
+
         for triangle in self.triangles:
 
             coordiantes = triangle.get_projected_coordinates(camera_position = camera_position,
@@ -35,9 +36,12 @@ class shape:
 
             pygame.draw.polygon(window,points=coordiantes,color=self.color)
 
-    def draw_all_triangles(self,window,d=1):
+
+
+    def draw_all_triangles(self,window,camera_position,orthogonal=False):
         for tri in self.triangles:
-            tri.wireframe_draw(window,d)
+            if tri.get_normal()[2]>0:
+                tri.wireframe_draw(window,camera_position,orthogonal=orthogonal)
 
 
     def move(self,axis,amount):
@@ -88,7 +92,17 @@ class triangle(shape):
         rotate(self.v2, axis,angle)
         rotate(self.v3,axis,angle)
 
+    def get_normalized(self):
+        return [
+            normalized(self.v1),
+            normalized(self.v2),
+            normalized(self.v3)
+        ]
+    def get_normal(self):
 
+        return get_normal(
+            self.get_normalized()
+        )
 
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
