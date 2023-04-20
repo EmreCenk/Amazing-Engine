@@ -38,7 +38,7 @@ class graphics_manager:
 
                                                       )
 
-        power_level = 10
+        power_level = 30
 
         while True:
 
@@ -54,10 +54,12 @@ class graphics_manager:
 
                 elif event.type == pygame.MOUSEBUTTONDOWN :
                     if event.button == 4:
-                        self.camera.move("z",-power_level)
+                        self.camera.move("z",-70)
 
                     elif event.button == 5:
-                        self.camera.move("z",power_level)
+                        self.camera.move("z",70)
+
+                    print(self.camera.position)
 
 
 
@@ -71,29 +73,26 @@ class graphics_manager:
 
             keys = pygame.key.get_pressed()
 
-            if keys[pygame.K_DOWN]:
+            if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 self.camera.move("y",-power_level)
 
-            elif keys[pygame.K_UP]:
+            elif keys[pygame.K_UP] or keys[pygame.K_w]:
                 self.camera.move("y",power_level)
 
 
-            if keys[pygame.K_LEFT]:
+            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 self.camera.move("x",-power_level)
 
-            elif keys[pygame.K_RIGHT]:
+            elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 self.camera.move("x",power_level)
 
 
-            # self.tester_rectangle.rotate("z", 10)
+            self.tester_rectangle.rotate("z", 10)
             self.tester_rectangle.rotate("y", 10)
 
-            self.tester_rectangle.color = "green"
             self.tester_rectangle.wireframe_draw(self.window, self.camera.position,orthogonal=False)
 
 
-            self.tester_rectangle.color = "white"
-            self.tester_rectangle.wireframe_draw(self.window, self.camera.position, orthogonal=True)
 
             pygame.display.update()
             self.window.fill(self.background_color)

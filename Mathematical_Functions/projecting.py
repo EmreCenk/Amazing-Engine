@@ -23,7 +23,7 @@ def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orth
     if z>=d:
         return [-10000,-10000]
 
-    scale=100
+    scale=screen_width
 
     if orthogonal:
         return convert_result(
