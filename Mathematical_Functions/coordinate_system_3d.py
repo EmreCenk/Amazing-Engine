@@ -41,4 +41,28 @@ def dot_product(v1,v2):
         v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]
     )
 
+def magnitude(v):
+    return sqrt(
+        v[0]**2 + v[1]**2 + v[2]**2
+    )
 
+def normalize(v):
+    mag = magnitude(v)
+
+    return [
+        v[1]/mag,v[2]/mag,v[3]/mag
+                          ]
+def get_normal(triangle_vertices):
+    #We get the cross product of two vertices of the triangle to find the normal
+
+    a = triangle_vertices[0]
+    b = triangle_vertices[1]
+
+    return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+    ]
+
+def is_it_visible(light_source, triangle_vertices):
+    normal = get_normal(triangle_vertices)
