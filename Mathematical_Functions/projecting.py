@@ -1,25 +1,12 @@
 from math import tan,radians
-
+from Mathematical_Functions.coordinate_system_3d import translate
 def convert_result(x,y,s_width,s_height):
     #the output of all the other functions take the center of the screen as the origin. Here, we convert it back such
 # that the top left corner is the origin
 
     return [x+s_width/2,y+s_height/2]
 
-def translate(point,camera_position):
-    x=point[0]
-    y=point[1]
-    z=point[2]
 
-    cx=camera_position[0]
-    cy = camera_position[1]
-    d=camera_position[2]
-
-    x+=cx
-    y-=cy
-    z-=d
-
-    return x,y,z
 def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orthogonal=False):
     if orthogonal:
         return convert_result(
