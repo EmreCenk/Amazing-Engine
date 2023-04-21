@@ -1,6 +1,6 @@
 
 import pygame
-from Mathematical_Functions.projecting import project_3d_point_to_2d,convert_result
+from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
 from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized
 from constants import conversion
 
@@ -40,9 +40,8 @@ class shape:
 
     def draw_all_triangles(self,window,camera_position,orthogonal=False):
         for tri in self.triangles:
-            if tri.get_normal()[2]>0:
+            if tri.is_visible(camera_position):
                 tri.wireframe_draw(window,camera_position,orthogonal=orthogonal)
-
 
     def move(self,axis,amount):
         if axis in conversion:
@@ -104,6 +103,22 @@ class triangle(shape):
             self.get_normalized()
         )
 
+    def get_translated(self,camera_position):
+        return translate(self.v1,camera_position),\
+               translate(self.v2,camera_position),\
+               translate(self.v3,camera_position),
+
+    def is_visible(self, camera_position):
+        normal = self.get_normal()
+
+        vt1, vt2, vt3 = translate(self.v1,camera_position)
+        c1 = normal[0] * vt1
+        c2 = normal[0] * vt1
+        c3 = normal[0] * vt1
+
+
+        return True
+
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
         #This class basically exists for the sole purpose of converting quadrilaterals to triangles
@@ -114,12 +129,12 @@ class quadrilateral(shape):
     def convert_to_triangles(self,v1,v2,v3,v4):
 
         t1=triangle(
-            v1,v2,v3, color = self.color,
+            v1,v3,v2, color = self.color,
         )
 
 
         t2 = triangle(
-                v3, v4, v1, color=self.color,
+                v1, v3, v4, color=self.color,
             )
 
         self.triangles.append(t1)
