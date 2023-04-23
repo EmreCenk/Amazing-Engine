@@ -129,7 +129,6 @@ def is_visible(triangle_vertices, camera_position):
     new_camera_position = normalized(camera_position)
     normal = get_normal(new_triangle_vertices)
 
-    print(dot_product(normal,new_camera_position))
 
     if dot_product(normal,new_camera_position)>0: #dot product correctly implemented
         return False
