@@ -11,7 +11,7 @@ def get_color(triangle, light_source, rgb_colour = (255, 255, 255)):
 
     centroid = triangle.get_centroid()
     dist = distance(centroid, light_source)
-    some_coefficient = 200 # Might use this to calibrate the sytem
+    some_coefficient = 170 # Might use this to calibrate the sytem
 
 
 

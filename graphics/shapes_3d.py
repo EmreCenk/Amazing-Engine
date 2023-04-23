@@ -1,4 +1,6 @@
 from graphics.shapes_2d import quadrilateral,shape
+from Mathematical_Functions.shading import get_color
+import pygame
 
 class shape_3d(shape):
 
@@ -89,3 +91,13 @@ class rectangular_prism(shape_3d):
 
         return x/8,y/8,z/8
 
+    def draw_faces(self,window,camera_position,orthogonal=False):
+        #This overrides the inherited draw_faces function
+        for face in self.faces:
+            new_color = get_color(face.triangles[0],camera_position)
+            for triangle in face.triangles:
+                if triangle.is_visible(camera_position):
+                    a = triangle.get_projected_coordinates(camera_position)
+                    pygame.draw.polygon(window,
+                                        new_color,
+                                        a)
