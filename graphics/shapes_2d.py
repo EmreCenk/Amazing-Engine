@@ -20,19 +20,27 @@ class shape:
         height = window.get_height()
         width = window.get_width()
         for edge in self.edges:
-
-
             p1=project_3d_point_to_2d(edge[0],width,height,camera_position,orthogonal)
             p2=project_3d_point_to_2d(edge[1],width,height,camera_position,orthogonal)
-
-
-
-
-
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
 
+
+
+
+    def draw_faces(self,window,camera_position,orthogonal=False):
+
+        for triangle in self.triangles:
+            if triangle.is_visible(camera_position):
+                coordiantes = triangle.get_projected_coordinates(camera_position = camera_position,
+                                                                 orthogonal = orthogonal)
+                pygame.draw.polygon(window,points=coordiantes,color=self.color)
+
+    def label_wireframe_corners(self,window,camera_position, orthogonal = False):
+        height = window.get_height()
+        width = window.get_width()
+
         for vertex in self.vertices:
-            prompt = str(self.vertices.index(vertex)+1)
+            prompt = str(self.vertices.index(vertex) + 1 )
             asdf = project_3d_point_to_2d(vertex, width,height,camera_position,orthogonal)
             pygame.draw.circle(window, "white", asdf, 3)
             prompt_surface = self.font.render(prompt, True, (255, 255, 255))
@@ -40,24 +48,15 @@ class shape:
 
             window.blit(prompt_surface, asdf)
 
-
-    def draw_faces(self,window,camera_position,orthogonal=False):
-
-        for triangle in self.triangles:
-
-            coordiantes = triangle.get_projected_coordinates(camera_position = camera_position,
-                                                             orthogonal = orthogonal)
-
-            pygame.draw.polygon(window,points=coordiantes,color=self.color)
-
-
-
     def draw_all_triangles(self,window,camera_position,orthogonal=False):
 
         for tri in self.triangles:
+            tri.wireframe_draw(window,camera_position,orthogonal=orthogonal)
 
+    def draw_all_visible_triangles(self,window,camera_position,orthogonal = False):
+        for tri in self.triangles:
             if tri.is_visible(camera_position):
-                tri.wireframe_draw(window,camera_position,orthogonal=orthogonal)
+                tri.wireframe_draw(window, camera_position, orthogonal=orthogonal)
 
     def move(self,axis,amount):
         if axis in conversion:

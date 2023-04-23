@@ -22,8 +22,6 @@ class graphics_manager:
             functions_to_call = []
 
         self.start_engine()
-        s=200
-
 
         shift = 5
         side = 60
@@ -87,9 +85,9 @@ class graphics_manager:
 
 
             # self.tester_rectangle.rotate("z", 1)
-            # self.tester_rectangle.rotate("y", 1)
+            self.tester_rectangle.rotate("y", 1)
 
-            self.tester_rectangle.draw_all_triangles(self.window, self.camera.position,orthogonal=False)
+            self.tester_rectangle.draw_all_visible_triangles(self.window, self.camera.position,orthogonal=False)
 
 
             pygame.display.update()
