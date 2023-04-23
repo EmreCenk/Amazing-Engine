@@ -4,7 +4,10 @@ from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
 from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,normalized,is_visible,normalize_triangle_vertices
 from constants import conversion
 
+pygame.font.init()
+
 class shape:
+    font = pygame.font.Font(None, 50)  # Setting the font
 
     def __init__(self,color):
         self.color = color
@@ -14,9 +17,10 @@ class shape:
 
 
     def wireframe_draw(self,window,camera_position,orthogonal=False):
+        height = window.get_height()
+        width = window.get_width()
         for edge in self.edges:
-            height = window.get_height()
-            width = window.get_width()
+
 
             p1=project_3d_point_to_2d(edge[0],width,height,camera_position,orthogonal)
             p2=project_3d_point_to_2d(edge[1],width,height,camera_position,orthogonal)
@@ -26,6 +30,16 @@ class shape:
 
 
             pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
+
+        for vertex in self.vertices:
+            prompt = str(self.vertices.index(vertex))
+            asdf = project_3d_point_to_2d(vertex, width,height,camera_position,orthogonal)
+            pygame.draw.circle(window, "white", asdf, 3)
+            prompt_surface = self.font.render(prompt, True, (255, 255, 255))
+
+
+            window.blit(prompt_surface, asdf)
+
 
     def draw_faces(self,window,camera_position,orthogonal=False):
 
@@ -39,7 +53,7 @@ class shape:
 
 
     def draw_all_triangles(self,window,camera_position,orthogonal=False):
-        distinct = set()
+
         for tri in self.triangles:
 
             if tri.is_visible(camera_position):
@@ -95,11 +109,8 @@ class triangle(shape):
         rotate(self.v3,axis,angle)
 
     def get_normalized(self):
-        return [
-            normalized(self.v1),
-            normalized(self.v2),
-            normalized(self.v3)
-        ]
+        return normalize_triangle_vertices(self.vertices)
+
     def get_normal(self):
 
         return get_normal(
@@ -125,12 +136,16 @@ class quadrilateral(shape):
     def convert_to_triangles(self,v1,v2,v3,v4):
 
         t1=triangle(
-            v1,v2,v3, color = self.color,
+            v1 = v1,
+            v2 = v2,
+            v3 = v3, color = self.color,
         )
 
 
         t2 = triangle(
-                v3, v4, v1, color=self.color,
+                v1 = v1,
+                v2 = v3,
+                v3 = v4, color=self.color,
             )
 
         self.triangles.append(t1)
