@@ -56,7 +56,7 @@ class graphics_manager:
                     elif event.button == 5:
                         self.camera.move("z",50)
 
-                    print(self.camera.position)
+                    # print(self.camera.position)
 
 
 
