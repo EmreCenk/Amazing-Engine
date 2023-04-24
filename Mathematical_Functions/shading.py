@@ -1,5 +1,5 @@
 
-from Mathematical_Functions.coordinate_system_3d import distance
+from Mathematical_Functions.coordinate_system_3d import distance, normalized
 
 def get_color(triangle, light_source, rgb_colour = (255, 255, 255)):
 
@@ -9,16 +9,19 @@ def get_color(triangle, light_source, rgb_colour = (255, 255, 255)):
     #TODO: add shadows
     #TODO: blend the shades, don't make it a homogeneous color
 
-    centroid = triangle.get_centroid()
-    dist = distance(centroid, light_source)
-    some_coefficient = 170 # Might use this to calibrate the sytem
+    centroid = normalized(triangle.get_centroid())
+    dist = distance(centroid, normalized(light_source))
+    dist = 1 - (dist / 2)
+
+    some_coefficient = 1 # Might use this to calibrate the sytem
+
 
 
 
     return (
-        some_coefficient * (rgb_colour[0] / dist),
-        some_coefficient * (rgb_colour[1] / dist),
-        some_coefficient * (rgb_colour[2] / dist),
+        some_coefficient * (rgb_colour[0] * dist),
+        some_coefficient * (rgb_colour[1] * dist),
+        some_coefficient * (rgb_colour[2] * dist),
 
     )
 
