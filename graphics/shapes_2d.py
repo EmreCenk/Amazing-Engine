@@ -1,7 +1,9 @@
 
 import pygame
+from pygame.draw import line
+
 from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
-from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices,normalized
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices
 from constants import conversion
 from Mathematical_Functions.shading import get_color
 
@@ -11,12 +13,11 @@ font = pygame.font.Font(None, 50)  # Setting the font
 
 class shape:
 
-    def __init__(self, color ):
+    def __init__(self,color):
         self.color = color
         self.triangles = [] #all shapes are represented as combined triangles. This is the list of triangle
         self.edges = []
         self.vertices = []
-        self.normalized_and_translated_vertices = []
 
 
     def wireframe_draw(self,window,camera_position,orthogonal=False):
@@ -34,7 +35,6 @@ class shape:
     def draw_faces(self,window,camera_position,orthogonal=False):
         for triangle in self.triangles: # 130 operations to compute the coordinates of a single triangle
             if triangle.is_visible(camera_position): # 62 operations
-
 
                 new_color = get_color(triangle, camera_position, rgb_colour = self.color) # 38 operations
                 coordiantes = triangle.get_projected_coordinates(camera_position = camera_position, orthogonal =
@@ -58,69 +58,48 @@ class shape:
     def draw_all_triangles(self,window,camera_position,orthogonal=False):
 
         for tri in self.triangles:
-            tri.wireframe_draw(window, camera_position, orthogonal = orthogonal)
+            tri.wireframe_draw(window,camera_position,orthogonal=orthogonal)
 
-    def draw_all_visible_triangles(self, window, camera_position, orthogonal = False):
+    def draw_all_visible_triangles(self,window,camera_position,orthogonal = False):
         for tri in self.triangles:
             if tri.is_visible(camera_position):
                 tri.wireframe_draw(window, camera_position, orthogonal=orthogonal)
 
-    def move(self,axis, amount, camera_position):
+    def move(self,axis,amount):
         if axis in conversion:
             axis = conversion[axis]
 
         #This method updates both the self.v values and the self.vertices values
-        print(self.normalized_and_translated_vertices)
-        for i in range(len(self.vertices)):
-            self.vertices[i][axis]+=amount
-            self.normalized_and_translated_vertices[i] = normalized(translate(self.vertices[i], camera_position)) #updating the normalized
-            # vertex as well
-
-
-        self.update_normalized_and_translated_vertices(camera_position)
-
-
-    def update_normalized_and_translated_vertices(self, camera_position):
-        for i in range(len(self.vertices)):
-            self.normalized_and_translated_vertices[i] = normalized(translate(self.vertices[i], camera_position))
-
-    def generate_normalized_and_translated_vertices(self, camera_position):
         for vert in self.vertices:
+            vert[axis]+=amount
 
-            self.normalized_and_translated_vertices.append(normalized(translate(vert, camera_position)))
-
-
-    def rotate(self, axis, angle, camera_position):
-        for i in range(len(self.vertices)):
-            rotate(self.vertices[i],axis,angle)
-            self.normalized_and_translated_vertices[i] = normalized(translate(self.vertices[i], camera_position))
-
-
+    def rotate(self,axis,angle):
+        for vert in self.vertices:
+            rotate(vert,axis,angle)
 
 
 class triangle(shape):
 
-    def __init__(self,v1, v2, v3, v1_norm, v2_norm, v3_norm, color = "white"):
+    def __init__(self,v1,v2,v3,color = "white"):
         super().__init__(color = color )
         self.v1 = v1
         self.v2 = v2
         self.v3 = v3
 
-
-        self.v_norm1 = v1_norm
-        self.v_norm2 = v2_norm
-        self.v_norm3 = v3_norm
-
         self.vertices = [self.v1,self.v2,self.v3]
-        self.normalized_and_translated_vertices = [self.v_norm1, self.v_norm2, self.v_norm3]
-
-
         self.edges = [
             [self.v1,self.v2],
             [self.v2,self.v3],
             [self.v3,self.v1]
         ]
 
+    # def move_yourself(self,axis, how_much):
+    #     if axis in conversion:
+    #         axis = conversion[axis]
+    #
+    #     self.v1[axis] += how_much
+    #     self.v2[axis] += how_much
+    #     self.v3[axis] += how_much
 
     def get_projected_coordinates(self,camera_position,orthogonal=False):
         #30 operations
@@ -131,16 +110,18 @@ class triangle(shape):
                project_3d_point_to_2d(self.v2,w,h,camera_position,orthogonal=orthogonal),\
                project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
 
-    # def rotate(self,axis,angle):
-    #     rotate(self.v1, axis,angle)
-    #     rotate(self.v2, axis,angle)
-    #     rotate(self.v3, axis,angle)
+    def rotate(self,axis,angle):
+        rotate(self.v1,axis,angle)
+        rotate(self.v2, axis,angle)
+        rotate(self.v3,axis,angle)
 
+    def get_normalized(self):
+        return normalize_triangle_vertices(self.vertices)
 
     def get_normal(self):
 
         return get_normal(
-            self.normalized_and_translated_vertices
+            normalize_triangle_vertices(self.vertices)
         )
 
     def get_translated(self,camera_position):
@@ -149,8 +130,8 @@ class triangle(shape):
                translate(self.v3,camera_position),
 
     def is_visible(self, camera_position):
-        # 29 operations
-        return is_visible(translated_and_normalized_triangle_vertices = self.normalized_and_translated_vertices,
+        #62 operations
+        return is_visible(triangle_vertices = self.vertices,
                           camera_position = camera_position)
 
     def get_centroid(self):
@@ -161,7 +142,6 @@ class triangle(shape):
             (self.v1[2] + self.v2[2] + self.v3[2]) / 3,
 
         )
-
 class quadrilateral(shape):
     def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
         #This class basically exists for the sole purpose of converting quadrilaterals to triangles
