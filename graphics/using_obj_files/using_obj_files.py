@@ -10,7 +10,7 @@ class obj_mesh(shape):
         self.create_attributes()
 
     def create_attributes(self):
-        self.triangles, self.vertices = parse_triangle_list(self.path_to_object)
+        self.triangles, self.vertices = parse_triangle_list(self.path_to_object, color = self.color)
 
 
     def wireframe_draw(self,window,camera_position,orthogonal=False): #We re-write the wireframe_draw function since
