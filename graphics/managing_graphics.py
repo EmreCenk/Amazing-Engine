@@ -38,13 +38,14 @@ class graphics_manager:
         #
         #                                               )
 
-        self.tester_mesh = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj")
+        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
+        # self.tester_mesh = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj")
         # self.tester_mesh2.move("x",5)
-        self.tester_mesh.move("x",-5)
-        power_level = 4
+        # self.tester_mesh.move("x",-5)
+        power_level = 1
+        zpower = 1
         while True:
-            s = perf_counter()
+            # s = perf_counter()
             pygame.time.delay(self.delay_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -57,10 +58,10 @@ class graphics_manager:
 
                 elif event.type == pygame.MOUSEBUTTONDOWN :
                     if event.button == 4:
-                        self.camera.move("z",-10)
+                        self.camera.move("z",-zpower)
 
                     elif event.button == 5:
-                        self.camera.move("z",10)
+                        self.camera.move("z",+zpower)
 
                     # print(self.camera.position)
 
@@ -91,26 +92,26 @@ class graphics_manager:
 
 
             # self.tester_rectangle.rotate("z", 1)
-            # self.tester_rectangle.rotate("y", 1)
+            # self.tester_mesh.rotate("y", 5)
             # self.tester_rectangle.rotate("x", 1)
             #
             # self.tester_rectangle.draw_faces(self.window, self.camera.position,orthogonal=False)
-            self.tester_mesh.rotate("y",5)
-            # self.tester_mesh.rotate("x",5)
+            # self.tester_mesh.rotate("y",5)
+            # self.tester_mesh2.rotate("x",5)
 
-            # self.tester_mesh2.rotate("y",5)
+            # self.tester_mesh2.rotate("y",1)
             # self.tester_mesh2.rotate("x",5)
 
             # self.tester_mesh2.rotate("x",2)
 
-            # self.tester_mesh2.draw_faces(self.window, self.camera.position, orthogonal = False)
-            self.tester_mesh.wireframe_draw(self.window, self.camera.position, orthogonal = False)
+            self.tester_mesh2.draw_faces(self.window, self.camera.position, orthogonal = False)
+            # self.tester_mesh.wireframe_draw(self.window, self.camera.position, orthogonal = False)
 
             pygame.display.update()
             self.window.fill(self.background_color)
 
 
-            print("Time took:",perf_counter()-s)
+            # print("Time took:",perf_counter()-s)
 
 # class cube:
 #     def __init__(self, center_x, center_y, center_z, side_length):
