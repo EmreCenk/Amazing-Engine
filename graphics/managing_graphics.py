@@ -44,8 +44,12 @@ class graphics_manager:
         # self.tester_mesh.move("x",-5)
         power_level = 1
         zpower = 1
-        while True:
-            # s = perf_counter()
+
+        x=0
+        total=0
+        while x<50:
+            x+=1
+            s = perf_counter()
             pygame.time.delay(self.delay_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -91,32 +95,19 @@ class graphics_manager:
                 self.camera.move("x",power_level)
 
 
-            # self.tester_rectangle.rotate("z", 1)
-            # self.tester_mesh.rotate("y", 5)
-            # self.tester_rectangle.rotate("x", 1)
-            #
-            # self.tester_rectangle.draw_faces(self.window, self.camera.position,orthogonal=False)
-            # self.tester_mesh.rotate("y",5)
-            # self.tester_mesh2.rotate("x",5)
-
-            # self.tester_mesh2.rotate("y",1)
-            # self.tester_mesh2.rotate("x",5)
-
-            # self.tester_mesh2.rotate("x",2)
 
             self.tester_mesh2.draw_faces(self.window, self.camera.position, orthogonal = False)
-            # self.tester_mesh.wireframe_draw(self.window, self.camera.position, orthogonal = False)
 
             pygame.display.update()
             self.window.fill(self.background_color)
 
+            total+=perf_counter()-s
 
-            # print("Time took:",perf_counter()-s)
+        # AVERAGE TIME IT TAKES TO "wireframe_draw" UTAH TEAPOT: 0.22753077799999993
 
-# class cube:
-#     def __init__(self, center_x, center_y, center_z, side_length):
-#         self.vertices = []
-#     def generate_coordinates(self, center_x, center_y, center_z, side_length):
+        # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT: 0.2826867440000001, 0.2819358000000001
+        # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT WITHOUT A SHADING FUNCTION: 0.24425682
+        print("AVERAGE:",total/x)
 
 
 if __name__ == '__main__':
