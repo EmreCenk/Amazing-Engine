@@ -80,12 +80,14 @@ def normalized(v):
     # 8 operations
 
     mag = magnitude(v) # 5 ops
-    try:
-        return [
-            v[0]/mag,v[1]/mag,v[2]/mag
-        ]
-    except ZeroDivisionError:
-        return [0,0,0]
+
+    if mag == 0:
+        return [0, 0, 0]
+
+    return [
+        v[0]/mag,v[1]/mag,v[2]/mag
+    ]
+
 
 def normalize_triangle_vertices(triangle_vertices):
     #24 operations
@@ -123,14 +125,12 @@ def get_normal(triangle_vertices):
 
 
 
-def is_visible(triangle_vertices, camera_position):
-    #62 operations
+def is_visible(translated_and_normalized_triangle_vertices, camera_position):
+    #29 operations
 
-    new_triangle_vertices = translate_triangle_vertices(triangle_vertices,camera_position) # 9 operations
 
-    new_triangle_vertices = normalize_triangle_vertices(new_triangle_vertices) # 24 operations
     new_camera_position = normalized(camera_position) # 8 operations
-    normal = get_normal(new_triangle_vertices) # 15 operations
+    normal = get_normal(translated_and_normalized_triangle_vertices) # 15 operations
 
 
     if dot_product(normal,new_camera_position)>0: #6 operations
