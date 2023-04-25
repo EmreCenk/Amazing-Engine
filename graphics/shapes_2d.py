@@ -1,14 +1,17 @@
 
 import pygame
+from pygame.draw import line
+
 from Mathematical_Functions.projecting import project_3d_point_to_2d,translate
 from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices
 from constants import conversion
 from Mathematical_Functions.shading import get_color
 
 pygame.font.init()
+font = pygame.font.Font(None, 50)  # Setting the font
+
 
 class shape:
-    font = pygame.font.Font(None, 50)  # Setting the font
 
     def __init__(self,color):
         self.color = color
@@ -20,6 +23,7 @@ class shape:
     def wireframe_draw(self,window,camera_position,orthogonal=False):
         height = window.get_height()
         width = window.get_width()
+
         for edge in self.edges:
             p1=project_3d_point_to_2d(edge[0],width,height,camera_position,orthogonal)
             p2=project_3d_point_to_2d(edge[1],width,height,camera_position,orthogonal)
@@ -29,11 +33,10 @@ class shape:
 
 
     def draw_faces(self,window,camera_position,orthogonal=False):
-        print(len(self.triangles))
-        for triangle in self.triangles: # 121 operations to compute the coordinates of a single triangle
+        for triangle in self.triangles: # 130 operations to compute the coordinates of a single triangle
             if triangle.is_visible(camera_position): # 62 operations
 
-                new_color = get_color(triangle,camera_position) # 29 operations
+                new_color = get_color(triangle,camera_position) # 38 operations
                 coordiantes = triangle.get_projected_coordinates(camera_position = camera_position, orthogonal =
                 orthogonal) # 30 operations
 
@@ -47,7 +50,7 @@ class shape:
             prompt = str(self.vertices.index(vertex) + 1 )
             asdf = project_3d_point_to_2d(vertex, width,height,camera_position,orthogonal)
             pygame.draw.circle(window, "white", asdf, 3)
-            prompt_surface = self.font.render(prompt, True, (255, 255, 255))
+            prompt_surface = font.render(prompt, True, (255, 255, 255))
 
 
             window.blit(prompt_surface, asdf)
@@ -132,6 +135,7 @@ class triangle(shape):
                           camera_position = camera_position)
 
     def get_centroid(self):
+        # 9 operations
         return (
             (self.v1[0] + self.v2[0] + self.v3[0]) / 3,
             (self.v1[1] + self.v2[1] + self.v3[1]) / 3,

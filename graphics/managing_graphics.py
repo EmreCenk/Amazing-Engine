@@ -37,9 +37,9 @@ class graphics_manager:
         # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
         #
         #                                               )
-
-        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        # self.tester_mesh = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj")
+        #
+        # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
+        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/sphere_5_scaled.obj")
         # self.tester_mesh2.move("x",5)
         # self.tester_mesh.move("x",-5)
         power_level = 1
@@ -50,7 +50,6 @@ class graphics_manager:
         while x<50:
             x+=1
             s = perf_counter()
-            pygame.time.delay(self.delay_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -96,19 +95,36 @@ class graphics_manager:
 
 
 
-            self.tester_mesh2.draw_faces(self.window, self.camera.position, orthogonal = False)
+            self.tester_mesh2.wireframe_draw(self.window, self.camera.position)
 
             pygame.display.update()
             self.window.fill(self.background_color)
 
-            total+=perf_counter()-s
+            time_took_for_frame = perf_counter()-s
 
-        # AVERAGE TIME IT TAKES TO "wireframe_draw" UTAH TEAPOT: 0.22753077799999993
+            self.proper_delay(time_took_for_frame)
+
+            total += perf_counter()-s
+
+
+
+
+
+        # AVERAGE TIME IT TAKES TO "wireframe_draw" (perspective projection) UTAH TEAPOT: 0.22753077799999993
+        # AVERAGE TIME IT TAKES TO "wireframe_draw" (orthogonal projection) UTAH TEAPOT: 0.155137514
+
+        # AVERAGE TIME IT TAKES TO "wireframe_draw" (perspective projection), delay_time = 0, utah teapot,
+        # time per frame: 0.16953308399999995
 
         # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT: 0.2826867440000001, 0.2819358000000001
         # AVERAGE TIME IT TAKES TO "draw_faces" UTAH TEAPOT WITHOUT A SHADING FUNCTION: 0.24425682
         print("AVERAGE:",total/x)
 
+    def proper_delay(self, frame_time):
+        if frame_time >= self.delay_time:
+            return None
+
+        pygame.time.delay(int(self.delay_time-frame_time*1000)) # multiply by 1000 to convert to milliseconds
 
 if __name__ == '__main__':
     a = graphics_manager(500,500,delay_time=50)
