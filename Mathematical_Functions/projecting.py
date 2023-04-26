@@ -7,6 +7,22 @@ def convert_result(x,y,s_width,s_height):
     return [x+s_width/2,y+s_height/2]
 
 
+def efficient_perspective_projection(translated_point,screen_width,screen_height):
+    # 6 operations
+
+    d=500
+    return convert_result(d*translated_point[0]/translated_point[2],
+                          d*translated_point[1]/translated_point[2],
+                          screen_width,
+                          screen_height)
+def efficient_triangle_projection(translated_triangle_vertices, screen_width, screen_height):
+    #18 operations
+    return (efficient_perspective_projection(translated_triangle_vertices[0],screen_width,screen_height,),
+            efficient_perspective_projection(translated_triangle_vertices[1],screen_width,screen_height,),
+            efficient_perspective_projection(translated_triangle_vertices[2],screen_width,screen_height,),
+            )
+
+
 def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orthogonal=False):
     # 10 operations
 
@@ -18,11 +34,11 @@ def project_3d_point_to_2d(point,screen_width,screen_height,camera_position,orth
     x,y,z = translate(point,camera_position) # 3 operations
 
 
-    scale=500
+    d=500
 
     #projected coordinates: ( 6 operations )
-    return convert_result(scale*x/z,
-                          scale*y/z,
+    return convert_result(d*x/z,
+                          d*y/z,
                           screen_width,
                           screen_height)
 def project_triangle(v1,v2,v3,screen_width,screen_height,camera_position):
