@@ -14,8 +14,8 @@ Before exporting, inside the geometry settings,  uncheck all of the boxes except
 The shape class is the parent class of all 3D classes.
 When you are using the engine as a user, you will almost never need to directly 
 interact with the shape class.
-Instead, you will interact with the functions that it provides. 
-#####Universal Functions for all 3D objects:
+Instead, you will interact with the functions that all 3D objects inherit from this class. 
+####Universal Functions for all 3D objects:
 
 
 #### Using the  obj_mesh class:
