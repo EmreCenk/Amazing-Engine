@@ -50,7 +50,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<100:
+        while x<500:
             x+=1
 
             s = perf_counter()
