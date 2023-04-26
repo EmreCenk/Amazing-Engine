@@ -41,10 +41,12 @@ class graphics_manager:
 
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
         self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
+
         # self.tester_mesh2.move("x",-10)
         self.tester_mesh2.rotate("x",-20)
         self.tester_mesh2.rotate("y",-20)
-        # self.tester_mesh2.move("x",5)
+
+        # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
         power_level = 1
         zpower = 1
@@ -101,6 +103,7 @@ class graphics_manager:
 
             # self.tester_mesh2.rotate("y",1)
             self.tester_mesh2.draw_faces(self.window, self.camera.position)
+
             # self.tester_mesh2.rotate("x",2)
             # self.tester_mesh2.rotate("y",2)
 
