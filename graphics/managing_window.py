@@ -1,5 +1,7 @@
 
 import pygame
+from pygame import gfxdraw
+
 from typing import Sequence
 
 class window_manager:
@@ -30,7 +32,8 @@ class window_manager:
             self.pixels[index[0]][index[1]] = float("inf") # resets the z value of the pixel
 
     @staticmethod
-    def draw_line(x1, y1, x2, y2):
+    def draw_line(window, x1, y1, x2, y2, color = (255,255,255)):
+
         # An implementation of Bresenham's Line algorithm
         # The algorithm basically travels through all integer x coordinates between the two points and finds the
         # corresponding y value by keeping track of the y difference between points
@@ -41,7 +44,8 @@ class window_manager:
         y = y1
         for x in range(x1, x2 + 1):
 
-            # DRAW TO THE PIXEL (X,Y)
+            gfxdraw.pixel(window, x, y, color)
+
 
 
             # Add slope to increment angle formed
@@ -74,9 +78,9 @@ class window_manager:
                 arr[1], arr[0] = arr[0], arr[1]
 
 
-    def draw_triangle(self, v1: Sequence[float,float,float],
-                            v2: Sequence[float,float,float],
-                            v3: Sequence[float,float,float],
+    def draw_triangle(self, v1: Sequence,
+                            v2: Sequence,
+                            v3: Sequence,
                             v1_distance: float, v2_distance: float, v3_distance: float):
 
         """ This function rasterizes the given triangle and draws each pixel onto the screen.
@@ -89,6 +93,20 @@ class window_manager:
 
 
 if __name__ == '__main__':
-    screen = window_manager(1920,1080)
-    screen.clear_z_buffer()
+    screen = window_manager(500,500)
+    pygame.init()
+
+    window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
+
+    screen.draw_line(window, 100, 100, 400, 10 )
+
+    while 1:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                break
+        pygame.display.update()
+
 
