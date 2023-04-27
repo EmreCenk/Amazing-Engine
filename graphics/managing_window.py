@@ -16,7 +16,7 @@ class window_manager:
 
 
         self.pixels = []
-        self.changed_pixels = set() #We store the pixels that were changed so that the program doesn't loop through
+        self.changed_pixels = {} #We store the pixels that were changed so that the program doesn't loop through
         # every single pixel when resetting z buffer
 
         for i in range(self.height):
@@ -31,16 +31,23 @@ class window_manager:
         for index in self.changed_pixels:
             self.pixels[index[0]][index[1]] = float("inf") # resets the z value of the pixel
 
-        self.changed_pixels = set()
+        self.changed_pixels = {}
 
     def draw_proper_pixel(self, window,  x, y, d, color = (255,255,255)):
-        if self.pixels[x][y]<d:
+        global k
+        k+=1
+        if self.pixels[x][y]<=d:
             #There is already a pixel that is closer to the camera
             return None
 
-        self.changed_pixels.add((x,y))
+        self.changed_pixels[(x,y)] = color
+        self.pixels[x][y] = d
 
-        gfxdraw.pixel(window, x, y, color)
+
+    def render_all_pixels(self):
+
+        for index in self.changed_pixels:
+            gfxdraw.pixel(window, index[0], index[1], self.changed_pixels[index])
 
 
     def draw_line(self, window, x1, y1, x2, y2, color = (255,255,255)):
@@ -55,11 +62,11 @@ class window_manager:
         y = y1
         for x in range(int(x1), int(x2) + 1):
             self.draw_proper_pixel(window, x, y , 0)
-            sn = sn + mn
-            if (sn >= 0):
-                y = y + 1
-                sn = sn - 2 * (x2 - x1)
-    def fill_top(self,v1,v2,v3):
+            sn += mn
+            if sn >= 0:
+                y += 1
+                sn -= 2 * (x2 - x1)
+    def fill_top(self,window, v1, v2, v3):
         inverse_slope_1 = (v3[0] - v1[0]) / (v3[1] - v1[1])
         inverse_slope_2 = (v3[0] - v2[0]) / (v3[1] - v2[1])
         curx1 = v3[0]
@@ -122,20 +129,23 @@ class window_manager:
 
 
 if __name__ == '__main__':
+    k=0
+    from time import perf_counter
     screen = window_manager(500,500)
     pygame.init()
 
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 
-    screen.fill_top([100,100], [200,100], [300,200])
+    #PERFORMANCE TEST:
+    s = perf_counter()
 
+    for i in range(1000):
+        screen.fill_top(window, [100,100], [200,100], [300,200])
+
+    screen.render_all_pixels()
+    print(perf_counter()-s)
+    print(k)
     while 1:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                break
         pygame.display.update()
 
 
