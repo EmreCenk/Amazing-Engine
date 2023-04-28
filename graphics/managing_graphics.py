@@ -76,9 +76,11 @@ class graphics_manager:
         # self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color=(255,255,0)
 
         #                                               )
-        self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
+        self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,0,255))
 
-        self.tester_rectangle.move("z",10)
+        self.tester_rectangle.move("x",10)
+
+        self.tester_mesh = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (255,255,0))
         # self.tester_rectangle2 = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color="white"
         #
         #                                               )
@@ -86,12 +88,14 @@ class graphics_manager:
 
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
         self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
+        self.tester_mesh2.move("x",-10)
 
         # self.tester_mesh2.move("x",-10)
         self.tester_mesh2.rotate("x",-20 * self.delta_time)
         self.tester_mesh2.rotate("y",-20 * self.delta_time)
         
         self.models.extend([self.tester_mesh2,
+                            self.tester_mesh,
                             self.tester_rectangle])
         # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
@@ -151,6 +155,7 @@ class graphics_manager:
 
 
             self.tester_mesh2.rotate("y",1)
+            self.tester_rectangle.rotate("y",1)
             # self.tester_mesh2.draw_faces(self.window, self.camera.position)
             self.render_frame()
             # self.tester_mesh2.rotate("x",2)
