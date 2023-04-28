@@ -14,7 +14,6 @@ def get_color(triangle, normalized_light_source, rgb_colour = (255, 255, 255)):
     dist = 1 - (dist / 2) # 2 operations
 
 
-
     # 3 operations:
     return (
         rgb_colour[0] * dist,
