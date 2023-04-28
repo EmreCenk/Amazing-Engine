@@ -72,3 +72,9 @@ def distance(p1,p2):
         (p1[1] - p2[1]) ** 2 +
         (p1[2] - p2[2]) ** 2
     )
+
+def magnitude(v):
+    # 5 operations
+    return sqrt(
+        v[0]**2 + v[1]**2 + v[2]**2
+    )
