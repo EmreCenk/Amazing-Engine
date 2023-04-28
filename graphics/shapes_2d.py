@@ -1,7 +1,11 @@
 
+import pyximport
+pyximport.install()
+# from cythonized_math.cython_coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+
 import pygame
 from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 from constants import conversion
 from Mathematical_Functions.shading import get_color
 
