@@ -40,12 +40,12 @@ class graphics_manager:
 
 
         # self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj")
-        self.tester_mesh2 = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
+        self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
 
         # self.tester_mesh2.move("x",-10)
         self.tester_mesh2.rotate("x",-20)
         self.tester_mesh2.rotate("y",-20)
-
+        
         # self.tester_mesh2.move("x",5)a
         # self.tester_mesh.move("x",-5)
         power_level = 1
@@ -134,6 +134,8 @@ class graphics_manager:
         #AFTER OPTIMIZATIONS 'draw_faces' TIME: 0.196687804
         #When plugged in: 0.12054579799999997
 
+        #When I run the code from vscode, the time went down to 0.06948835800000003 (~0.07 seconds per frame)
+
         print("AVERAGE:",total/x)
 
     def proper_delay(self, frame_time):
@@ -142,6 +144,3 @@ class graphics_manager:
 
         pygame.time.delay(int(self.delay_time-frame_time*1000)) # multiply by 1000 to convert to milliseconds
 
-if __name__ == '__main__':
-    a = graphics_manager(500,500,delay_time=50)
-    a.init_loop()
