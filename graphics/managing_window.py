@@ -137,13 +137,28 @@ if __name__ == '__main__':
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 
     #PERFORMANCE TEST:
-    s = perf_counter()
+    
+    pixels = pygame.PixelArray(window)
+    a=10
+    total=0
+    for k in range(a):
+        s = perf_counter()
 
-    for i in range(500*500):
-        gfxdraw.pixel(window,0,0,(255,255,255))
+        for i in range(500):
+            for j in range(500):
+                pixels[i][j] = 1000
 
+        total+=perf_counter()-s
+                # gfxdraw.pixel(window,i,j,(255,255,255))
+
+    #gfxdraw.pixel takes around 0.2 seconds for 250,000 pixels
+    #pygame.surfarray.pixels3d takes 0.3 seconds
+    #pygame.PixelArray(window) takes 0.096 seconds (~0.1)
+    #pygame.draw.circle takes 0.3 seconds
+
+    #with cython pixelarray takes 0.02 seconds
     screen.render_all_pixels()
-    print('drawing them:',perf_counter()-s)
+    print('on average:',total/a)
     print(k)
     while 1:
         pygame.display.update()

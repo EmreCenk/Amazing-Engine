@@ -3,17 +3,18 @@ try:
     #Try importing the cython files:
     # import pyximport
     # pyximport.install()
-    from cythonized_math.cython_coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+    from cythonized_math.cython_coordinate_system_3d import distance,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
     from cythonized_math.cythonized_projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
     print("Cython implementation is running")
 
 except Exception as E:
-
+    print("oh no:",E)
+    
     print("Python implementation is running.\nPlease install Cython to significantly increase the fps"
           "\nIf Cython is already installed, try running from the command line")
     #If the cython files don't work, then use the pure pyhton implementations
     from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-    from Mathematical_Functions.coordinate_system_3d import rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+    from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 
 import pygame
 from constants import conversion
@@ -46,20 +47,26 @@ class shape:
 
     def draw_faces(self,window,camera_position,orthogonal=False):
         normalized_camera = normalized(camera_position)
+        to_draw = []
+        for triangle in self.triangles:
 
-        for triangle in self.triangles: # 102 operations to compute the coordinates of a single triangle
+            translated_vert = triangle.get_translated(camera_position)
+            if is_visible(translated_vert,normalized_camera):
+                to_draw.append(
+                    [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
+                )
 
-            translated_vert = triangle.get_translated(camera_position) # 9 operations
-            if is_visible(translated_vert,normalized_camera): # 45 operations
+        to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
-                new_color = get_color(triangle,
-                                      normalized_light_source=normalized_camera
-                                      , rgb_colour = self.color) # 30 operations
+        for liste in to_draw:
+            new_color = get_color(liste[0],
+                                    normalized_light_source=normalized_camera
+                                    , rgb_colour = self.color)
 
-                w, h = pygame.display.get_window_size()
-                coordiantes = efficient_triangle_projection(translated_vert,w,h) #18 operations
+            w, h = pygame.display.get_window_size()
+            coordiantes = efficient_triangle_projection(liste[2],w,h)
 
-                pygame.draw.polygon(window,points=coordiantes,color=new_color)
+            pygame.draw.polygon(window,points=coordiantes,color=new_color)
 
     def label_wireframe_corners(self,window,camera_position, orthogonal = False):
         height = window.get_height()
