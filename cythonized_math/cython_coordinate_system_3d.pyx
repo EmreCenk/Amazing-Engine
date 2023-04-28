@@ -20,3 +20,11 @@ cpdef translate(point, camera_position):
     z-=d
 
     return x,y,z
+
+cpdef translate_triangle_vertices(triangle_vertices, camera_position):
+    #has 9 operations
+    return [
+        translate(triangle_vertices[0],camera_position),
+        translate(triangle_vertices[1],camera_position),
+        translate(triangle_vertices[2],camera_position)
+    ]
