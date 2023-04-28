@@ -139,11 +139,11 @@ if __name__ == '__main__':
     #PERFORMANCE TEST:
     s = perf_counter()
 
-    for i in range(1000):
-        screen.fill_top(window, [100,100], [200,100], [300,200])
+    for i in range(500*500):
+        gfxdraw.pixel(window,0,0,(255,255,255))
 
     screen.render_all_pixels()
-    print(perf_counter()-s)
+    print('drawing them:',perf_counter()-s)
     print(k)
     while 1:
         pygame.display.update()
