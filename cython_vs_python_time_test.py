@@ -2,22 +2,22 @@
 import pyximport
 pyximport.install()
 from time import perf_counter
-from cythonized_math.cython_coordinate_system_3d import magnitude as ma_cyth
-from Mathematical_Functions.coordinate_system_3d import magnitude
-function_cython = ma_cyth
-function_python = magnitude
+from cythonized_math.cython_coordinate_system_3d import get_normal as ncyth
+from Mathematical_Functions.coordinate_system_3d import get_normal
+function_cython = ncyth
+function_python = get_normal
 
-a = [6,7,8]
+a = [[6,7,8],[6,7,8],[6,7,8]]
 b = [1,2,3]
 c = 62
 
 s = perf_counter()
-tim = 100000
+tim = 10000000
 
 for i in range(tim):
     pass
 
-intime = 0
+intime = perf_counter() - s
 
 s = perf_counter()
 
