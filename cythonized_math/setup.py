@@ -1,4 +1,5 @@
 import pyximport
 pyximport.install()
-from cython_coordinate_system_3d import translate as trcyth
-from Mathematical_Functions.coordinate_system_3d import translate
+from cython_coordinate_system_3d import rotate
+
+print(rotate([1,2,3], "x", 50))
