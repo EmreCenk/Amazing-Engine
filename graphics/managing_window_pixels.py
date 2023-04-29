@@ -1,7 +1,7 @@
 
 import pygame
 from pygame import gfxdraw
-
+import numpy
 from typing import Sequence
 
 class WindowManager:
@@ -52,11 +52,12 @@ class WindowManager:
 
 
     @staticmethod
-    def sort_v_by_ascending(arr: Sequence) -> None:
+    def sort_v_by_ascending(arr: Sequence) -> Sequence:
 
         # basically an insertions sort
         # This method uses as little operations as possible
-        # 3 operations
+        # This function also changes the array in place, so be very carefull when using this function
+
         if (arr[1] < arr[0]):
             arr[0], arr[1] = arr[1], arr[0]
 
@@ -111,8 +112,8 @@ class WindowManager:
             current_x_1 += inverse_m1
             current_x_2 += inverse_m2
  
-    def draw_triangle(self, v1: Sequence,v2: Sequence,v3: Sequence,
-                            v1_distance: float, v2_distance: float, v3_distance: float):
+    def draw_triangle(self,surface, v1: Sequence,v2: Sequence,v3: Sequence,
+                            v1_distance: float, v2_distance: float, v3_distance: float) -> None: 
 
 
         """ This function rasterizes the given triangle and draws each pixel onto the screen.
@@ -120,7 +121,35 @@ class WindowManager:
         The algorithm basically splits the triangle into 2 triangles where each triangle has one side parallel to the x axis."""
 
 
+        v1, v2, v3 = self.sort_v_by_ascending([v1,v2,v3])
+
+        #Now that they have been sorted, v1.y<v2.y<v3.y
+
+
+        #If there are any horizontal edges, we treat them as special cases:
+        if v3[1] == v2[1]:
+            self.flat_fill_top(surface, v2, v3 , v1)
+            return 
         
+        if v1[1] == v2[1]:
+            self.flat_fill_bottom(surface, v1, v2, v3)
+            return 
+
+        # General case is derived by splitting the triangle into two different triangles by drawing a horizontal 
+        # line from v2 to the line v1-v3
+        m = (v1[1]-v3[1]) / (v1[0]-v3[0])
+        b = v1[1] - m*v1[0]
+        y = v2[1]
+        v4 = [ (y-b)/m, y ]
+
+        self.flat_fill_top(surface, v2,v4,v1)
+        self.flat_fill_bottom(surface, v2,v4,v3)
+
+        
+
+
+        
+            
 
 
 if __name__ == '__main__':
@@ -139,19 +168,40 @@ if __name__ == '__main__':
     #pygame.draw.circle takes 0.3 seconds
 
     #with cython pixelarray takes 0.02 seconds
+    asdf = {True:0,False:0}
+    for k in range(1):
+        total = 0
+        totalpy = 0
+        s = perf_counter()
+        screen.draw_triangle(window, [300,323],[123,123], [400,400], 0, 0, 0)
+        
 
+        total+=perf_counter()-s
+        # print("SETTING THEM CUSTOM:",perf_counter()-s)
+        s = perf_counter()
+        screen.render_all_pixels()
+        total+=perf_counter()-s
+        # print("RENDERING:",perf_counter()-s)
+        
 
+        s= perf_counter()
+        pygame.draw.polygon(window,(255,0,0),points = [ [300,323],[123,123], [400,400]] )
+        totalpy+=perf_counter()-s
+        print("pygame SETTING THEM:",perf_counter()-s)
+        
+        s= perf_counter()
+        pygame.display.update()
+        totalpy+=perf_counter()-s
+        # print("pygame RENDERING:",perf_counter()-s)
+            
+        # print()
+        asdf[total<=totalpy]+=1
+
+    print(asdf)
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
                 break
-
-        screen.flat_fill_bottom(window, [300,100],[100,100], [400,400])
-        screen.render_all_pixels()
-        pygame.display.update()
-
-        pygame.time.delay(100)
-        pygame.draw.polygon(window,(255,0,0),points = [ [300,100],[100,100], [400,400]] )
-
+        
