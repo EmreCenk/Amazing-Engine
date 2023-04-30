@@ -1,4 +1,3 @@
-
 import pygame
 from pygame import gfxdraw
 import numpy
@@ -7,7 +6,10 @@ from typing import Sequence
 class WindowManager:
     #This class implements a z buffer
 
-    def __init__(self, width:int = None, height: int = None) :
+    def __init__(self, width:int = None, height: int = None, background_color: Sequence = None) :
+        if background_color is None:
+            background_color = (0,0,0)
+
         if width is None or height is None:
             self.width, self.height = pygame.display.get_window_size() #Getting the pixel width and height of the curent
             # window
@@ -15,33 +17,36 @@ class WindowManager:
             self.width, self.height = width, height
 
 
-        self.pixels = []
-        self.changed_pixels = {} #We store the pixels that were changed so that the program doesn't loop through
+        self.pixel_depths = []
+        self.changed_pixels = [] #We store the pixels that were changed so that the program doesn't loop through
         # every single pixel when resetting z buffer
 
         for i in range(self.height):
             current = []
+            current2 = []
             for j in range(self.width):
                 current.append(float("inf")) #set all the pixel values to infinity,
-
-            self.pixels.append(current)
+                current2.append(background_color)
+            self.pixel_depths.append(current)
+            self.changed_pixels.append(current2)
+            
 
 
     def clear_z_buffer(self):
         for index in self.changed_pixels:
-            self.pixels[index[0]][index[1]] = float("inf") # resets the z value of the pixel
+            self.pixel_depths[index[0]][index[1]] = float("inf") # resets the z value of the pixel
 
         self.changed_pixels = {}
 
     def draw_proper_pixel(self, window,  x, y, d, color = (255,255,255)):
         global k
         k+=1
-        if self.pixels[x][y]<=d:
+        if self.pixel_depths[x][y]<=d:
             #There is already a pixel that is closer to the camera
             return None
 
         self.changed_pixels[(x,y)] = color
-        self.pixels[x][y] = d
+        self.pixel_depths[x][y] = d
 
 
     def render_all_pixels(self):
