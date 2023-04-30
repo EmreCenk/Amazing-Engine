@@ -126,13 +126,14 @@ class WindowManager:
             current_x_2 += inverse_m2
  
     def draw_triangle(self,surface, v1: Sequence,v2: Sequence,v3: Sequence,
-                            v1_distance: float, v2_distance: float, v3_distance: float) -> None: 
+                            v1_distance: float, v2_distance: float, v3_distance: float,
+                            color = (255,255,255)) -> None: 
 
 
         """ This function rasterizes the given triangle and draws each pixel onto the screen.
         The pixel is not drawn if there is anything else in that pixel which is closer.
         The algorithm basically splits the triangle into 2 triangles where each triangle has one side parallel to the x axis."""
-
+        #FIXME: The class/function does not work when implemented into managing_graphics
 
         v1, v2, v3 = self.sort_v_by_ascending([v1,v2,v3])
 
@@ -141,11 +142,11 @@ class WindowManager:
 
         #If there are any horizontal edges, we treat them as special cases:
         if v3[1] == v2[1]:
-            self.flat_fill_top(surface, v2, v3 , v1)
+            self.flat_fill_top(surface, v2, v3 , v1, color)
             return 
         
         if v1[1] == v2[1]:
-            self.flat_fill_bottom(surface, v1, v2, v3)
+            self.flat_fill_bottom(surface, v1, v2, v3, color)
             return 
 
         # General case is derived by splitting the triangle into two different triangles by drawing a horizontal 
@@ -153,10 +154,14 @@ class WindowManager:
         m = (v1[1]-v3[1]) / (v1[0]-v3[0])
         b = v1[1] - m*v1[0]
         y = v2[1]
-        v4 = [ (y-b)/m, y ]
+        try:
+            v4 = [ (y-b)/m, y ]
+        except ZeroDivisionError:
+            gfxdraw.pixel(surface, round(v1[0]),round(v1[1]), color)
+            return 
 
-        self.flat_fill_top(surface, v2,v4,v1)
-        self.flat_fill_bottom(surface, v2,v4,v3)
+        self.flat_fill_top(surface, v2,v4,v1, color)
+        self.flat_fill_bottom(surface, v2,v4,v3, color)
 
         
 
@@ -182,32 +187,31 @@ if __name__ == '__main__':
 
     #with cython pixelarray takes 0.02 seconds
     asdf = {True:0,False:0}
-    for k in range(1):
-        total = 0
-        totalpy = 0
-        s = perf_counter()
-        screen.draw_triangle(window, [300,323],[123,123], [400,400], 0, 0, 0)
-        
+    total = 0
+    totalpy = 0
+    s = perf_counter()
+    screen.draw_triangle(window, [300,323],[123,123], [400,400], 0, 0, 0, (255,255,0))
+    
 
-        total+=perf_counter()-s
-        # print("SETTING THEM CUSTOM:",perf_counter()-s)
-        s = perf_counter()
-        total+=perf_counter()-s
-        # print("RENDERING:",perf_counter()-s)
-        
+    total+=perf_counter()-s
+    # print("SETTING THEM CUSTOM:",perf_counter()-s)
+    s = perf_counter()
+    total+=perf_counter()-s
+    print("RENDERING:",perf_counter()-s)
+    
 
-        s= perf_counter()
-        # pygame.draw.polygon(window,(255,0,0),points = [ [300,323],[123,123], [400,400]] )
-        totalpy+=perf_counter()-s
-        print("pygame SETTING THEM:",perf_counter()-s)
+    s= perf_counter()
+    # pygame.draw.polygon(window,(255,0,0),points = [ [300,323],[123,123], [400,400]] )
+    totalpy+=perf_counter()-s
+    print("pygame SETTING THEM:",perf_counter()-s)
+    
+    s= perf_counter()
+    pygame.display.update()
+    totalpy+=perf_counter()-s
+    # print("pygame RENDERING:",perf_counter()-s)
         
-        s= perf_counter()
-        pygame.display.update()
-        totalpy+=perf_counter()-s
-        # print("pygame RENDERING:",perf_counter()-s)
-            
-        # print()
-        asdf[total<=totalpy]+=1
+    # print()
+    asdf[total<=totalpy]+=1
 
     print(asdf)
     while 1:
