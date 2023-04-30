@@ -27,7 +27,9 @@ class graphics_manager:
         self.width = width_window
         self.camera = camera( z = 20)
         self.delta_time = 1 #inital value. It gets updated every frame
-        self.Window_Manager = WindowManager(width_window, height_window)
+        self.start_engine()
+
+        self.Window_Manager = WindowManager(self.window, width_window, height_window)
         self.models = []
 
         
@@ -45,30 +47,32 @@ class graphics_manager:
 
                 translated_vert = triangle.get_translated(camera_position)
                 if is_visible(translated_vert,normalized_camera):
-                    to_draw.append(
-                        [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
-                    )
-
-        to_draw.sort(key = lambda tri: tri[1], reverse=True)
-
-        for liste in to_draw:
-            new_color = get_color(liste[0],
-                                    normalized_light_source=normalized_camera
-                                    , rgb_colour = liste[0].color)
-
-            w, h = pygame.display.get_window_size()
-            coordiantes = efficient_triangle_projection(liste[2],w,h)
-
-            # pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
-            self.Window_Manager.draw_triangle(self.window, coordiantes[0],coordiantes[1],coordiantes[2],0, 0, 0,new_color)
+                    liste = ( triangle, distance(triangle.get_centroid(),camera_position),translated_vert)
                     
+                    new_color = get_color(liste[0],
+                                            normalized_light_source=normalized_camera
+                                            , rgb_colour = liste[0].color)
+
+                    w, h = pygame.display.get_window_size()
+                    coordiantes = efficient_triangle_projection(liste[2],w,h)
+
+                    # pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+                    self.Window_Manager.draw_triangle(self.window,
+                    coordiantes[0],
+                    coordiantes[1],
+                    coordiantes[2],
+                    liste[1], #distance was already calculated above
+                    color = new_color)
+                            
+
+        self.Window_Manager.clear_z_buffer(self.background_color)
+
 
     def init_loop(self, functions_to_call=None):
 
         if functions_to_call is None:
             functions_to_call = []
 
-        self.start_engine()
 
         shift = 0
         side = 5
@@ -119,8 +123,8 @@ class graphics_manager:
                     quit()
                     break
                 elif event.type == pygame.VIDEORESIZE:
-                    self.width, self.height = pygame.display.get_window_size()
-                    print(self.width,self.height)
+                    self.Window_Manager.width, self.Window_Manager.height = self.width, self.height = pygame.display.get_window_size()
+                    
 
                 elif event.type == pygame.MOUSEBUTTONDOWN :
                     if event.button == 4:

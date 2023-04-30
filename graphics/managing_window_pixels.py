@@ -1,12 +1,15 @@
 import pygame
-from pygame import gfxdraw
-import numpy
+from numpy import full
 from typing import Sequence
+import pygame
+import pyximport
+pyximport.install()
+from cythonized_graphics.pixels import clear_z_buffer, efficient_clear_z_buffer, fill_screen
 
 class WindowManager:
     #This class implements a z buffer
 
-    def __init__(self, width:int = None, height: int = None, background_color: Sequence = None) :
+    def __init__(self,surface, width:int = None, height: int = None, background_color: Sequence = None) :
         if background_color is None:
             background_color = (0,0,0)
 
@@ -15,44 +18,43 @@ class WindowManager:
             # window
         else:
             self.width, self.height = width, height
+        
+        self.pixel_depths = full((self.width, self.height),float("inf"))
 
+        self.pixels = pygame.surfarray.pixels3d(surface)
+        
 
-        self.pixel_depths = []
         self.changed_pixels = [] #We store the pixels that were changed so that the program doesn't loop through
         # every single pixel when resetting z buffer
 
-        for i in range(self.height):
-            current = []
-            current2 = []
-            for j in range(self.width):
-                current.append(float("inf")) #set all the pixel values to infinity,
-                current2.append(background_color)
-            self.pixel_depths.append(current)
-            self.changed_pixels.append(current2)
-            
+        # for i in range(self.height):
+        #     current = []
+        #     for j in range(self.width):
+        #         current.append(0) #set all the pixel values to infinity,
+        #     self.changed_pixels.append(current)
+    
+
+    def draw_pixel(self, x:Sequence, y:Sequence, color:Sequence, depth:int = 0):
+        # print(len(self.pixel_depths),len(self.pixel_depths[0]), x, y)
+        if self.pixel_depths[x][y]<depth:
+            return 
+
+        self.pixel_depths[x][y] = depth
+        #This pixel is closer
+
+        self.pixels[x][y] = color
 
 
-    def clear_z_buffer(self):
-        for index in self.changed_pixels:
-            self.pixel_depths[index[0]][index[1]] = float("inf") # resets the z value of the pixel
-
-        self.changed_pixels = {}
-
-    def draw_proper_pixel(self, window,  x, y, d, color = (255,255,255)):
-        global k
-        k+=1
-        if self.pixel_depths[x][y]<=d:
-            #There is already a pixel that is closer to the camera
-            return None
-
-        self.changed_pixels[(x,y)] = color
-        self.pixel_depths[x][y] = d
+    def clear_z_buffer(self, background):
+        clear_z_buffer(self.pixel_depths,float("inf"))
 
 
-    def render_all_pixels(self):
 
-        for index in self.changed_pixels:
-            gfxdraw.pixel(window, index[0], index[1], self.changed_pixels[index])
+
+    # def render_all_pixels(self):
+
+    #     for index in self.changed_pixels:
+    #         self.draw_pixel(index[0], index[1], self.changed_pixels[index])
 
 
 
@@ -73,7 +75,7 @@ class WindowManager:
         return arr
 
 
-    def draw_horizontal_line(self, window, color, start_position: Sequence, end_position: Sequence, ):
+    def draw_horizontal_line(self, window, color, distance:int, start_position: Sequence, end_position: Sequence, ):
         # FIXME: This function does not always work
         
         if start_position[0]<end_position[0]:
@@ -82,11 +84,14 @@ class WindowManager:
             new_e_x, new_s_x = round(start_position[0]), round(end_position[0])
         
         y = round(start_position[1])
-        
-        for i in range(new_s_x, new_e_x+1):
-            gfxdraw.pixel(window, i, y, color)
+        if new_s_x<0:
+            new_s_x = 0
+        while new_s_x<new_e_x+1 and new_s_x<self.width:
+            self.draw_pixel(new_s_x, y, color, distance)
+            new_s_x += 1
 
-    def flat_fill_top(self, surface, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
+
+    def flat_fill_top(self, surface, distance: int, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
         
         """
         v1, v2: bottom left and bottom right corners of the triangle (in any order)
@@ -103,7 +108,6 @@ class WindowManager:
             inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
             inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
         except ZeroDivisionError:
-            print('ERROR1:',v1,v2,v3)
             return 
 
         current_x_1 = v1[0]
@@ -111,13 +115,13 @@ class WindowManager:
         current_y = v1[1]
 
         while current_y>v3[1]:
-            self.draw_horizontal_line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
+            self.draw_horizontal_line(surface,color,distance, (current_x_1, current_y), (current_x_2, current_y))
             current_y -= 1
             current_x_1 -= inverse_m1
             current_x_2 -= inverse_m2
 
         
-    def flat_fill_bottom(self, surface, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
+    def flat_fill_bottom(self, surface, distance:int, v1: Sequence, v2: Sequence, v3: Sequence, color:Sequence = (255,255,255)):
         """Goes through the pixels of a triangle which has a side paralel to the x axis.
         Assumes that the line v1-v2 is parralel to the x axis and v3[1]>v1[1]"""
         inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
@@ -128,7 +132,7 @@ class WindowManager:
         current_y = v1[1]
 
         while current_y<v3[1]:
-            self.draw_horizontal_line(surface,color, (current_x_1, current_y), (current_x_2, current_y))
+            self.draw_horizontal_line(surface,color,distance, (current_x_1, current_y), (current_x_2, current_y))
             current_y += 1
             current_x_1 += inverse_m1
             current_x_2 += inverse_m2
@@ -139,7 +143,7 @@ class WindowManager:
             round(v[0]), round(v[1])
         ]
     def draw_triangle(self,surface, v1: Sequence,v2: Sequence,v3: Sequence,
-                            v1_distance: float, v2_distance: float, v3_distance: float,
+                            distance:float,
                             color = (255,255,255)) -> None: 
 
 
@@ -156,11 +160,11 @@ class WindowManager:
 
         #If there are any horizontal edges, we treat them as special cases:
         if v3[1] == v2[1]:
-            self.flat_fill_top(surface, v2, v3 , v1, color)
+            self.flat_fill_top(surface,distance, v2, v3 , v1, color)
             return 
         
         if v1[1] == v2[1]:
-            self.flat_fill_bottom(surface, v1, v2, v3, color)
+            self.flat_fill_bottom(surface,distance, v1, v2, v3, color)
             return 
 
         # General case is derived by splitting the triangle into two different triangles by drawing a horizontal 
@@ -173,11 +177,10 @@ class WindowManager:
             b = v1[1] - (v1[0]*m)
             v4 = [ (y-b)/m, y ]
         except ZeroDivisionError:
-            print("ERROR2:",v1,v2,v3)
             v4 = [v1[0], y]
 
-        self.flat_fill_top(surface, v2,v4,v1, color)
-        self.flat_fill_bottom(surface, v2,v4,v3, color)
+        self.flat_fill_top(surface,distance, v2,v4,v1, color)
+        self.flat_fill_bottom(surface,distance, v2,v4,v3, color)
 
         
 
@@ -189,10 +192,10 @@ class WindowManager:
 if __name__ == '__main__':
     from random import randint
     from time import perf_counter
-    screen = WindowManager(500,500)
     pygame.init()
 
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
+    screen = WindowManager(window,500,500)
 
     # for i in range(2):
     #     a = [randint(0,500),randint(0,500)]
@@ -200,7 +203,7 @@ if __name__ == '__main__':
     #     c = [randint(0,500),randint(0,500)]
     #     col = [randint(0,255),randint(0,255),randint(0,255),]
     #     screen.draw_triangle(window, a,b,c, 0, 0, 0, col)
-    screen.draw_triangle(window,[250, 312], [225, 337], [250, 338] ,0, 0, 0, (255,0,0))
+    screen.draw_triangle(window,[250, 312], [225, 337], [250, 338] ,0, (255,0,0))
     #    screen.draw_triangle(window,[375, 203], [242, 272], [332, 346],0, 0, 0, (255,0,0))
 
     # pygame.draw.polygon(window, (255,0,255), [[250, 312], [225, 337], [250, 338]])
