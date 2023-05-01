@@ -2,6 +2,9 @@ import pygame
 from pygame import Surface
 from numpy import full, ndarray
 
+import pyximport
+pyximport.install()
+from pixels import clear_z_buffer, efficient_clear_z_buffer, fill_screen
 
 cdef class WindowManager:
     #This class implements a z buffer
@@ -30,16 +33,18 @@ cdef class WindowManager:
         self.pixels[x][y][1] = color[1]
         self.pixels[x][y][2] = color[2]
 
-        
-
+    cpdef clear_z_buffer(self,):
+        clear_z_buffer(self.pixel_depths,float("inf"))
     
-    cpdef clear_screen(self, unsigned char[:] new_color):
-        cdef int i = 0
-        cdef int j = 0
-        cdef int N = self.pixel_depths.shape[0]
-        cdef int K = self.pixel_depths.shape[1]
-        for i in range(N):
-            for j in range(K):
-                self.draw_pixel(i, j, new_color, 0)
+    # The following function was a test to see how long it would take to loop through an entire screen surface
+    # It takes around 0.002 seconds (210 fps)    
+    # cpdef clear_screen(self, unsigned char[:] new_color):
+    #     cdef int i = 0
+    #     cdef int j = 0
+    #     cdef int N = self.pixel_depths.shape[0]
+    #     cdef int K = self.pixel_depths.shape[1]
+    #     for i in range(N):
+    #         for j in range(K):
+    #             self.draw_pixel(i, j, new_color, 0)
 
-        print(self.pixels)
+    #     print(self.pixels[0][0][0])
