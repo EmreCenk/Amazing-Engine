@@ -3,7 +3,16 @@ import graphics.shapes_3d as sh3
 from graphics.camera import camera
 from graphics.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
-from graphics.managing_window_pixels import WindowManager
+import numpy as np
+try:
+    import pyximport
+    pyximport.install()
+    from cythonized_graphics.managing_pixels import WindowManager
+except Exception as E:
+    print("NO")
+# except ImportError:
+#     print("Could not import cython WinowManager. Python version is runningg. ")
+#     from graphics.managing_window_pixels import WindowManager
 try:
     #Try importing the cython files:
     # import pyximport
@@ -22,14 +31,17 @@ class graphics_manager:
 
     def __init__(self,  width_window , height_window, delay_time = 100, background_color = (0,0,0)):
         self.delay_time = delay_time
-        self.background_color = background_color
+        self.background_color = np.array(background_color,dtype=np.ubyte)
         self.height = height_window
         self.width = width_window
         self.camera = camera( z = 20)
         self.delta_time = 1 #inital value. It gets updated every frame
         self.start_engine()
 
-        self.Window_Manager = WindowManager(self.window,)
+        pix = pygame.surfarray.pixels3d(self.window)
+
+        
+        self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
         self.models = []
 
         
@@ -53,19 +65,24 @@ class graphics_manager:
                                             normalized_light_source=normalized_camera
                                             , rgb_colour = liste[0].color)
 
+                    new_color = np.array(new_color, dtype = np.ubyte)
                     w, h = pygame.display.get_window_size()
                     coordiantes = efficient_triangle_projection(liste[2],w,h)
 
                     # pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+                    a = np.array(coordiantes[0])
+                    b = np.array(coordiantes[1])
+                    c = np.array(coordiantes[2])
+
                     self.Window_Manager.draw_triangle(self.window,
-                    coordiantes[0],
-                    coordiantes[1],
-                    coordiantes[2],
+                    a,
+                    b,
+                    c,
                     liste[1], #distance was already calculated above
                     color = new_color)
                             
 
-        self.Window_Manager.clear_z_buffer(self.background_color)
+        self.Window_Manager.clear_z_buffer()
 
 
     def init_loop(self, functions_to_call=None):
