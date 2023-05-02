@@ -39,8 +39,6 @@ class graphics_manager:
         self.start_engine()
 
         pix = pygame.surfarray.pixels3d(self.window)
-
-        
         self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
         self.models = []
 
@@ -81,8 +79,10 @@ class graphics_manager:
                     liste[1], #distance was already calculated above
                     color = new_color)
                             
-
-        self.Window_Manager.clear_z_buffer()
+        try:
+            self.Window_Manager.clear_z_buffer(self.background_color)
+        except:
+            self.Window_Manager.clear_z_buffer()
 
 
     def init_loop(self, functions_to_call=None):

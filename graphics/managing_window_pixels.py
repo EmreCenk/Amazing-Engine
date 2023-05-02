@@ -9,32 +9,31 @@ from cythonized_graphics.pixels import clear_z_buffer, efficient_clear_z_buffer,
 class WindowManager:
     #This class implements a z buffer
 
-    def __init__(self,surface, height: int = None, width:int = None, background_color: Sequence = None) :
+    def __init__(self,pixels, height: int, width:int, background_color: Sequence = None) :
         if background_color is None:
             background_color = (0,0,0)
 
-        if width is None or height is None:
-            self.width, self.height = pygame.display.get_window_size() #Getting the pixel width and height of the curent
-            # window
-        else:
-            self.width, self.height = width, height
+
+        self.width = width
+        self.height = height
         
         self.pixel_depths = full((self.width, self.height),float("inf"))
 
-        self.pixels = pygame.surfarray.pixels3d(surface)
+        self.pixels = pixels
+        print(self.width)
+        print(self.height)
 
 
     
 
     def draw_pixel(self, x: int, y: int, color:Sequence, depth:int = 0):
         # print(len(self.pixel_depths),len(self.pixel_depths[0]), x, y)
-        if self.pixel_depths[x][y]<depth:
+        if self.pixel_depths[x][y]<=depth:
             return 
-
         self.pixel_depths[x][y] = depth
-        #This pixel is closer
-        self.pixels[x][y] = color
-
+        self.pixels[x][y][0] = color[0]
+        self.pixels[x][y][1] = color[1]
+        self.pixels[x][y][2] = color[2]
     def clear_z_buffer(self, background):
         clear_z_buffer(self.pixel_depths,float("inf"))
 
@@ -59,7 +58,7 @@ class WindowManager:
 
 
     def draw_horizontal_line(self, window, color, distance:int, start_position: Sequence, end_position: Sequence, ):
-        # FIXME: This function does not always work
+
         y = round(start_position[1])
         if y<0 or y>self.height:
             return 

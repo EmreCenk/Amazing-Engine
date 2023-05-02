@@ -14,7 +14,7 @@ cdef class WindowManager:
     cdef unsigned char[:, :, :] pixels
 
     
-    def __init__(self, unsigned char[:, :, :] _pixels, int _height, int _width, unsigned char[:] background_color) :
+    def __init__(self, unsigned char[:, :, :] _pixels, int _width, int _height, unsigned char[:] background_color) :
 
 
         self.width = _width
@@ -24,15 +24,18 @@ cdef class WindowManager:
         self.pixels = _pixels
         
     cdef void draw_pixel(self, int x, int y, unsigned char[:] color, int depth):
-        if self.pixel_depths[x][y]<=depth:
-            return 
-
-        self.pixel_depths[x][y] = depth
-    
-        self.pixels[x][y][0] = color[0]
-        self.pixels[x][y][1] = color[1]
-        self.pixels[x][y][2] = color[2]
-
+        try:
+            if self.pixel_depths[x][y]<=depth:
+                return 
+            self.pixel_depths[x][y] = depth
+            self.pixels[x][y][0] = color[0]
+            self.pixels[x][y][1] = color[1]
+            self.pixels[x][y][2] = color[2]
+        except Exception as E:
+            print(x,y,color,depth,self.pixels.shape)
+            print("oh no:",E)
+            pygame.quit()
+            quit()
 
     cpdef clear_z_buffer(self,):
         clear_z_buffer(self.pixel_depths,float("inf"))
