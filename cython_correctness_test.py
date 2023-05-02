@@ -31,8 +31,8 @@ for i in range(1,numtimes):
     if i%10==0:
         k*=-1
     s=perf_counter()
-    Manager.flat_fill_top(
-        window, 0, a, b, c, colman
+    Manager.draw_triangle(
+        window, a, b, c, 0, colman
     )    
     total+=perf_counter()-s
     # a[0]+=k

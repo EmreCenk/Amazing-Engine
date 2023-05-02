@@ -133,15 +133,13 @@ class WindowManager:
     def draw_triangle(self,surface, v1: Sequence,v2: Sequence,v3: Sequence,
                             distance:float,
                             color = (255,255,255)) -> None: 
+        
 
 
         """ This function rasterizes the given triangle and draws each pixel onto the screen.
         The pixel is not drawn if there is anything else in that pixel which is closer.
         The algorithm basically splits the triangle into 2 triangles where each triangle has one side parallel to the x axis."""
-        # FIXME: The class/function does not work when implemented into managing_graphics
-        # FIXME: Function does not work for all inputs. The following vertices do not work for instance:
-        # [375, 203], [242, 272], [332, 346]
-        # [7, 126] [132, 135] [418, 48]
+
         v1, v2, v3 = self.sort_v_by_ascending([self.roundv(v1),self.roundv(v2),self.roundv(v3)])
         #Now that they have been sorted, v1.y<v2.y<v3.y
 

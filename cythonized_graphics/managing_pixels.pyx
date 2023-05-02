@@ -36,7 +36,7 @@ cdef class WindowManager:
         clear_z_buffer(self.pixel_depths,float("inf"))
     
 
-    cdef void sort_v_by_ascending(self, float arr[3][3]):
+    cdef void sort_v_by_ascending(self, double arr[3][3]):
         # basically a very efficient insertion sort
         # This method uses as little operations as possible (3 operations)
         # This function also changes the array in place, so be very carefull when using this function
@@ -122,3 +122,94 @@ cdef class WindowManager:
             current_y -= 1
             current_x_1 -= inverse_m1
             current_x_2 -= inverse_m2
+
+
+    cpdef void flat_fill_bottom(self, surface, int distance, double[:] v1, double[:] v2, double[:] v3, unsigned char[:] color):
+        """Goes through the pixels of a triangle which has a side paralel to the x axis.
+        Assumes that the line v1-v2 is parralel to the x axis and v3[1]>v1[1]"""
+
+                
+        cdef double inverse_m1, inverse_m2, current_x_1, current_x_2, current_y
+        
+        cdef double initial[2]
+        cdef double final[2]
+
+        inverse_m2 = (v2[0]-v3[0]) / (v2[1] - v3[1])
+        inverse_m1 = (v1[0]-v3[0]) / (v1[1] - v3[1])
+
+        current_x_1 = v1[0]
+        current_x_2 = v2[0]
+        current_y = v1[1]
+
+        while current_y<v3[1]:
+            initial[0] = current_x_1
+            initial[1] = current_y
+            final[0] = current_x_2
+            final[1] = current_y
+
+            self.draw_horizontal_line(surface,color,distance, initial, final)
+            current_y += 1
+            current_x_1 += inverse_m1
+            current_x_2 += inverse_m2
+
+    cdef roundv(self, double[:] v):
+        return [
+            round(v[0]), round(v[1])
+        ]
+    def draw_triangle(self,surface, double[:] v1, double[:] v2, double[:] v3,
+                            int distance,
+                            unsigned char[:] color): 
+        
+
+
+        """ This function rasterizes the given triangle and draws each pixel onto the screen.
+        The pixel is not drawn if there is anything else in that pixel which is closer.
+        The algorithm basically splits the triangle into 2 triangles where each triangle has one side parallel to the x axis."""
+
+        cdef double[3][3] temporary
+        temporary[0][0] = v1[0]
+        temporary[0][1] = v1[1]
+        temporary[0][2] = v1[2]
+
+
+
+        temporary[1][0] = v2[0]
+        temporary[1][1] = v2[1]
+        temporary[1][2] = v2[2]
+
+
+        temporary[2][0] = v3[0]
+        temporary[2][1] = v3[0]
+        temporary[2][2] = v3[0]
+
+        self.sort_v_by_ascending(temporary)
+        #Now that they have been sorted, v1.y<v2.y<v3.y
+        v1 = temporary[0]
+        v2 = temporary[1]
+        v3 = temporary[2]
+
+        #If there are any horizontal edges, we treat them as special cases:
+        if v3[1] == v2[1]:
+            self.flat_fill_top(surface,distance, v2, v3 , v1, color)
+            return 
+        
+        if v1[1] == v2[1]:
+            self.flat_fill_bottom(surface,distance, v1, v2, v3, color)
+            return 
+
+        # General case is derived by splitting the triangle into two different triangles by drawing a horizontal 
+        # line from v2 to the line v1-v3
+        y = v2[1]
+
+
+        if v1[0] == v3[0]: #to avoid zerodivisionerror
+            v4 = [v1[0], y]
+        
+        else:
+            m =  (v1[1]-v3[1]) / (v1[0]-v3[0])
+            b = v1[1] - (v1[0]*m)
+            v4 = [ (y-b)/m, y ]
+            
+
+        self.flat_fill_top(surface,distance, v2,v4,v1, color)
+        self.flat_fill_bottom(surface,distance, v2,v4,v3, color)
