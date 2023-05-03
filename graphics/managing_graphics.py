@@ -48,7 +48,7 @@ class graphics_manager:
         screen_size = (self.height,self.width)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
 
-    def render_frame(self):
+    def render_frame_alternative(self):
         camera_position = self.camera.position
         normalized_camera = normalized(camera_position)
         to_draw = []
@@ -84,7 +84,30 @@ class graphics_manager:
         except:
             self.Window_Manager.clear_z_buffer()
 
+    def render_frame(self):
+        camera_position = self.camera.position
+        normalized_camera = normalized(camera_position)
+        to_draw = []
+        for model in self.models:
+            for triangle in model.triangles:
 
+                translated_vert = triangle.get_translated(camera_position)
+                if is_visible(translated_vert,normalized_camera):
+                    to_draw.append(
+                        [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
+                    )
+
+        to_draw.sort(key = lambda tri: tri[1], reverse=True)
+
+        for liste in to_draw:
+            new_color = get_color(liste[0],
+                                    normalized_light_source=normalized_camera
+                                    , rgb_colour = liste[0].color)
+
+            w, h = pygame.display.get_window_size()
+            coordiantes = efficient_triangle_projection(liste[2],w,h)
+
+            pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
     def init_loop(self, functions_to_call=None):
 
         if functions_to_call is None:

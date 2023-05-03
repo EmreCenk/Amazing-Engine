@@ -5,7 +5,7 @@ from graphics.managing_window_pixels import WindowManager as pymanag
 import pygame
 from time import perf_counter
 import numpy as np
-from random import randint
+from random import randint, uniform
 pygame.init()
 window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
 pix = pygame.surfarray.pixels3d(window)
@@ -26,11 +26,17 @@ a,b,c = np.array([100,100],dtype=np.double), \
 
 # print("function time:",perf_counter()-s,f"({1/(perf_counter()-s)} fps)")
 k = 10
-numtimes = 6300
+numtimes = 63000
+tosort = []
+# for j in range(numtimes):
+#     tosort.append(uniform(0,100000))
 for i in range(1,numtimes):
-    if i%10==0:
-        k*=-1
+
+
+
     s=perf_counter()
+
+    # pygame.draw.polygon(window,[255,255,0],[a,b,c])
     Manager.draw_triangle(
         window, a, b, c, 0, colman
     )    
@@ -43,7 +49,9 @@ for i in range(1,numtimes):
 
     # c[0]+=k
     # c[1]+=k
-
+s=perf_counter()
+tosort = sorted(tosort)
+total+=perf_counter()-s
 print("TOTAL:",total,f"({1/total} fps)")
 print("AVERAGE:",total/numtimes)
 print("AREA:", -(a[0]-b[0])*(b[1]-c[1])/2)

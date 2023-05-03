@@ -206,7 +206,7 @@ cdef class WindowManager:
         y = v2[1]
 
 
-        if v1[0] == v3[0]: #to avoid zerodivisionerror
+        if v1[0] == v3[0] or v1[1] == v3[1]: #to avoid zerodivisionerror
             v4[0] = v1[0]        
         else:
             m =  (v1[1]-v3[1]) / (v1[0]-v3[0])
