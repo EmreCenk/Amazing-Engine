@@ -1,27 +1,9 @@
 from graphics.shapes_2d import quadrilateral,shape
-from Mathematical_Functions.shading import get_color
-from constants import conversion
-import pygame
-try:
-    #Try importing the cython files:
-    a=0/0
-    import pyximport
-    pyximport.install()
-    from cythonized_math.cython_coordinate_system_3d import distance,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
-    from cythonized_math.cythonized_projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-    print("Cython implementation is running")
-
-except Exception as E:
-    print("oh no:",E)
-    
-    print("Python math implementation is running")
-    #If the cython files don't work, then use the pure pyhton implementations
-    from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-    from Mathematical_Functions.coordinate_system_3d import distance,rotate_around_self ,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
-
+from Mathematical_Functions.coordinate_system_3d import rotate_around_self
 import pygame
 from constants import conversion
 from Mathematical_Functions.shading import get_color
+
 class shape_3d(shape):
 
     # Surprisingly, every function in the 2d shape class is actually really usefull for 3d shapes. Perhaps I should
@@ -40,26 +22,26 @@ class shape_3d(shape):
         """
 
         #The lambda part takes the index of the axis as the key when finding max
-        max_x = max(self.vertices, key = lambda tri: tri[0])[0] 
-        min_x = min(self.vertices, key = lambda tri: tri[0])[0] 
+        max_x = max(self.vertices, key = lambda tri: tri[0])[0]
+        min_x = min(self.vertices, key = lambda tri: tri[0])[0]
 
-        max_y = max(self.vertices, key = lambda tri: tri[1])[1] 
-        min_y = min(self.vertices, key = lambda tri: tri[1])[1] 
+        max_y = max(self.vertices, key = lambda tri: tri[1])[1]
+        min_y = min(self.vertices, key = lambda tri: tri[1])[1]
 
-        max_z = max(self.vertices, key = lambda tri: tri[2])[2] 
-        min_z = min(self.vertices, key = lambda tri: tri[2])[2] 
+        max_z = max(self.vertices, key = lambda tri: tri[2])[2]
+        min_z = min(self.vertices, key = lambda tri: tri[2])[2]
 
-        #Taking the average of the upper and lower bounds to find the midpoint for all 
+        #Taking the average of the upper and lower bounds to find the midpoint for all
         #dimensions:
 
         self.center = [
             (max_x + min_x) / 2,
             (max_y + min_y) / 2,
             (max_z + min_z) / 2,
-            
+
         ]
 
-        
+
 
     def move(self,axis,amount):
         #Overriding the move function to also move the center along with everything else:
@@ -100,6 +82,7 @@ class rectangular_prism(shape_3d):
         self.v8 = v8
 
         self.generate_triangles()
+        self.define_center()
 
 
 
@@ -145,19 +128,6 @@ class rectangular_prism(shape_3d):
 
 
 
-    def define_center(self):
-        #We find the center of this cube by taking the average of all coordinates
-
-        x=0
-        y=0
-        z=0
-        for s in self.vertices:
-           x+=s[0]
-           y+=s[1]
-           z+=s[2]
-
-
-        return x/8,y/8,z/8
 
     def draw_faces(self,window,camera_position,orthogonal=False):
         #This overrides the inherited draw_faces function

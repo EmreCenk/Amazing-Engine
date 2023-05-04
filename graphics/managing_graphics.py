@@ -1,31 +1,11 @@
 import pygame
-import graphics.shapes_3d as sh3
 from graphics.camera import camera
 from graphics.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
 import numpy as np
-try:
-    a=0/0
-    import pyximport
-    pyximport.install()
-    from cythonized_graphics.managing_pixels import WindowManager
-
-except:
-    from graphics.managing_window_pixels import WindowManager
-    print("Could not import cython WinowManager. Python version is runningg. ")
-
-try:
-    #Try importing the cython files:
-    # import pyximport
-    # pyximport.install()
-    from cythonized_math.cython_coordinate_system_3d import distance,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
-    from cythonized_math.cythonized_projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-
-except Exception as E:
-    #If the cython files don't work, then use the pure pyhton implementations
-    from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-    from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
-
+from a_ideas_on_hold.managing_window_pixels import WindowManager
+from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 from Mathematical_Functions.shading import get_color
 
 class graphics_manager:
@@ -170,7 +150,7 @@ class graphics_manager:
 
         x=0
         total=0
-        while x<5000:
+        while x<100:
             x+=1
             power_level = p_original * self.delta_time
             zpower = p_z_original * self.delta_time
