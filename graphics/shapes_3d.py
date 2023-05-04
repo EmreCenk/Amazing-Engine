@@ -1,5 +1,5 @@
 from graphics.shapes_2d import quadrilateral,shape
-from Mathematical_Functions.coordinate_system_3d import rotate_around_point
+from Mathematical_Functions.coordinate_system_3d import rotate_around_point, normalized, is_visible
 import pygame
 from constants import conversion
 from Mathematical_Functions.shading import get_color
@@ -131,10 +131,13 @@ class rectangular_prism(shape_3d):
 
     def draw_faces(self,window,camera_position,orthogonal=False):
         #This overrides the inherited draw_faces function
+        normalized_camera = normalized(camera_position)
         for face in self.faces:
-            new_color = get_color(face.triangles[0],camera_position)
+            new_color = get_color(face.triangles[0],normalized_camera, rgb_colour=self.color)
             for triangle in face.triangles:
-                if triangle.is_visible(camera_position):
+                translated_vert = triangle.get_translated(camera_position)
+
+                if is_visible(translated_vert, normalized_camera):
                     a = triangle.get_projected_coordinates(camera_position)
                     pygame.draw.polygon(window,
                                         new_color,

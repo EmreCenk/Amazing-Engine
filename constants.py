@@ -3,7 +3,7 @@ conversion = {"x":0,
               "z":2,
               "X":0,
               "Y":1,
-              "X":2,
+              "Z":2,
               }
 
 excluded = {
@@ -18,3 +18,10 @@ excluded = {
     2: [0, 1],
 }
 
+ang_conversion = {"x":3,
+              "y":4,
+              "z":5,
+              "X":3,
+              "Y":4,
+              "Z":5,
+              }
