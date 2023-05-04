@@ -2,7 +2,26 @@ from graphics.shapes_2d import quadrilateral,shape
 from Mathematical_Functions.shading import get_color
 from constants import conversion
 import pygame
+try:
+    #Try importing the cython files:
+    a=0/0
+    import pyximport
+    pyximport.install()
+    from cythonized_math.cython_coordinate_system_3d import distance,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+    from cythonized_math.cythonized_projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+    print("Cython implementation is running")
 
+except Exception as E:
+    print("oh no:",E)
+    
+    print("Python math implementation is running")
+    #If the cython files don't work, then use the pure pyhton implementations
+    from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
+    from Mathematical_Functions.coordinate_system_3d import distance,rotate_around_self ,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+
+import pygame
+from constants import conversion
+from Mathematical_Functions.shading import get_color
 class shape_3d(shape):
 
     # Surprisingly, every function in the 2d shape class is actually really usefull for 3d shapes. Perhaps I should
@@ -12,7 +31,7 @@ class shape_3d(shape):
     def __init__(self,color):
         super().__init__(color)
 
-    def find_center(self):
+    def define_center(self):
         """
         Finds the center of the object by taking
         the upper bounds of the object and treating it as a rectangle.
@@ -33,7 +52,6 @@ class shape_3d(shape):
         #Taking the average of the upper and lower bounds to find the midpoint for all 
         #dimensions:
 
-        print(max_x, min_x)
         self.center = [
             (max_x + min_x) / 2,
             (max_y + min_y) / 2,
@@ -54,7 +72,14 @@ class shape_3d(shape):
 
         self.center[axis] += amount
 
-        
+    def rotate(self,axis,angle):
+        #Overriding the rotate function to also rotate the center along with everything else:
+
+        for vert in self.vertices:
+            rotate_around_self(self.center,vert,axis,angle)
+
+        # rotate_around_self(self.center,self.center, axis, angle)
+
 
 
 class rectangular_prism(shape_3d):
