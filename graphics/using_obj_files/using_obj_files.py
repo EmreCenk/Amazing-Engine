@@ -8,6 +8,7 @@ class obj_mesh(shape_3d):
         super().__init__(color)
         self.path_to_object = path_to_object
         self.create_attributes()
+        self.find_center()
 
     def create_attributes(self):
         self.triangles, self.vertices = parse_triangle_list(self.path_to_object, color = self.color)

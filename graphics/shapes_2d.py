@@ -98,6 +98,8 @@ class shape:
         #This method updates both the self.v values and the self.vertices values
         for vert in self.vertices:
             vert[axis]+=amount
+        
+        
 
     def rotate(self,axis,angle):
         for vert in self.vertices:
@@ -119,14 +121,6 @@ class triangle(shape):
             [self.v3,self.v1]
         ]
 
-    # def move_yourself(self,axis, how_much):
-    #     if axis in conversion:
-    #         axis = conversion[axis]
-    #
-    #     self.v1[axis] += how_much
-    #     self.v2[axis] += how_much
-    #     self.v3[axis] += how_much
-
 
     def get_projected_coordinates(self,camera_position,orthogonal=False):
         #30 operations
@@ -137,10 +131,7 @@ class triangle(shape):
                project_3d_point_to_2d(self.v2,w,h,camera_position,orthogonal=orthogonal),\
                project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
 
-    def rotate(self,axis,angle):
-        rotate(self.v1,axis,angle)
-        rotate(self.v2, axis,angle)
-        rotate(self.v3,axis,angle)
+
 
     def get_normalized(self):
         return normalize_triangle_vertices(self.vertices)

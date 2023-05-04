@@ -1,5 +1,6 @@
 from graphics.shapes_2d import quadrilateral,shape
 from Mathematical_Functions.shading import get_color
+from constants import conversion
 import pygame
 
 class shape_3d(shape):
@@ -11,7 +12,49 @@ class shape_3d(shape):
     def __init__(self,color):
         super().__init__(color)
 
+    def find_center(self):
+        """
+        Finds the center of the object by taking
+        the upper bounds of the object and treating it as a rectangle.
+        The efficiency of this function does not really matter since it is called
+        only once.
+        """
 
+        #The lambda part takes the index of the axis as the key when finding max
+        max_x = max(self.vertices, key = lambda tri: tri[0])[0] 
+        min_x = min(self.vertices, key = lambda tri: tri[0])[0] 
+
+        max_y = max(self.vertices, key = lambda tri: tri[1])[1] 
+        min_y = min(self.vertices, key = lambda tri: tri[1])[1] 
+
+        max_z = max(self.vertices, key = lambda tri: tri[2])[2] 
+        min_z = min(self.vertices, key = lambda tri: tri[2])[2] 
+
+        #Taking the average of the upper and lower bounds to find the midpoint for all 
+        #dimensions:
+
+        print(max_x, min_x)
+        self.center = [
+            (max_x + min_x) / 2,
+            (max_y + min_y) / 2,
+            (max_z + min_z) / 2,
+            
+        ]
+
+        
+
+    def move(self,axis,amount):
+        #Overriding the move function to also move the center along with everything else:
+        if axis in conversion:
+            axis = conversion[axis]
+
+        #This method updates both the self.v values and the self.vertices values
+        for vert in self.vertices:
+            vert[axis]+=amount
+
+        self.center[axis] += amount
+
+        
 
 
 class rectangular_prism(shape_3d):
