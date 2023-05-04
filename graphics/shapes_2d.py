@@ -1,8 +1,9 @@
 
 try:
     #Try importing the cython files:
-    # import pyximport
-    # pyximport.install()
+    a=0/0
+    import pyximport
+    pyximport.install()
     from cythonized_math.cython_coordinate_system_3d import distance,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
     from cythonized_math.cythonized_projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
     print("Cython implementation is running")
@@ -10,8 +11,7 @@ try:
 except Exception as E:
     print("oh no:",E)
     
-    print("Python implementation is running.\nPlease install Cython to significantly increase the fps"
-          "\nIf Cython is already installed, try running from the command line")
+    print("Python math implementation is running")
     #If the cython files don't work, then use the pure pyhton implementations
     from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
     from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
