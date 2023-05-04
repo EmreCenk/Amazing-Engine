@@ -1,5 +1,5 @@
 from graphics.shapes_2d import quadrilateral,shape
-from Mathematical_Functions.coordinate_system_3d import rotate_around_self
+from Mathematical_Functions.coordinate_system_3d import rotate_around_point
 import pygame
 from constants import conversion
 from Mathematical_Functions.shading import get_color
@@ -58,9 +58,9 @@ class shape_3d(shape):
         #Overriding the rotate function to also rotate the center along with everything else:
 
         for vert in self.vertices:
-            rotate_around_self(self.center,vert,axis,angle)
+            rotate_around_point(self.center, vert, axis, angle)
 
-        # rotate_around_self(self.center,self.center, axis, angle)
+        # rotate_around_point(self.center,self.center, axis, angle)
 
 
 

@@ -4,9 +4,8 @@ from graphics.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
 import numpy as np
 from a_ideas_on_hold.managing_window_pixels import WindowManager
-from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-from Mathematical_Functions.coordinate_system_3d import distance, rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
-from Mathematical_Functions.shading import get_color
+from Mathematical_Functions.coordinate_system_3d import *
+
 
 class graphics_manager:
 
@@ -35,43 +34,7 @@ class graphics_manager:
         screen_size = (self.height,self.width)
         self.window = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
 
-    def render_frame_alternative(self):
-        #FIXME: Cython WindowManager implementation gives a bunch of errors when implemented into this function
 
-        camera_position = self.camera.position
-        normalized_camera = normalized(camera_position)
-        to_draw = []
-        for model in self.models:
-            for triangle in model.triangles:
-
-                translated_vert = triangle.get_translated(camera_position)
-                if is_visible(translated_vert,normalized_camera):
-                    liste = ( triangle, distance(triangle.get_centroid(),camera_position),translated_vert)
-                    
-                    new_color = get_color(liste[0],
-                                            normalized_light_source=normalized_camera
-                                            , rgb_colour = liste[0].color)
-
-                    new_color = np.array(new_color, dtype = np.ubyte)
-                    w, h = pygame.display.get_window_size()
-                    coordiantes = efficient_triangle_projection(liste[2],w,h)
-
-                    # pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
-                    a = np.array(coordiantes[0])
-                    b = np.array(coordiantes[1])
-                    c = np.array(coordiantes[2])
-
-                    self.Window_Manager.draw_triangle(self.window,
-                    a,
-                    b,
-                    c,
-                    liste[1], #distance was already calculated above
-                    color = new_color)
-                            
-        try:
-            self.Window_Manager.clear_z_buffer(self.background_color)
-        except:
-            self.Window_Manager.clear_z_buffer()
 
     def render_frame(self):
         camera_position = self.camera.position
@@ -81,6 +44,17 @@ class graphics_manager:
             for triangle in model.triangles:
 
                 translated_vert = triangle.get_translated(camera_position)
+                for i in range(3):
+                    for j in range(3):
+
+                        rotate_around_point(camera_position,
+                                                              translated_vert[j],
+                                                              i,
+                                                              -camera_position[i+3],
+                                                              )
+
+
+
                 if is_visible(translated_vert,normalized_camera):
                     to_draw.append(
                         [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
@@ -89,22 +63,15 @@ class graphics_manager:
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
         for liste in to_draw:
-            new_color = get_color(liste[0],
-                                    normalized_light_source=normalized_camera
-                                    , rgb_colour = liste[0].color)
-
-            w, h = pygame.display.get_window_size()
-            coordiantes = efficient_triangle_projection(liste[2],w,h)
-
-            pygame.draw.polygon(self.window,points=coordiantes,color=new_color)
+            liste[0].draw(self.window, normalized_camera, liste[2])
 
 
-        for model in self.models:
-            pygame.draw.circle(
-                self.window, 
-            (255,255,255),
-            project_3d_point_to_2d(model.center,self.width,self.height,self.camera.position),
-            radius = 3)
+        # for model in self.models:
+        #     pygame.draw.circle(
+        #         self.window,
+        #     (255,255,255),
+        #     project_3d_point_to_2d(model.center,self.width,self.height,self.camera.position),
+        #     radius = 3)
 
         
     def init_loop(self, functions_to_call=None):
@@ -195,10 +162,10 @@ class graphics_manager:
 
 
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                self.camera.move("x",-power_level)
+                self.camera.move(4,-power_level)
 
             elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                self.camera.move("x",power_level)
+                self.camera.move(4,power_level)
 
 
             self.tester_mesh2.rotate("y",10*self.delta_time)

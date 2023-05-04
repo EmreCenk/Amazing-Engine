@@ -1,6 +1,6 @@
 from Mathematical_Functions.shading import get_color
 from Mathematical_Functions.projecting import project_3d_point_to_2d, translate, efficient_triangle_projection
-from Mathematical_Functions.coordinate_system_3d import distance, rotate_around_self ,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
+from Mathematical_Functions.coordinate_system_3d import distance, rotate_around_point ,rotate,get_normal,is_visible,normalize_triangle_vertices, normalized
 import pygame
 from constants import conversion
 
@@ -37,20 +37,17 @@ class shape:
             translated_vert = triangle.get_translated(camera_position)
             if is_visible(translated_vert,normalized_camera):
                 to_draw.append(
-                    [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
+                    [triangle,
+                    distance(triangle.get_centroid(),camera_position),
+                    translated_vert]
                 )
 
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
         for liste in to_draw:
-            new_color = get_color(liste[0],
-                                    normalized_light_source=normalized_camera
-                                    , rgb_colour = self.color)
+            liste[0].draw(window, normalized_camera, liste[2])
 
-            w, h = pygame.display.get_window_size()
-            coordiantes = efficient_triangle_projection(liste[2],w,h)
 
-            pygame.draw.polygon(window,points=coordiantes,color=new_color)
 
     def label_wireframe_corners(self,window,camera_position, orthogonal = False):
         height = window.get_height()
@@ -116,6 +113,15 @@ class triangle(shape):
                project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
 
 
+    def draw(self,window,  normalized_camera, translated_vertices):
+        new_color = get_color(self,
+                              normalized_light_source=normalized_camera
+                              , rgb_colour=self.color)
+
+        w, h = pygame.display.get_window_size()
+        coordiantes = efficient_triangle_projection(translated_vertices, w, h)
+
+        pygame.draw.polygon(window, points=coordiantes, color=new_color)
 
     def get_normalized(self):
         return normalize_triangle_vertices(self.vertices)
@@ -128,9 +134,9 @@ class triangle(shape):
 
     def get_translated(self,camera_position):
         # 9 operations
-        return translate(self.v1,camera_position),\
-               translate(self.v2,camera_position),\
-               translate(self.v3,camera_position),
+        return [translate(self.v1,camera_position),
+               translate(self.v2,camera_position),
+               translate(self.v3,camera_position)]
 
     # def is_visible(self, normalized_camera_position, camera_position):
     #     #62 operations

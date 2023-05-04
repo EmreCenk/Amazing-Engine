@@ -2,7 +2,7 @@
 from math import radians, sqrt, cos, sin
 from constants import conversion, excluded
 
-print("python math")
+
 def translate(point,camera_position):
 
     #Has 3 operations
@@ -18,14 +18,14 @@ def translate(point,camera_position):
     y-=cy
     z-=d
 
-    return x,y,z
+    return [x,y,z]
 
 def translate_triangle_vertices(triangle_vertices,camera_position):
     #has 9 operations
     return [
         translate(triangle_vertices[0],camera_position),
         translate(triangle_vertices[1],camera_position),
-        translate(triangle_vertices[2],camera_position)
+        translate(triangle_vertices[2],camera_position),
     ]
 
 def rotate(vertex, axis, angle, radian_input = False):
@@ -50,22 +50,6 @@ def rotate(vertex, axis, angle, radian_input = False):
 
     return vertex
 
-def rotate_around_self(center, vertex, axis, angle, radian_input = False):
-
-    #Translate the vertex to the origin (relative to the center of the object)
-    new_vertex = [
-        vertex[0] - center[0],
-        vertex[1] - center[1],
-        vertex[2] - center[2],
-        
-    ]
-
-    rotate(new_vertex,axis,angle,radian_input)
-
-    #re-translating it to the original place:
-    vertex[0] = new_vertex[0] + center[0]
-    vertex[1] = new_vertex[1] + center[1]
-    vertex[2] = new_vertex[2] + center[2]
 
 def distance(p1,p2):
     # 8 operations
@@ -156,4 +140,20 @@ def is_visible(translated_triangle_vertices, normalized_camera_position):
 
 
 
+##################cython version of the above code exists#######################################
+
+
+def rotate_around_point(point_to_rotate_around, vertex, axis, angle, radian_input=False):
+    # Translate the vertex such that point_to_rotate_around is the origin
+    vertex[0] -= point_to_rotate_around[0]
+    vertex[1] -= point_to_rotate_around[1]
+    vertex[2] -= point_to_rotate_around[2]
+
+
+    rotate(vertex, axis, angle, radian_input)
+
+    # re-translating it to the original place:
+    vertex[0] += point_to_rotate_around[0]
+    vertex[1] += point_to_rotate_around[1]
+    vertex[2] += point_to_rotate_around[2]
 
