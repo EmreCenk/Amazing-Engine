@@ -156,21 +156,21 @@ def classify_point(x,y,width,height):
     #third boolean: check if inside  left boundary
     #Fourth boolean: check if inside right boundary
 
-    top = 0
-    bottom = 0
-    left = 0
-    right = 0
+    top = 1
+    bottom = 1
+    left = 1
+    right = 1
 
     if y>0:
-        top = 1
+        top = 0
     if y<height:
-        bottom = 1
+        bottom = 0
 
     if x<width:
-        right = 1
+        right = 0
 
     if x>0:
-        left = 1
+        left = 0
 
     return top, bottom, left, right
 
@@ -190,10 +190,42 @@ def clip_line(line_coordinates, width, height):
 
         return [] #if both are in the same sector outside of the screen, then no part of the line is inside the screen
 
+    if y1>y2:
+        max_y, min_y = y1, y2
+    else:
+        max_y, min_y = y2, y1
+    if x1>x2:
+        max_x, min_x = x1, x2
+    else:
+        max_x, min_x = x2, x1
 
 
+    new_points = []
+    #checking if it intersects with top:
+    if max_y>100 and min_y<100:
+        # x intercept is found via:x1 + (deltax*y1/deltay)
+        new_points.append(
+            [ x1 + y1*(x2-x1)/(y2-y1),
+              0]
+        )
 
+    #checking bottom:
+    if max_y>height and min_y<height:
+        pass
 
+    #checking left:
+    if max_x>0 and min_x<0:
+        pass
+
+    #checking right:
+    if max_x>width and min_x<height:
+        pass
+
+    if len(new_points)==0:
+        print("ya")
+        return line_coordinates
+
+    print("No wtf")
     
 def clip_2d_triangle(triangle_vertices, width, height):
 
@@ -201,7 +233,15 @@ def clip_2d_triangle(triangle_vertices, width, height):
     b = clip_line([triangle_vertices[1], triangle_vertices[2]], width, height)
     c = clip_line([triangle_vertices[0], triangle_vertices[2]], width, height)
 
+    final = []
+    for k in a:
+        final.append(k)
+    for k in b:
+        final.append(k)
+    for k in c:
+        final.append(k)
 
+    return final
 
 
 def rotate_around_point(point_to_rotate_around, vertex, axis, angle, radian_input=False):
@@ -217,4 +257,23 @@ def rotate_around_point(point_to_rotate_around, vertex, axis, angle, radian_inpu
     vertex[0] += point_to_rotate_around[0]
     vertex[1] += point_to_rotate_around[1]
     vertex[2] += point_to_rotate_around[2]
+
+if __name__ == "__main__":
+    import pygame
+    pygame.init()
+    window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
+    a,b,c = [100,50], [200,100],[400,20]
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                break
+
+        new = clip_2d_triangle([a,b,c],800,800)
+        print(new)
+        pygame.draw.polygon(window, (255,0,0), new)
+        pygame.time.delay(50)
+        pygame.display.update()
+        window.fill((0,0,0))
 
