@@ -2,6 +2,7 @@
 from math import radians, sqrt, cos, sin
 from constants import conversion, excluded
 import pygame
+from constants import TOP, BOTTOM
 
 def translate(point,camera_position):
 
@@ -144,6 +145,7 @@ def is_visible(translated_triangle_vertices, normalized_camera_position):
 ##################cython version of the above code exists#######################################
 
 def classify_point(x,y,width,height):
+    print(x,y,width,height)
     # Finds which sector a given point is:
     # 1010 | 1000 | 1001 |
     # ___________________
@@ -162,14 +164,21 @@ def classify_point(x,y,width,height):
     right = 1
 
     if y>0:
+        print("Yes")
         top = 0
     if y<height:
+
+        print("Yes2")
         bottom = 0
 
     if x<width:
+
+        print("Yes3")
         right = 0
 
     if x>0:
+
+        print("Yes4")
         left = 0
 
     return top, bottom, left, right
@@ -185,6 +194,9 @@ def clip_line(line_coordinates, width, height):
 
     #Checking for trivial cases:
     if clas_p1 == clas_p2:
+        print(clas_p1, clas_p2)
+        print("trivial")
+        print()
         if clas_p1 == (0,0,0,0): #if both are inside, we can leave line as is
             return line_coordinates
 
@@ -200,18 +212,22 @@ def clip_line(line_coordinates, width, height):
         max_x, min_x = x2, x1
 
 
-    new_points = []
     #checking if it intersects with top:
-    if max_y>100 and min_y<100:
-        # x intercept is found via:x1 + (deltax*y1/deltay)
-        new_points.append(
-            [ x1 + y1*(x2-x1)/(y2-y1),
-              0]
-        )
+    if max_y>0 and min_y<0:
+        print("TOP")
+        if clas_p1 in TOP:
+            x1, y1 = x1 + y1*(x2-x1)/(y2-y1), 0
+
+        else:
+            x2, y2 = x1 + y1*(x2-x1)/(y2-y1), 0
 
     #checking bottom:
     if max_y>height and min_y<height:
-        pass
+
+        if clas_p1 in BOTTOM:
+            x1, y1 =  x1 - (y1-height)*(x2-x1)/(y2-y1), height
+        else:
+            x2, y2 = x1 - (y1-height)*(x2-x1)/(y2-y1), height
 
     #checking left:
     if max_x>0 and min_x<0:
@@ -221,12 +237,10 @@ def clip_line(line_coordinates, width, height):
     if max_x>width and min_x<height:
         pass
 
-    if len(new_points)==0:
-        print("ya")
-        return line_coordinates
 
-    print("No wtf")
-    
+
+    return [(x1,y1), (x2,y2)]
+
 def clip_2d_triangle(triangle_vertices, width, height):
 
     a = clip_line([triangle_vertices[0], triangle_vertices[1]], width, height)
@@ -235,11 +249,16 @@ def clip_2d_triangle(triangle_vertices, width, height):
 
     final = []
     for k in a:
-        final.append(k)
+        if k not in final:
+            final.append(k)
+
     for k in b:
-        final.append(k)
+        if k not in final:
+            final.append(k)
+
     for k in c:
-        final.append(k)
+        if k not in final:
+            final.append(k)
 
     return final
 
@@ -262,16 +281,26 @@ if __name__ == "__main__":
     import pygame
     pygame.init()
     window = pygame.display.set_mode((500,500), pygame.RESIZABLE)
-    a,b,c = [100,50], [200,100],[400,20]
+
+
+    a,b,c = [100,350], [200,600],[400,320]
     while 1:
+        pygame.draw.line(window, "green", (0, 0), (0, 500))
+        pygame.draw.line(window, "green", (0, 0), (500, 0))
+        pygame.draw.line(window, "green", (500, 500), (0, 500))
+        pygame.draw.line(window, "green", (500, 500), (500, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
                 break
 
-        new = clip_2d_triangle([a,b,c],800,800)
+        new = clip_2d_triangle([a,b,c],500,500)
         print(new)
+        pygame.draw.polygon(window, (255,255,0), new)
+
+        new = [a,b,c]
+
         pygame.draw.polygon(window, (255,0,0), new)
         pygame.time.delay(50)
         pygame.display.update()

@@ -58,7 +58,7 @@ class shape_3d(shape):
         #Overriding the rotate function to also rotate the center along with everything else:
 
         for vert in self.vertices:
-            rotate_around_point(self.center, vert, axis, angle)
+            rotate_around_point((0,0,0), vert, axis, angle)
 
         # rotate_around_point(self.center,self.center, axis, angle)
 

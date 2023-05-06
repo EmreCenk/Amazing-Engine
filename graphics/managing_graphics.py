@@ -95,8 +95,9 @@ class graphics_manager:
         # self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (255,0,0))
 
 
-        # self.tester_mesh = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (255,255,0))
-        self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color = (255,255,255))
+        self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj",
+                                        color = (255,255,255))
+        # self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color = (255,255,255))
 
         # #                                               )
         #
@@ -120,6 +121,8 @@ class graphics_manager:
 
         x=0
         total=0
+
+        self.tester_rectangle.move("z",10)
         while x<10000:
             x+=1
             power_level = p_original * self.delta_time
@@ -154,13 +157,13 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-            # xr, yr = pygame.mouse.get_rel()
-            #
-            # dsd = 0.2
-            # self.camera.rotate("x",yr*dsd)
-            # self.camera.rotate("y",xr*dsd)
-            #
-            #
+            xr, yr = pygame.mouse.get_rel()
+
+            dsd = 0.2
+            self.camera.rotate("x",yr*dsd)
+            self.camera.rotate("y",xr*dsd)
+
+
             #
             keys = pygame.key.get_pressed()
 
