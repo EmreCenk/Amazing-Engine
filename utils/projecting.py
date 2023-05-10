@@ -1,5 +1,5 @@
 from math import tan,radians
-from Mathematical_Functions.coordinate_system_3d import translate
+from utils.coordinate_system_3d import translate
 def convert_result(x,y,s_width,s_height):
     #the output of all the other functions take the center of the screen as the origin. Here, we convert it back such
 # that the top left corner is the origin

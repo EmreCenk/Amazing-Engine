@@ -1,6 +1,6 @@
-from Mathematical_Functions.shading import get_color
-from Mathematical_Functions.projecting import *
-from Mathematical_Functions.coordinate_system_3d import *
+from utils.shading import get_color
+from utils.projecting import *
+from utils.coordinate_system_3d import *
 import pygame
 from constants import conversion
 
@@ -119,7 +119,8 @@ class triangle(shape):
         w, h = pygame.display.get_window_size()
         coordiantes = efficient_triangle_projection(translated_vertices, w, h)
 
-        coordiantes = clip_2d_triangle(coordiantes, w, h)
+        coordiantes = clip_2d_triangle(coordiantes, w+50, h+50) #add 50 to make sure there are no spaces left in the
+        # corners
         if len(coordiantes)<=2:
             return
 
@@ -183,7 +184,7 @@ class quadrilateral(shape):
         self.triangles.append(t2)
 
 if __name__ == '__main__':
-    import graphics.shapes_3d as sh3
+    import models.shapes_3d as sh3
 
     shift = 1
     side = 100

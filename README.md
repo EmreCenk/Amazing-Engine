@@ -27,7 +27,7 @@ When initializing, you need to specify two values:
 
 An example:
 ```python
-from graphics.using_obj_files.using_obj_files import obj_mesh
+from models.using_obj_files.using_obj_files import obj_mesh
 
 mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
 

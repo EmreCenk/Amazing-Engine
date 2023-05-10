@@ -1,12 +1,10 @@
-import pygame
 from graphics.camera import camera
-from graphics.using_obj_files.using_obj_files import obj_mesh
-import graphics.shapes_3d as sh3
+from models.using_obj_files.using_obj_files import obj_mesh
 from time import perf_counter
 import numpy as np
 from a_ideas_on_hold.managing_window_pixels import WindowManager
-from Mathematical_Functions.coordinate_system_3d import *
-
+from utils.coordinate_system_3d import *
+import pygame
 
 class graphics_manager:
 
@@ -95,7 +93,7 @@ class graphics_manager:
         # self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (255,0,0))
 
 
-        self.tester_rectangle = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj",
+        self.tester_rectangle = obj_mesh("models/using_obj_files/sample_object_files/sphere_5_scaled.obj",
                                         color = (0,255,255))
         # self.tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color = (255,255,255))
 

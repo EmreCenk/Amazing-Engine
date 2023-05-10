@@ -1,5 +1,5 @@
 
-from Mathematical_Functions.coordinate_system_3d import distance, normalized
+from utils.coordinate_system_3d import distance, normalized
 
 def get_color(triangle, normalized_light_source, rgb_colour = (255, 255, 255)):
     # 30 operations

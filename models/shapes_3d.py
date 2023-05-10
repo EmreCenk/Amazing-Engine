@@ -1,8 +1,8 @@
-from graphics.shapes_2d import quadrilateral,shape
-from Mathematical_Functions.coordinate_system_3d import rotate_around_point, normalized, is_visible
+from models.shapes_2d import quadrilateral,shape
+from utils.coordinate_system_3d import rotate_around_point, normalized, is_visible
 import pygame
 from constants import conversion
-from Mathematical_Functions.shading import get_color
+from utils.shading import get_color
 
 class shape_3d(shape):
 
