@@ -57,7 +57,6 @@ class graphics_manager:
                                                               )
 
 
-
                 if is_visible(translated_vert,normalized_camera):
                     to_draw.append(
                         [triangle, distance(triangle.get_centroid(),camera_position),translated_vert]
@@ -66,7 +65,7 @@ class graphics_manager:
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
         for liste in to_draw:
-            liste[0].draw(self.window, normalized_camera, liste[2])
+            liste[0].draw(self.window, self.camera.position, liste[2])
 
 
         # for model in self.models:
@@ -120,7 +119,6 @@ class graphics_manager:
         x=0
         total=0
 
-        self.tester_rectangle.move("z",10)
         while x<10000:
             x+=1
             power_level = p_original * self.delta_time
@@ -155,11 +153,11 @@ class graphics_manager:
             for func in functions_to_call:
                 func()
 
-            xr, yr = pygame.mouse.get_rel()
-
-            dsd = 0.2
-            self.camera.rotate("x",yr*dsd)
-            self.camera.rotate("y",xr*dsd)
+            # xr, yr = pygame.mouse.get_rel()
+            #
+            # dsd = 0.2
+            # # self.camera.rotate("x",yr*dsd)
+            # self.camera.rotate("y",xr*dsd)
 
 
             #
@@ -178,6 +176,20 @@ class graphics_manager:
             elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 self.camera.move("x",power_level)
 
+
+            power_level += self.delta_time*10
+            if keys[pygame.K_k]:
+                self.camera.rotate("x", power_level)
+
+            elif keys[pygame.K_i]:
+                self.camera.rotate("x", -power_level)
+
+
+            if keys[pygame.K_j]:
+                self.camera.rotate("y",-power_level)
+
+            if keys[pygame.K_l]:
+                self.camera.rotate("y",+power_level)
 
             # self.tester_mesh2.rotate("y",10*self.delta_time)
             # self.tester_rectangle.rotate("y",10*self.delta_time)
