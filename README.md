@@ -1,24 +1,35 @@
 # Amazing-3D-Engine-A3E-
-A 3d Graphıcs Engine 
 
-The coordinate system initially takes the camera as the origin (0,0,0).
+####What is Amazing Engine?
+Amazing Engine is a 3D graphics Engine that brings a third dimension to pygame.
+Pygame is a 2d python graphics library 
+You can use this engine to either create 3d games from scratch, or to add 3d graphics to existing pygame games
 
-In the initial camera configuration, the depth is the Z axis, left to right is the X axis and up/down is the Y axis. 
-
-The Engine supports .obj files.
-This means that you can import any 3d model that you create in blender. All you need to do this
- export -> export as .obj.
-Before exporting, inside the geometry settings,  uncheck all of the boxes except "Triangulate Faces".
-
-#### The shape class:
-The shape class is the parent class of all 3D classes.
-When you are using the engine as a user, you will almost never need to directly 
-interact with the shape class.
-Instead, you will interact with the functions that all 3D objects inherit from this class. 
-####Universal Functions for all 3D objects:
+** Insert Example Gifs **
 
 
-#### Using the  obj_mesh class:
+###Getting Started
+Getting set up with Amazing Engine is a very easy process.
+#####Importing and initializing engine:
+There are 3 mandatory arguments you need to provide when initializing the engine:
+* The screen width
+* The screen height
+* The current working directory 
+* The name of the script you are currently running
+```python
+from graphics.managing_graphics import Engine
+import os
+screen_width = 800
+screen_height = 600
+script_name = "my_script"
+my_engine = Engine(screen_width, screen_height, os.getcwd(), script_name, delay_time=25)
+
+```
+
+###Creating 3D objects:
+Amazing Engine has a variety of 3d shapes such as rectangular prisms. The Engine also supports .obj files. 
+
+#### Importing .obj files:
 
 To import a .obj file to the engine, you need to use the obj_mesh class.
 When initializing, you need to specify two values:
@@ -28,8 +39,14 @@ When initializing, you need to specify two values:
 An example:
 ```python
 from models.using_obj_files.using_obj_files import obj_mesh
-
 mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
-
-
 ```
+####Universal Functions for all 3D objects:
+
+
+
+
+maybe:
+This means that you can import any 3d model that you create in blender. All you need to do this
+ export -> export as .obj.
+Before exporting, inside the geometry settings,  uncheck all of the boxes except "Triangulate Faces".
