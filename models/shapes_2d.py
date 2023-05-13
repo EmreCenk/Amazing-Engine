@@ -117,7 +117,7 @@ class triangle(shape):
 
 
         w, h = pygame.display.get_window_size()
-        coordiantes = efficient_triangle_projection(translated_vertices, w, h)
+        coordiantes = efficient_triangle_projection(translated_vertices, w, h,)
 
         coordiantes = clip_2d_triangle(coordiantes, w+50, h+50) #add 50 to make sure there are no spaces left in the
         # corners

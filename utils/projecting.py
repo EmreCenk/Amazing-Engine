@@ -16,7 +16,7 @@ def efficient_perspective_projection(translated_point,screen_width,screen_height
                           screen_width,
                           screen_height)
 def efficient_triangle_projection(translated_triangle_vertices, screen_width, screen_height):
-    #18 operations
+    #18 operations. Doesn't check orthogonal
     return (efficient_perspective_projection(translated_triangle_vertices[0],screen_width,screen_height,),
             efficient_perspective_projection(translated_triangle_vertices[1],screen_width,screen_height,),
             efficient_perspective_projection(translated_triangle_vertices[2],screen_width,screen_height,),
