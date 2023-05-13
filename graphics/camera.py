@@ -40,3 +40,6 @@ class camera:
         #Angles are 3 after the index of their respective axis
         self.position[axis+3] += amount
 
+        for i in range(len(self.models_3d)):
+            self.models_3d[i].rotate(axis, -amount)
+
