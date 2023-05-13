@@ -14,7 +14,7 @@ def translate(point,camera_position):
     cy = camera_position[1]
     d=camera_position[2]
 
-    x+=cx
+    x-=cx
     y-=cy
     z-=d
 

@@ -103,7 +103,6 @@ class graphics_manager:
         # self.tester_mesh2 = obj_mesh("graphics/using_obj_files/sample_object_files/sphere_5_scaled.obj", color = (0,255,255))
 
 
-        self.tester_rectangle.move("x",11)
 
 
         # self.tester_mesh2.move("x",-10)
@@ -191,6 +190,14 @@ class graphics_manager:
             if keys[pygame.K_l]:
                 self.camera.rotate("y",+power_level)
 
+
+
+            if keys[pygame.K_SPACE]:
+                print(self.tester_rectangle.triangles[0].vertices)
+                self.tester_rectangle.move("x", self.delta_time*10)
+
+                print(self.tester_rectangle.triangles[0].vertices)
+                print()
             # self.tester_mesh2.rotate("y",10*self.delta_time)
             # self.tester_rectangle.rotate("y",10*self.delta_time)
             # self.tester_mesh2.draw_faces(self.window, self.camera.position)
