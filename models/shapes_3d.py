@@ -64,6 +64,7 @@ class shape_3d(shape):
 
 
 
+
 class rectangular_prism(shape_3d):
 
     def __init__(self,v1, v2, v3, v4, v5, v6, v7, v8, color=(255,255,255),):
@@ -142,3 +143,25 @@ class rectangular_prism(shape_3d):
                     pygame.draw.polygon(window,
                                         new_color,
                                         a)
+
+
+class cube(rectangular_prism):
+
+    def __init__(self, center_coordinates, side_length, color):
+
+        shift = 0
+        v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side_length],\
+                                         [side_length, shift, side_length],\
+                                         [side_length, shift, shift],\
+                                         [shift, shift,shift], \
+                                         [shift, side_length, side_length],\
+                                         [side_length, side_length, side_length],\
+                                         [side_length, side_length, shift],\
+                                         [shift, side_length, shift]
+
+
+        super().__init__(v1, v2,v3 ,v4 ,v5 ,v6 ,v7 ,v8, color)
+
+        self.move("x", center_coordinates[0])
+        self.move("y", center_coordinates[1])
+        self.move("z", center_coordinates[2])

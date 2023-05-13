@@ -6,12 +6,9 @@ import pygame
 import models.shapes_3d as sh3
 
 my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
-shift = 0
-side = 5
-v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side], [side, shift, side], [side, shift, shift], [shift, shift, shift], \
-                                 [shift, side, side], [side, side, side], [side, side, shift], [shift, side, shift]
 
-tester_rectangle = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8, color=(255, 255, 255))
+
+tester_rectangle = sh3.cube([10,0,-30],20,(255,0,0))
 my_engine.add_model(tester_rectangle)
 
 
