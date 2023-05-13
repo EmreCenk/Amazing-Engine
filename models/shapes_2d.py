@@ -82,9 +82,9 @@ class shape:
         
         
 
-    def rotate(self,axis,angle):
+    def rotate(self,axis, angle, radian_input = False ):
         for vert in self.vertices:
-            rotate(vert,axis,angle)
+            rotate(vert, axis, angle, radian_input)
 
 
 class triangle(shape):
