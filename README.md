@@ -106,7 +106,7 @@ from graphics.managing_graphics import Engine
 import os
 my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
 
-my_engine.camera.move("x", 10) # moves the camera along the x axis by 20 units
+my_engine.camera.move("x", 10) # moves the Camera along the x axis by 20 units
 my_engine.camera.rotate("z", 12) #rotates the camera along the z axis by 12 degrees
 
 ```

@@ -1,4 +1,4 @@
-from graphics.camera import camera
+from graphics.camera import Camera
 from time import perf_counter
 from a_ideas_on_hold.managing_window_pixels import WindowManager
 from utils.coordinate_system_3d import *
@@ -13,10 +13,12 @@ import sys
 class Engine:
 
     #TODO: add clipping for triangles
-    #TODO: add camera angles
+    #TODO: add Camera angles
 
     def __init__(self,  width_window , height_window, path, script_name, window = None, delay_time = 100,background_color = (
         0,0,0)):
+        self.keep_the_engine_going = True
+
         self.path = path #the path to where the main script is running at
         self.delay_time = delay_time
         self.background_color = background_color
@@ -38,10 +40,10 @@ class Engine:
         pix = pygame.surfarray.pixels3d(self.window)
         self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
         self.models_3d = []
-        self.camera = camera(self.models_3d, z = 20)
+        self.camera = Camera(self.models_3d, z = 20)
 
         self.event_bindings = {} # pygame events mapped to functions
-        
+
 
 
     def render_frame(self):
@@ -70,7 +72,7 @@ class Engine:
         #     pygame.draw.circle(
         #         self.window,
         #     (255,255,255),
-        #     project_3d_point_to_2d(model.center,self.width,self.height,self.camera.position),
+        #     project_3d_point_to_2d(model.center,self.width,self.height,self.Camera.position),
         #     radius = 3)
 
     def add_model(self, obj_3d):
@@ -81,12 +83,12 @@ class Engine:
         obj_3d.move("x", -self.camera.x)
         obj_3d.move("y", -self.camera.y)
         obj_3d.move("z", -self.camera.z)
-        self.camera.models_3d = self.models_3d # making sure the camera also has access to our list
+        self.camera.models_3d = self.models_3d # making sure the Camera also has access to our list
 
 
     def bind_event(self, event_type, function_to_execute):
         self.event_bindings[event_type] = function_to_execute
-    def init_loop(self, ):
+    def start_engine(self, ):
 
         sys.path.append(self.path)
         main_script = __import__(self.script_name)
@@ -109,7 +111,7 @@ class Engine:
         x=0
         total=0
 
-        while x<100000:
+        while self.keep_the_engine_going:
             x += 1
 
             s = perf_counter()
@@ -153,3 +155,5 @@ class Engine:
 
         pygame.time.delay(int(self.delay_time-frame_time*1000)) # multiply by 1000 to convert to milliseconds
 
+    def stop_engine(self):
+        self.keep_the_engine_going = False

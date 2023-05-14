@@ -1,4 +1,4 @@
-from utils.shading import get_color
+from graphics.shading import get_color
 from utils.projecting import *
 from utils.coordinate_system_3d import *
 import pygame
@@ -87,6 +87,10 @@ class shape:
             rotate(vert, axis, angle, radian_input)
 
 
+    def rotate_around_point(self, point, axis, angle, radian_input = False):
+        for vert in self.vertices:
+            rotate_around_point(point, vert, axis, angle, radian_input)
+
 class triangle(shape):
 
     def __init__(self,v1,v2,v3,color = (255,255,255)):
@@ -142,11 +146,7 @@ class triangle(shape):
                translate(self.v2,camera_position),
                translate(self.v3,camera_position)]
 
-    # def is_visible(self, normalized_camera_position, camera_position):
-    #     #62 operations
-    #     return is_visible(triangle_vertices = self.vertices,
-    #                       camera_position = camera_position,
-    #                       normalized_camera_position = normalized_camera_position)
+
 
     def get_centroid(self):
         # 9 operations
@@ -157,7 +157,7 @@ class triangle(shape):
 
         )
 class quadrilateral(shape):
-    def __init__(self,v1,v2,v3,v4,_color = "white", fill_bool = False):
+    def __init__(self,v1,v2,v3,v4,_color = (255,255,255)):
         #This class basically exists for the sole purpose of converting quadrilaterals to triangles
 
         super().__init__(color=_color)
