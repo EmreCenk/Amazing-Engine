@@ -1,5 +1,8 @@
-from models.shapes_3d import shape_3d
+import os
+print(os.getcwd())
 from models.using_obj_files.parse_obj_files import parse_triangle_list
+
+from models.shapes_3d import shape_3d
 
 
 class obj_mesh(shape_3d):

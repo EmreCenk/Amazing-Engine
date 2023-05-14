@@ -10,7 +10,8 @@ my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
 
 # tester_rectangle = sh3.Cube([10, 0, -10], 5, (255, 0, 0))
 # tester_rectangle = obj_mesh("models/using_obj_files/sample_object_files/sphere_5_scaled.obj",(255,255,255))
-tester_rectangle = sh3.Pyramid([0, 0, -10], 5, (255,0,0))
+# tester_rectangle = sh3.Pyramid([0, 0, -10], 5, (255,0,0))
+tester_rectangle = sh3.Sphere([0,0,-100], 40, (255,255,0))
 my_engine.add_model(tester_rectangle)
 
 

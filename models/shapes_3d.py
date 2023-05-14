@@ -5,6 +5,7 @@ from constants import conversion
 from utils.shading import get_color
 from math import sqrt
 
+
 class shape_3d(shape):
 
     # Surprisingly, every function in the 2d shape class is actually really usefull for 3d shapes. Perhaps I should
@@ -64,7 +65,9 @@ class shape_3d(shape):
         # rotate_around_point(self.center,self.center, axis, angle)
 
 
-
+#We have to import obj_mesh here since obj_mesh imports the shape_3d class. We need to initialize shape_3d before
+# trying to import it from obj_mesh
+from models.using_obj_files.using_obj_files import obj_mesh
 
 class rectangular_prism(shape_3d):
 
@@ -207,4 +210,24 @@ class Pyramid(shape_3d):
 
         self.vertices = [self.v1, self.v2, self.v3, self.v4 ]
 
+
+class Sphere(obj_mesh):
+
+    def __init__(self, center, radius, color):
+        """This class takes a preset sphere .obj file and scales it according to radius size.
+        The initial model sphere has a radius of 5."""
+        super().__init__("models/using_obj_files/sample_object_files/sphere_5_scaled.obj", color)
+
+        ratio = radius / 5
+        for i in range(len(self.vertices)):
+            self.vertices[i][0] *= ratio
+            self.vertices[i][1] *= ratio
+            self.vertices[i][2] *= ratio
+
+        #moving to the desired position
+        self.move("x", center[0])
+        self.move("y", center[1])
+        self.move("z", center[2])
+
+        self.center = center
 
