@@ -4,12 +4,15 @@ import os
 from graphics.managing_graphics import Engine
 import pygame
 import models.shapes_3d as sh3
-
+from models.using_obj_files.using_obj_files import obj_mesh
 my_engine = Engine(800, 600, os.getcwd(), "run", delay_time=25)
 
 
-tester_rectangle = sh3.cube([10,0,-30],20,(255,0,0))
+# tester_rectangle = sh3.Cube([10, 0, -10], 5, (255, 0, 0))
+# tester_rectangle = obj_mesh("models/using_obj_files/sample_object_files/sphere_5_scaled.obj",(255,255,255))
+tester_rectangle = sh3.Pyramid([0, 0, -10], 5, (255,0,0))
 my_engine.add_model(tester_rectangle)
+
 
 
 def zoom(event):
@@ -58,6 +61,9 @@ def update():
         my_engine.camera.rotate("y", +power_level)
 
 
+    if keys[pygame.K_SPACE]:
+        tester_rectangle.move("x",0.1)
+        print(tester_rectangle.triangles[0].vertices)
 my_engine.init_loop()
 
 

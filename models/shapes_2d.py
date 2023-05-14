@@ -89,7 +89,7 @@ class shape:
 
 class triangle(shape):
 
-    def __init__(self,v1,v2,v3,color = "white"):
+    def __init__(self,v1,v2,v3,color = (255,255,255)):
         super().__init__(color = color )
         self.v1 = v1
         self.v2 = v2
