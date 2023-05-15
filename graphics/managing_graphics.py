@@ -83,9 +83,9 @@ class Engine:
                             obj_3d,
                             )
 
-        obj_3d.move("x", -self.camera.x)
-        obj_3d.move("y", -self.camera.y)
-        obj_3d.move("z", -self.camera.z)
+        obj_3d.shift("x", -self.camera.x)
+        obj_3d.shift("y", -self.camera.y)
+        obj_3d.shift("z", -self.camera.z)
         self.camera.models_3d = self.models_3d # making sure the Camera also has access to our list
 
 

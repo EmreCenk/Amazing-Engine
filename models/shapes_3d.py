@@ -47,8 +47,8 @@ class shape_3d(shape):
 
 
 
-    def move(self,axis,amount):
-        #Overriding the move function to also move the center along with everything else:
+    def shift(self, axis, amount):
+        #Overriding the shift function to also shift the center along with everything else:
         if axis in conversion:
             axis = conversion[axis]
 
@@ -92,6 +92,16 @@ class shape_3d(shape):
             rotate_around_point(point, vert, axis, angle, radian_input)
 
         rotate_around_point(point, self.center, axis, angle)
+
+    def teleport(self, x, y, z):
+        x_shift = -self.center[0] + x
+        y_shift = -self.center[1] + y
+        z_shift = -self.center[2] + z
+
+        self.shift(0, x_shift)
+        self.shift(1, y_shift)
+        self.shift(2, z_shift)
+
 #We have to import obj_mesh here since obj_mesh imports the shape_3d class. We need to initialize shape_3d before
 # trying to import it from obj_mesh
 from models.using_obj_files.using_obj_files import obj_mesh
@@ -194,13 +204,13 @@ class Cube(rectangular_prism):
 
 
         super().__init__(v1, v2,v3 ,v4 ,v5 ,v6 ,v7 ,v8, color)
-        self.move("x", side_length/2)
-        self.move("y", -side_length/2)
-        self.move("z", -side_length/2)
+        self.shift("x", side_length / 2)
+        self.shift("y", -side_length / 2)
+        self.shift("z", -side_length / 2)
 
-        self.move("x", center_coordinates[0])
-        self.move("y", center_coordinates[1])
-        self.move("z", center_coordinates[2])
+        self.shift("x", center_coordinates[0])
+        self.shift("y", center_coordinates[1])
+        self.shift("z", center_coordinates[2])
 
 
 
@@ -264,9 +274,9 @@ class Sphere(obj_mesh):
             self.vertices[i][2] *= ratio
 
         #moving to the desired position
-        self.move("x", center[0])
-        self.move("y", center[1])
-        self.move("z", center[2])
+        self.shift("x", center[0])
+        self.shift("y", center[1])
+        self.shift("z", center[2])
 
         self.center = center
 
