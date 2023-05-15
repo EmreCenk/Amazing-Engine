@@ -234,12 +234,16 @@ class Pyramid(shape_3d):
         self.v3[0] -= side_length / 2
         self.v4[0] += side_length / 2
 
+        #height triangles:
         self.triangles.append(triangle(self.v1, self.v3, self.v4, color = self.color))
 
         self.triangles.append(triangle(self.v1, self.v4, self.v2, color = self.color))
 
         self.triangles.append(triangle(self.v1, self.v2, self.v3, color = self.color))
-        self.triangles.append(triangle(self.v2, self.v3, self.v4, color = self.color))
+
+
+        #base triangle
+        self.triangles.append(triangle(self.v2, self.v4, self.v3, color = self.color))
 
         self.center = center_coordinates
 
