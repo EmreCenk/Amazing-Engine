@@ -181,18 +181,3 @@ class quadrilateral(shape):
         self.triangles.append(t1)
         self.triangles.append(t2)
 
-if __name__ == '__main__':
-    import models.shapes_3d as sh3
-
-    shift = 1
-    side = 100
-
-    v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side], [side, shift, side], [side, shift, shift], [shift, shift,
-                                                                                                       shift], \
-                                     [shift, side, side], [side, side, side], [side, side, shift], [shift, side, shift]
-    self = sh3.rectangular_prism(v1, v2, v3, v4, v5, v6, v7, v8)
-    print(self.triangles[0].edges,self.edges)
-
-    self.rotate("x",60)
-
-    print(self.triangles[0].edges,self.edges)

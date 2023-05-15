@@ -6,10 +6,9 @@ from graphics.shading import Light
 import pygame
 import sys
 
-#
-# import importlib.util
-# from models.using_obj_files.using_obj_files import obj_mesh
-# import models.shapes_3d as sh3
+import models.shapes_3d as sh3 #do not delete this line. Due to some import dependencies, we need to first import
+# this before importing the obj_mesh class
+from models.using_obj_files.using_obj_files import obj_mesh
 
 class Engine:
 
@@ -47,7 +46,32 @@ class Engine:
 
         self.event_bindings = {} # pygame events mapped to functions
 
+    def create_text(self, text, center_position, spacing, font_size):
 
+        letter_objs = []
+        y_offset = 0
+        x_offset = 0
+        text = text.upper()
+        for i in range(len(text)):
+
+            if text[i] == " " or text[i].upper() not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n":
+                continue
+
+            if text[i] == "\n":
+                y_offset -= 30*font_size
+                x_offset += (i+1)*spacing
+                continue
+
+            car = obj_mesh(rf"models\using_obj_files\obj_letters\uploads_files_1950256_{text[i]}.obj",
+                           (255, 255, 255))
+            car.teleport(center_position[0] - spacing*i + x_offset, center_position[1] + y_offset, -10)
+            car.rotate("x", -90)
+            car.rotate("y", 180)
+            car.scale(font_size)
+            letter_objs.append(car)
+            self.add_model(car)
+
+        return letter_objs
 
     def render_frame(self):
 

@@ -14,7 +14,7 @@ def parse_triangle_list(path, color = (255,255,255)):
         file = open(path, "r") #opening the path
 
     except FileNotFoundError:
-        raise FileNotFoundError(".obj file path is not valid")
+        raise FileNotFoundError(".obj file path is not valid. given path:",path)
 
     text_to_parse = file.read()
     file.close()
