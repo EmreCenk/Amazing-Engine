@@ -1,20 +1,20 @@
 # Amazing-3D-Engine-A3E-
 
-#### What is Amazing Engine?
+## What is Amazing Engine?
 Amazing Engine is a 3D graphics Engine that brings a third dimension to pygame.
-Pygame is a 2d python graphics library 
+Pygame is a 2d python graphics library that currently does not have a 3D version. This project changes that.
 You can use this engine to either create 3d games from scratch, or to add 3d graphics to existing pygame games
 
-#### Example Images/Gifs (don't forget to add gifs)
+## Example Images/Gifs (don't forget to add gifs)
 
 
-#### Demonstrating some of the available shapes:
+### Some built in shape examples:
 ![](example_images/example_image_1.PNG)
 
-#### Example imported .obj file:
+#### Example of an imported obj file:
 ![](example_images/utah_teapot_example.PNG)
 
-### Getting Started
+## Getting Started
 Getting set up with Amazing Engine is a very easy process.
 ##### Importing and initializing engine:
 There are 3 mandatory arguments you need to provide when initializing the engine:
@@ -32,10 +32,45 @@ my_engine = Engine(screen_width, screen_height, os.getcwd(), script_name, delay_
 
 ```
 
-### Creating 3D objects:
-Amazing Engine has a variety of 3d shapes such as rectangular prisms. The Engine also supports .obj files. 
+## Creating 3D objects:
+Amazing Engine has a variety of 3d shapes such as Cubes, Pyramids and Spheres. The Engine even supports .obj files.
 
-#### Importing .obj files:
+### Initializing built in shapes:
+Most 3d shapes have a general rule when initializing:
+* The first argument is an array that specifies the coordinates of the center
+* The second argument is an integer that specifies what the side length, radius, or height is
+    For instance, 
+    
+    for cubes, the second argument specifies the side length,
+    
+    for pyramids, the second argument specifies the height
+    
+    for spheres, the second argument specifies the radius 
+
+* The third argument is what color you want the object to be
+```python
+import models.shapes_3d as sh3
+from graphics.managing_graphics import Engine
+import os
+my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
+
+#Initializing 3d objects:
+example_cube = sh3.Cube([10, 0, -10], 5, (255, 0, 255)) #A cube with center at [10, 0, -10] with a side length of 5
+example_pyramid = sh3.Pyramid([25, 0, -10], 5, (255,0,0)) #A pyramid with center at [25, 0, -10] with a height of 5
+example_sphere = sh3.Sphere([0,0,-10], 8, (255,255,0)) #A sphere with center at [0, 0, -10] with a radius of 5
+
+#Adding the objects to the Engine:
+my_engine.add_model(example_cube)
+my_engine.add_model(example_pyramid)
+my_engine.add_model(example_sphere)
+```
+
+Note: Whenever you create a new 3d object, you need to call the Engine.add_model function. Otherwise your 3d object will
+not be rendered.
+
+####
+
+### Importing .obj files:
 
 To import a .obj file to the engine, you need to use the obj_mesh class.
 When initializing, you need to specify two values:
@@ -52,24 +87,23 @@ mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", co
 
 my_engine.add_model(mesh_object) #This function must be called when you create any 3d object
 ```
-Whenever you create a new 3d object, you need to call the Engine.add_model function. Otherwise your 3d object will
- not be rendered.
+
 
 At this point, the mesh_object class can be treated as if it was any other built in shape.
 Any method that is valid for a 3d shape object is also valid for a mesh_class object.
  
-#### Other 3d objects:
+### Other 3d objects:
 The engine has many built in shapes. * insert examples *
 
 
  
  
-#### Universal Methods for all 3D objects:
+### Universal Methods for all 3D objects:
 All 3d objects have some common methods that can be called. (These 3d objects can be an obj_mesh class, or any other
- built in shape)
+ built in shape such as cubes, pyramids or spheres)
 
-##### Moving objects
-In order to move an object, you call the .move method for the object. The move method takes in two inputs:
+#### Moving objects
+In order to move an object, you call the 'move' method for the object. The move method takes in two inputs:
 1) axis: a string "x", "y" or "z". Instead of the axis values as strings, you can also input 0, 1, and 2 respectively.
 2) amount: an integer, how much to move the object by
 
@@ -77,23 +111,20 @@ In order to move an object, you call the .move method for the object. The move m
 from models.using_obj_files.using_obj_files import obj_mesh
 mesh_object = obj_mesh("using_obj_files/sample_object_files/utah_teapot.obj", color = (0,255,255))
 
-#MOVING ALONG THE X AXIS:
-mesh_object.move("x", 10) #moves the object 10 units on the x axis
-mesh_object.move(0, 10) #Equivalent to the above expression
-
-#MOVING ALONG THE Y AXIS:
-mesh_object.move(axis = "y", amount = -10) #moves the object -10 units on the x axis
+mesh_object.move("x",  10) #moves the object 10 units along the x axis
+mesh_object.move("y", -10) #moves the object -10 units along the y axis
+mesh_object.move(axis = "z", amount = -10) #moves the object -10 units along the z axis
 
 ```
 
-##### Rotating objects
+#### Rotating objects
 To rotate an object, you call the .rotate method. Takes in two inputs:
 1) axis: The axis to rotate around, any string "x", "y", "z" or the integers 0, 1, 2 respectively
 2) angle: How many degrees to rotate the object by, any float (By default, the input is in degrees, NOT RADIANS)
 
 The rotate method also takes in one keyword arguement which is False by default:
 3) radian_input: a boolean value specifying whether the input is in radians, when the input is True, the amount
- variable will be treated as radians
+ argument will be treated as radians
  
 ```python
 from models.using_obj_files.using_obj_files import obj_mesh
@@ -103,8 +134,9 @@ mesh_object.rotate("x", 10) #rotates the mesh_object by 10 degrees along the x a
 mesh_object.rotate(axis = "y", angle = 1, radian_input=True) #rotates the mesh_object by 1 radian along the y axis
 ```
  
-#### The Camera
-The camera is an instance attribute that belongs to your Engine object. 
+#### Using The Camera
+The camera is an instance attribute that belongs to your Engine object.
+The camera is accessed via Engine.camera
 The move and rotate functions also apply to the camera.
 
 ```python
@@ -117,6 +149,27 @@ my_engine.camera.rotate("z", 12) #rotates the camera along the z axis by 12 degr
 
 ```
 
+### Adjusting the Lighting:
+For now, the lighting is glued to the camera. You can customize how bright the light is by changing the "luminosity
+" attribute of the engine's light.
+```python
+from graphics.managing_graphics import Engine
+import os
+my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
+
+my_engine.light.luminosity = 50 #The light can light up to 50 units around itself
+```
+
+####The update function:
+Once you have initialized the engine and created your 3D objects, you will need to create a function named 'update'.
+The 'update' function will be called before every frame is rendered. 
+
+### Example animation of a rotating cube:
+```python
+from graphics.managing_graphics import Engine
+import os
+my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
+```
 
 
 
