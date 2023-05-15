@@ -8,9 +8,11 @@ You can use this engine to either create 3d games from scratch, or to add 3d gra
 #### Example Images/Gifs (don't forget to add gifs)
 
 
-##### Demonstrating some of the available shapes:
+#### Demonstrating some of the available shapes:
 ![](example_images/example_image_1.PNG)
 
+#### Example imported .obj file:
+![](example_images/utah_teapot_example.PNG)
 
 ### Getting Started
 Getting set up with Amazing Engine is a very easy process.

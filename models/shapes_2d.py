@@ -117,7 +117,7 @@ class triangle(shape):
                project_3d_point_to_2d(self.v3,w,h,camera_position,orthogonal=orthogonal)
 
 
-    def draw(self,window,  camera_position, translated_vertices):
+    def draw(self,window, translated_vertices,   light_source_position, light_luminosity):
 
 
         w, h = pygame.display.get_window_size()
@@ -128,7 +128,7 @@ class triangle(shape):
         if len(coordiantes)<=2:
             return
 
-        new_color = get_color(self, light_v=camera_position, rgb_colour=self.color)
+        new_color = get_color(self, light_v=light_source_position, rgb_colour=self.color, luminosity=light_luminosity)
         pygame.draw.polygon(window, points=coordiantes, color=new_color)
 
     def get_normalized(self):

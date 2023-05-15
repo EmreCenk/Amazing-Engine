@@ -15,7 +15,7 @@ my_engine.add_model(alpha)
 
 
 def zoom(event):
-    zpower = 50 * my_engine.delta_time
+    zpower = 25 * my_engine.delta_time
     if event.button == 4:
         my_engine.camera.move("z", -zpower)
 
