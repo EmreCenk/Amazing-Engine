@@ -181,6 +181,7 @@ class Cube(rectangular_prism):
     def __init__(self, center_coordinates, side_length, color):
         self.center = center_coordinates
         self.side_length = side_length
+
         shift = 0
         v1, v2, v3, v4, v5, v6, v7, v8 = [shift, shift, side_length],\
                                          [side_length, shift, side_length],\
@@ -200,6 +201,9 @@ class Cube(rectangular_prism):
         self.move("x", center_coordinates[0])
         self.move("y", center_coordinates[1])
         self.move("z", center_coordinates[2])
+
+
+
 
 class Pyramid(shape_3d):
 
