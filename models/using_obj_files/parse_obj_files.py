@@ -3,6 +3,7 @@ from models.shapes_2d import triangle
 
 possible_extensions = {".obj", ".txt"}
 
+
 def parse_triangle_list(path, color = (255,255,255)):
 
     root, extension = os.path.splitext(path)
@@ -14,6 +15,7 @@ def parse_triangle_list(path, color = (255,255,255)):
         file = open(path, "r") #opening the path
 
     except FileNotFoundError:
+
         raise FileNotFoundError(".obj file path is not valid. given path:",path)
 
     text_to_parse = file.read()
@@ -65,7 +67,3 @@ def parse_triangle_list(path, color = (255,255,255)):
     return all_triangles,all_vertices
 
 
-
-
-if __name__ == '__main__':
-    parse_triangle_list("sample_object_files/sphere_example.obj")
