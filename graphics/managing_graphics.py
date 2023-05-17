@@ -1,6 +1,7 @@
 from graphics.camera import Camera
 from time import perf_counter
 from a_ideas_on_hold.managing_window_pixels import WindowManager
+from constants import SOLID, WIREFRAME
 from utils.coordinate_system_3d import *
 from graphics.shading import Light
 import pygame
@@ -92,7 +93,10 @@ class Engine:
         to_draw.sort(key = lambda tri: tri[1], reverse=True)
 
         for liste in to_draw:
-            liste[0].draw(self.window, liste[2],  self.light.position, self.light.luminosity)
+            if liste[0].draw_style == SOLID:
+                liste[0].draw(self.window, liste[2],  self.light.position, self.light.luminosity)
+            else:
+                liste[0].wireframe_draw(self.window, self.camera.position)
 
 
         # for model in self.models_3d:

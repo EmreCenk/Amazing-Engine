@@ -34,8 +34,12 @@ BOTTOM = {(0,1,1,0),
           (0,1,0,0),
           (0,1,0,1)}
 
-
+#Shape tags:
 OBJ = 0
 SPHERE = 1
 CUBE = 2
 PYRAMID = 3
+
+#Drawing styles:
+WIREFRAME = 1
+SOLID = 2
