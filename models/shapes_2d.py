@@ -101,6 +101,7 @@ class triangle(shape):
 
     def __init__(self,v1,v2,v3,color = (255,255,255)):
         super().__init__(color = color )
+        self.tag = 0 #this is to see what parent 3d object the triangle belongs to
         self.v1 = v1
         self.v2 = v2
         self.v3 = v3
