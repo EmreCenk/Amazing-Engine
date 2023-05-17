@@ -13,9 +13,9 @@ def update():
 
     a, b, c = cubes[len(cubes)//2].center
     for i in range(len(cubes)):
-        cubes[i].rotate_around_point([a, b, c],"y",60*engine.delta_time)
-        cubes[i].rotate_around_point([a, b, c],"x",59*engine.delta_time)
-        cubes[i].rotate_around_point([a, b, c],"z",58*engine.delta_time)
+        cubes[i].rotate_around_point([a, b, c],"y",30*engine.delta_time)
+        cubes[i].rotate_around_point([a, b, c],"x",29*engine.delta_time)
+        cubes[i].rotate_around_point([a, b, c],"z",28*engine.delta_time)
 
 
 engine = Engine(800, 600, __file__, delay_time=25)
