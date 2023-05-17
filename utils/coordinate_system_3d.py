@@ -231,9 +231,9 @@ def clip_line(
         if opt == clip_class_1:
             x1, y1 = x, y
             clip_class_1 = classify_point(x1, y1, xmax, ymax, xmin, ymin)
-
+            # if dbglvl>1: print('checking k1: ' + str(x) + ',' + str(y) + '    ' + str(k1))
         elif opt == clip_class_2:
-
+            # if dbglvl>1: print('checking k2: ' + str(x) + ',' + str(y) + '    ' + str(k2))
             x2, y2 = x, y
             clip_class_2 = classify_point(x2, y2, xmax, ymax, xmin, ymin)
 
@@ -309,7 +309,9 @@ if __name__ == "__main__":
 
         new = clip_2d_triangle([a,b,c],500,500)
 
+        print(len(new))
         if len(new)>2:
+            print("alpha:",new)
             pygame.draw.polygon(window, (255,255,0), new)
 
         pygame.time.delay(50)

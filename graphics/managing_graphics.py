@@ -41,7 +41,7 @@ class Engine:
         self.Window_Manager = WindowManager(pix, self.height, self.width, self.background_color)
 
         self.models_3d = [] #list of all 3d objects crated
-        self.light = Light(0,0,0,10)
+        self.light = Light(0,0,0,50)
         self.camera = Camera(self.models_3d, z = 20)
 
         self.event_bindings = {} # pygame events mapped to functions
