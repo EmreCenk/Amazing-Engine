@@ -114,10 +114,7 @@ def update():
     if keys[pygame.K_l]:
         engine.camera.rotate("y", +power_level-0.1)
 
-try:
-    engine.start_engine()
+engine.start_engine()
 
-    pygame.quit()
-except:
-    pygame.quit()
+pygame.quit()
 

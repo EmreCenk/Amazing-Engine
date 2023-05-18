@@ -21,11 +21,9 @@ class shape:
     def wireframe_draw(self,window,camera_position,orthogonal=False):
         height = window.get_height()
         width = window.get_width()
+        edges = efficient_triangle_projection(self.vertices, width, height)
 
-        for edge in self.edges:
-            p1=project_3d_point_to_2d(edge[0],width,height,camera_position,orthogonal)
-            p2=project_3d_point_to_2d(edge[1],width,height,camera_position,orthogonal)
-            pygame.draw.line(window,start_pos=p1,end_pos=p2,color=self.color)
+        pygame.draw.polygon(surface=window, color = self.color, points = edges, width = 1)
 
 
 
@@ -131,9 +129,9 @@ class triangle(shape):
         w, h = pygame.display.get_window_size()
         coordiantes = efficient_triangle_projection(translated_vertices, w, h,)
 
-        coordiantes = clip_2d_triangle(coordiantes, w+50, h+50) #add 50 to make sure there are no spaces left in the
+        coordiantes = clip_2d_triangle(coordiantes, w, h) #add 50 to make sure there are no spaces left in the
         # corners
-        if len(coordiantes)<=2:
+        if len(coordiantes)<=2 or len(coordiantes)>6:
             return
 
         new_color = get_color(self, light_v=light_source_position, rgb_colour=self.color, luminosity=light_luminosity)
