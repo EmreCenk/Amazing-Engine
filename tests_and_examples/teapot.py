@@ -12,7 +12,7 @@ teapot.shift("y", -2)
 teapot.rotate("x", -30)
 teapot.rotate("y", -30)
 
-teapot.change_draw_style(WIREFRAME)
+# teapot.change_draw_style(WIREFRAME)
 
 engine.add_model(teapot)
 
