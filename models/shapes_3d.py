@@ -102,6 +102,7 @@ class shape_3d(shape):
 
         rotate_around_point(point, self.center, axis, angle)
 
+
     def teleport(self, x, y, z):
         x_shift = -self.center[0] + x
         y_shift = -self.center[1] + y

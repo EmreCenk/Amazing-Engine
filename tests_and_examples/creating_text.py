@@ -12,6 +12,7 @@ def zoom(event):
 
 
 def update():
+
     power_level = p_original * my_engine.delta_time
 
     keys = pygame.key.get_pressed()
@@ -50,12 +51,13 @@ def update():
 
 my_engine = Engine(800, 600, __file__, delay_time=25)
 my_engine.light.luminosity = 50
-
 letters = my_engine.create_text("Amazing Engine\nby Emre Cenk", [20, 0, -10], 3, 0.1)
+
 my_engine.bind_event(pygame.MOUSEBUTTONDOWN, zoom)
 
 p_original = 30
 p_z_original = 30
+
 
 
 my_engine.start_engine()

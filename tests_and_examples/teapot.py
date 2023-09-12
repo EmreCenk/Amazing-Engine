@@ -15,6 +15,7 @@ teapot.rotate("y", -30)
 # teapot.change_draw_style(WIREFRAME)
 
 engine.add_model(teapot)
+engine.camera.shift("z",-0.4)
 
 def update():
     pass
