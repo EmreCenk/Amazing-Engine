@@ -46,7 +46,7 @@ class Engine:
 
         self.event_bindings = {} # pygame events mapped to functions
 
-    def create_text(self, text, center_position, spacing, font_size):
+    def create_text(self, text, center_position, spacing = 3, font_size = 0.1):
 
         letter_objs = []
         y_offset = 0
