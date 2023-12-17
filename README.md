@@ -44,14 +44,10 @@ Amazing Engine has a variety of 3d shapes such as Cubes, Pyramids and Spheres. T
 ### Initializing built in shapes:
 Most 3d shapes have a general rule when initializing:
 * The first argument is an array that specifies the coordinates of the center
-* The second argument is an integer that specifies what the side length, radius, or height is
-    For instance, 
-    
-    for cubes, the second argument specifies the side length,
-    
-    for pyramids, the second argument specifies the height
-    
-    for spheres, the second argument specifies the radius 
+* The second argument is an integer that specifies what the side length, radius, or height is:
+  * for cubes, the second argument specifies the side length, 
+  * for pyramids, the second argument specifies the height 
+  * for spheres, the second argument specifies the radius 
 
 * The third argument is what color you want the object to be
 ```python
@@ -160,7 +156,7 @@ from graphics.managing_graphics import Engine
 import os
 my_engine = Engine(600, 800, os.getcwd(), "script_name", delay_time=25) # initializing engine
 
-my_engine.light.luminosity = 50 #The light can light up to 50 units around itself
+my_engine.light.luminosity = 50 #In this example, the light can light up to 50 units around itself
 ```
 
 #### The update function:
@@ -198,7 +194,3 @@ engine.start_engine()
 
 
 
-maybe:
-This means that you can import any 3d model that you create in blender. All you need to do this
- export -> export as .obj.
-Before exporting, inside the geometry settings,  uncheck all of the boxes except "Triangulate Faces".

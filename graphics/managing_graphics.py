@@ -7,8 +7,7 @@ from graphics.shading import Light
 import pygame
 import sys
 import os
-import models.shapes_3d as sh3 #DO NOT DELETE. Due to some import dependencies, we need to first import
-# this before importing the obj_mesh class
+import models.shapes_3d as sh3 #DO NOT DELETE. Due to some import dependencies, we need to first import this before importing the obj_mesh class
 from models.using_obj_files.using_obj_files import obj_mesh
 
 class Engine:
@@ -176,7 +175,7 @@ class Engine:
 
 
 
-        print(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
+            print(f"Average time between frames: {total/x} ({1/(total/x)} fps)")
 
 
 
