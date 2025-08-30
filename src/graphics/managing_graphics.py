@@ -1,6 +1,6 @@
 from graphics.camera import Camera
 from time import perf_counter
-from a_ideas_on_hold.managing_window_pixels import WindowManager
+from wip.managing_window_pixels import WindowManager
 from constants import SOLID, WIREFRAME
 from utils.coordinate_system_3d import *
 from graphics.shading import Light
