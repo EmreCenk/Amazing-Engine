@@ -1,7 +1,7 @@
 import pyximport
 pyximport.install()
 from cythonized_graphics.managing_pixels import WindowManager
-from a_ideas_on_hold.managing_window_pixels import WindowManager as pymanag
+from wip.managing_window_pixels import WindowManager as pymanag
 import pygame
 from time import perf_counter
 import numpy as np
